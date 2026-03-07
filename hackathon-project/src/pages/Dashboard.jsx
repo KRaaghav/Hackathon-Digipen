@@ -260,19 +260,21 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             justifyContent: 'center'
           }}
         >
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn btn-primary"
-            style={{
-              fontSize: '1.05rem',
-              padding: '16px 40px',
-              borderRadius: '12px',
-              fontWeight: 600
-            }}
-          >
-            Get Started
-          </motion.button>
+          <Link to="/explore">
+            <motion.button
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn btn-primary"
+              style={{
+                fontSize: '1.05rem',
+                padding: '16px 40px',
+                borderRadius: '12px',
+                fontWeight: 600
+              }}
+            >
+              Get Started
+            </motion.button>
+          </Link>
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
