@@ -22,9 +22,11 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
     const searchQ = customQuery || query
     setLoading(true); setHasSearched(true); setResults([])
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('/api/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+                'x-api-key': 'PCKIHTF766OX7R'
+         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514', max_tokens: 1000,
           messages: [{ role: 'user', content: `You are an extracurricular advisor. Student: ${userProfile?.year || 'college'} student majoring in ${userProfile?.major || 'undecided'}. Goals: ${userProfile?.goals?.join(', ') || 'academic success'}. Search: "${searchQ || 'top extracurriculars for my major'}". Return EXACTLY 6 items as JSON array only (no markdown). Each: title, category (Academic/Sports/Arts/Community/Professional/Leadership), description(1 sentence), commitment, teamSize, rating(4.0-5.0), meetingDay, skills(array of 3), why(1 sentence fit).` }]

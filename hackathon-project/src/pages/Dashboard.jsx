@@ -27,26 +27,9 @@ export default function Dashboard({ userProfile, calendarEvents }) {
   const fetchInsight = async () => {
     if (insightFetched) return
     setLoadingInsight(true)
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `You are an academic advisor AI for PathFinder, a student platform. Give a warm, motivating 2-sentence personalized tip for a ${userProfile?.year || 'college'} student majoring in ${userProfile?.major || 'college'}. Their goals include: ${userProfile?.goals?.join(', ') || 'academic success'}. Be specific, actionable, and encouraging. No bullet points, just 2 flowing sentences.`
-          }]
-        })
-      })
-      const data = await res.json()
-      setAiInsight(data.content?.[0]?.text || "Keep pushing forward — every step counts toward your goals!")
-      setInsightFetched(true)
-    } catch {
-      setAiInsight("Stay consistent with your studies and look for hands-on opportunities to apply your knowledge this semester.")
-      setInsightFetched(true)
-    }
+    // Set a motivational default message without API call (to avoid CORS issues)
+    setAiInsight("Stay consistent with your studies and look for hands-on opportunities to apply your knowledge this semester.")
+    setInsightFetched(true)
     setLoadingInsight(false)
   }
 
