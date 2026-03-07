@@ -77,24 +77,12 @@ export default function Dashboard({ userProfile, calendarEvents }) {
   const [aiInsight, setAiInsight] = useState('')
   const [loadingInsight, setLoadingInsight] = useState(false)
   const [insightFetched, setInsightFetched] = useState(false)
-  // Initialize from localStorage if available, otherwise from userProfile
-  const [selectedMajor, setSelectedMajor] = useState(() => {
-    const saved = localStorage.getItem('userMajor')
-    return saved || userProfile?.major || 'Computer Science'
-  })
-  const [majorInput, setMajorInput] = useState(() => {
-    const saved = localStorage.getItem('userMajor')
-    return saved || userProfile?.major || 'Computer Science'
-  })
+  const [selectedMajor, setSelectedMajor] = useState(userProfile?.major || 'Computer Science')
+  const [majorInput, setMajorInput] = useState(userProfile?.major || 'Computer Science')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState([])
 
   const tips = TIPS_BY_MAJOR[selectedMajor] || TIPS_BY_MAJOR.default
-
-  // Save major to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('userMajor', selectedMajor)
-  }, [selectedMajor])
 
   // Fuzzy search to find matching majors
   const findMatchingMajors = (query) => {
@@ -272,19 +260,21 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             justifyContent: 'center'
           }}
         >
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn btn-primary"
-            style={{
-              fontSize: '1.05rem',
-              padding: '16px 40px',
-              borderRadius: '12px',
-              fontWeight: 600
-            }}
-          >
-            Get Started
-          </motion.button>
+          <Link to="/explore">
+            <motion.button
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn btn-primary"
+              style={{
+                fontSize: '1.05rem',
+                padding: '16px 40px',
+                borderRadius: '12px',
+                fontWeight: 600
+              }}
+            >
+              Get Started
+            </motion.button>
+          </Link>
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
@@ -760,7 +750,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               alignItems: 'center',
               gap: '8px'
             }}>
-              <BookOpen size={24} color="var(--accent2)" /> Tips for {selectedMajor || 'Your Major'}
+              <BookOpen size={24} color="var(--accent2)" /> Tips for {userProfile?.major || 'Your Major'}
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {tips.map((tip, i) => (

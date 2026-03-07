@@ -1,54 +1,181 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Sparkles, Plus, Check, MapPin, Clock, Users, Star, Filter, Loader, BookOpen } from 'lucide-react'
+import { Search, Sparkles, Plus, Check, MapPin, Clock, Users, Star, Filter, Loader } from 'lucide-react'
 
-const TIPS_BY_MAJOR = {
-  "Computer Science": ["Build a GitHub portfolio", "Contribute to open source", "Learn system design", "Practice LeetCode daily"],
-  "Software Engineering": ["Master full-stack development", "Deploy side projects", "Learn DevOps basics", "Study clean code principles"],
-  "Data Science": ["Build predictive models", "Master Python & SQL", "Create visualizations", "Participate in Kaggle competitions"],
-  "Cybersecurity": ["Get security certifications", "Capture The Flag competitions", "Learn penetration testing", "Study network security"],
-  "Business Administration": ["Network on LinkedIn", "Join a business club", "Read the WSJ daily", "Find a mentor in industry"],
-  "Finance": ["Learn financial modeling", "Follow the market daily", "Get CFA certifications", "Intern at investment firms"],
-  "Marketing": ["Build a personal brand", "Study consumer psychology", "Create marketing campaigns", "Learn analytics tools"],
-  "Accounting": ["Master Excel & accounting software", "Get CPA exam prep started", "Intern at accounting firms", "Stay updated on tax law"],
-  "Economics": ["Study economic theory deeply", "Read economics journals", "Learn econometrics", "Analyze real-world markets"],
-  "Psychology": ["Volunteer at a counseling center", "Read academic journals", "Join APA student division", "Apply for research positions"],
-  "Sociology": ["Conduct field research", "Read sociological studies", "Join sociology club", "Explore social issues deeply"],
-  "Political Science": ["Intern in government", "Follow current politics", "Mock debate competitions", "Study policy papers"],
-  "International Relations": ["Learn multiple languages", "Study geopolitics", "Join Model UN", "Intern at international orgs"],
-  "Biology": ["Find a research lab", "Shadow a professional", "Study for MCAT early", "Join science honor society"],
-  "Chemistry": ["Master lab techniques", "Join research groups", "Study for GRE early", "Participate in science olympiad"],
-  "Physics": ["Build physics projects", "Study quantum mechanics deeply", "Join physics clubs", "Attend physics symposiums"],
-  "Environmental Science": ["Work on conservation projects", "Study climate change research", "Join environmental clubs", "Volunteer for cleanups"],
-  "Neuroscience": ["Find brain research labs", "Study neurobiology deeply", "Read neuroscience journals", "Shadow neuroscientists"],
-  "Mechanical Engineering": ["Build robots or engines", "Learn CAD software", "Join engineering competitions", "Intern at tech companies"],
-  "Electrical Engineering": ["Master circuit design", "Build electronics projects", "Learn microcontrollers", "Intern at tech firms"],
-  "Civil Engineering": ["Design infrastructure projects", "Use CAD software", "Intern at engineering firms", "Study sustainability"],
-  "Biomedical Engineering": ["Research medical devices", "Study human physiology", "Join biomedical clubs", "Intern at medical companies"],
-  "Pre-Med": ["Volunteer at hospitals", "Maintain high GPA", "Get clinical experience", "Prepare for MCAT"],
-  "Nursing": ["Get clinical certifications", "Volunteer in hospitals", "Study anatomy thoroughly", "Network with nurses"],
-  "Public Health": ["Work on health projects", "Study epidemiology", "Intern at health organizations", "Learn data analysis"],
-  "Pharmacy": ["Intern at pharmacies", "Study biochemistry deeply", "Prepare for PCAT", "Get healthcare certifications"],
-  "English Literature": ["Read widely and critically", "Join writing workshops", "Build writing portfolio", "Submit to literary journals"],
-  "Journalism": ["Write for student publications", "Build journalism portfolio", "Learn multimedia reporting", "Intern at news outlets"],
-  "Communications": ["Study media & rhetoric", "Build communication skills", "Intern in communications", "Create media projects"],
-  "Media Studies": ["Analyze films & media", "Create media projects", "Intern at media companies", "Study digital culture"],
-  "Art & Design": ["Build visual portfolio", "Practice design daily", "Exhibit your work", "Follow design trends"],
-  "Architecture": ["Master architecture software", "Explore building design", "Intern at firms", "Attend architecture lectures"],
-  "Film & Media": ["Create short films", "Build filmmaking portfolio", "Attend film festivals", "Study cinematography"],
-  "Music": ["Practice your instrument", "Perform regularly", "Learn music theory deeply", "Collaborate with musicians"],
-  "History": ["Read historical sources", "Write research papers", "Study primary documents", "Intern at museums"],
-  "Philosophy": ["Read philosophy widely", "Engage in debates", "Write analytical essays", "Explore ethics deeply"],
-  "Anthropology": ["Study human cultures", "Read ethnographies", "Volunteer in communities", "Explore fieldwork methods"],
-  "Religious Studies": ["Study world religions", "Read sacred texts", "Engage in discussions", "Explore comparative religion"],
-  "Mathematics": ["Solve complex problems", "Study pure math deeply", "Join math clubs", "Participate in competitions"],
-  "Statistics": ["Learn R and Python", "Analyze real datasets", "Study statistical theory", "Intern at data companies"],
-  "Actuarial Science": ["Pass actuarial exams", "Study probability deeply", "Learn financial math", "Intern at insurance firms"],
-  "Education": ["Tutor students regularly", "Intern at schools", "Study pedagogy", "Volunteer in classrooms"],
-  "Social Work": ["Volunteer with communities", "Get certifications", "Intern at social agencies", "Study social policy"],
-  "Criminal Justice": ["Intern in law enforcement", "Study criminology", "Shadow professionals", "Learn investigative methods"],
-  "Undecided / Exploring": ["Explore various majors", "Take diverse electives", "Talk to career advisors", "Attend major info sessions"]
-}
+const ALL_EXTRACURRICULARS = [
+  // Academic (40)
+  { title: "Computer Science Club", category: "Academic", description: "Collaborate on projects, hackathons, and competitive programming.", commitment: "3 hrs/week", teamSize: "50-100 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Problem Solving", "Teamwork", "Coding"], why: "Directly boosts technical skills and networking." },
+  { title: "Undergraduate Research Program", category: "Academic", description: "Work alongside faculty on cutting-edge research projects.", commitment: "8-10 hrs/week", teamSize: "5-15 members", rating: 4.9, meetingDay: "Flexible", skills: ["Research", "Critical Thinking", "Writing"], why: "Essential for graduate school applications." },
+  { title: "Debate Club", category: "Academic", description: "Compete in parliamentary and policy debate tournaments.", commitment: "6 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Tuesdays & Thursdays", skills: ["Public Speaking", "Critical Thinking", "Research"], why: "Improves communication and persuasion skills." },
+  { title: "Math Olympiad Team", category: "Academic", description: "Prepare for national and international math competitions.", commitment: "4 hrs/week", teamSize: "15-25 members", rating: 4.9, meetingDay: "Saturdays", skills: ["Problem Solving", "Mathematical Thinking", "Persistence"], why: "Top choice for STEM majors and grad school." },
+  { title: "Engineering Design Club", category: "Academic", description: "Build functional projects using CAD, fabrication, and electronics.", commitment: "5 hrs/week", teamSize: "30-60 members", rating: 4.8, meetingDay: "Thursdays", skills: ["CAD", "Problem Solving", "Teamwork"], why: "Build portfolio projects for internships." },
+  { title: "Model United Nations", category: "Academic", description: "Represent countries at global conferences and debates.", commitment: "4 hrs/week", teamSize: "40-80 members", rating: 4.6, meetingDay: "Mondays & Wednesdays", skills: ["Public Speaking", "Diplomacy", "Research"], why: "Great for international relations and business careers." },
+  { title: "Robotics Club", category: "Academic", description: "Design and build robots for FIRST and VEX competitions.", commitment: "8 hrs/week", teamSize: "25-50 members", rating: 4.9, meetingDay: "Flexible", skills: ["Programming", "Electronics", "Mechanical Design"], why: "Hands-on experience for engineering careers." },
+  { title: "Data Science Club", category: "Academic", description: "Learn machine learning, analytics, and big data techniques.", commitment: "3 hrs/week", teamSize: "30-60 members", rating: 4.8, meetingDay: "Tuesdays", skills: ["Data Analysis", "Python", "Machine Learning"], why: "Perfect for CS and analytics career paths." },
+  { title: "Biology Research Lab", category: "Academic", description: "Conduct experiments in molecular and cellular biology.", commitment: "10 hrs/week", teamSize: "5-10 members", rating: 4.8, meetingDay: "Flexible", skills: ["Lab Technique", "Scientific Writing", "Analysis"], why: "Crucial for pre-med and biology graduate programs." },
+  { title: "Philosophy Club", category: "Academic", description: "Discuss ethics, metaphysics, epistemology, and social theory.", commitment: "2 hrs/week", teamSize: "15-30 members", rating: 4.5, meetingDay: "Thursdays", skills: ["Critical Thinking", "Discussion", "Analysis"], why: "Develops clear thinking and communication." },
+  { title: "Economics Club", category: "Academic", description: "Explore economic theory and participate in trading competitions.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.6, meetingDay: "Wednesdays", skills: ["Analysis", "Trading", "Economic Theory"], why: "Excellent for finance and business careers." },
+  { title: "Chemistry Club", category: "Academic", description: "Perform experiments, demonstrations, and chemistry outreach.", commitment: "3 hrs/week", teamSize: "20-35 members", rating: 4.7, meetingDay: "Fridays", skills: ["Lab Skills", "Safety", "Teaching"], why: "Build chemistry skills and mentoring experience." },
+  { title: "Physics Society", category: "Academic", description: "Explore experimental and theoretical physics through projects.", commitment: "4 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Physics Concepts", "Experimentation", "Analysis"], why: "Deepens physics understanding beyond coursework." },
+  { title: "Neuroscience Journal Club", category: "Academic", description: "Review and discuss latest neuroscience research papers.", commitment: "2 hrs/week", teamSize: "10-20 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Research Analysis", "Presentation", "Discussion"], why: "Essential for pre-med and neuroscience majors." },
+  { title: "Astrophysics Club", category: "Academic", description: "Observe celestial objects and learn space physics.", commitment: "3 hrs/week", teamSize: "15-25 members", rating: 4.8, meetingDay: "Saturdays", skills: ["Observation", "Physics", "Data Analysis"], why: "Perfect for physics and astronomy enthusiasts." },
+  { title: "Case Competitions Club", category: "Academic", description: "Solve business cases and compete in management competitions.", commitment: "4 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Tuesdays & Fridays", skills: ["Problem Solving", "Business Analysis", "Presentation"], why: "Top preparation for consulting internships." },
+  { title: "Actuarial Science Club", category: "Academic", description: "Prepare for actuarial exams and learn insurance math.", commitment: "4 hrs/week", teamSize: "15-30 members", rating: 4.9, meetingDay: "Thursdays", skills: ["Mathematics", "Statistics", "Finance"], why: "Essential for actuarial science majors." },
+  { title: "Biomedical Engineering Club", category: "Academic", description: "Build medical devices and implant prototypes.", commitment: "6 hrs/week", teamSize: "20-40 members", rating: 4.8, meetingDay: "Flexible", skills: ["Engineering", "Biocompatibility", "Design"], why: "Great for pre-med engineers." },
+  { title: "Environmental Science Club", category: "Academic", description: "Study sustainability, ecology, and climate science.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.6, meetingDay: "Wednesdays", skills: ["Environmental Science", "Sustainability", "Research"], why: "Perfect for environmental and ecology majors." },
+  { title: "Astronomy Club", category: "Academic", description: "Star gazing, space exploration discussions, and planetarium visits.", commitment: "2 hrs/week", teamSize: "25-50 members", rating: 4.7, meetingDay: "Fridays", skills: ["Observation", "Astronomy", "Teaching"], why: "Accessible for all majors interested in space." },
+  { title: "Coding Bootcamp", category: "Academic", description: "Intensive programming workshops in multiple languages.", commitment: "5 hrs/week", teamSize: "30-60 members", rating: 4.8, meetingDay: "Saturdays", skills: ["Programming", "Web Dev", "Problem Solving"], why: "Accelerate coding skills for tech careers." },
+  { title: "Architecture & Design Club", category: "Academic", description: "Learn CAD, architecture, and interior design principles.", commitment: "3 hrs/week", teamSize: "20-35 members", rating: 4.6, meetingDay: "Thursdays", skills: ["Design", "CAD", "Creativity"], why: "Perfect for architecture and design students." },
+  { title: "Psychology Research Lab", category: "Academic", description: "Conduct behavioral and cognitive psychology studies.", commitment: "8 hrs/week", teamSize: "5-12 members", rating: 4.8, meetingDay: "Flexible", skills: ["Research", "Data Analysis", "Participant Interaction"], why: "Essential for psychology graduate programs." },
+  { title: "Quantum Computing Club", category: "Academic", description: "Learn quantum mechanics and quantum computing principles.", commitment: "4 hrs/week", teamSize: "15-25 members", rating: 4.9, meetingDay: "Tuesdays", skills: ["Quantum Physics", "Programming", "Mathematics"], why: "Cutting-edge for computer science majors." },
+  { title: "Patent Law Club", category: "Academic", description: "Study intellectual property and patent applications.", commitment: "2 hrs/week", teamSize: "10-20 members", rating: 4.6, meetingDay: "Mondays", skills: ["Legal Thinking", "Patent Research", "Writing"], why: "Great for pre-law and STEM students." },
+  { title: "Healthcare Ethics Club", category: "Academic", description: "Discuss bioethical dilemmas and healthcare policy.", commitment: "2 hrs/week", teamSize: "15-30 members", rating: 4.7, meetingDay: "Thursdays", skills: ["Ethics", "Critical Thinking", "Healthcare Knowledge"], why: "Essential for pre-med students." },
+  { title: "Linear Algebra Study Group", category: "Academic", description: "Collaborative problem-solving for advanced mathematics.", commitment: "3 hrs/week", teamSize: "8-15 members", rating: 4.8, meetingDay: "Sundays", skills: ["Mathematics", "Collaboration", "Teaching"], why: "Boost grades in challenging math courses." },
+  { title: "Genetics & Molecular Biology Club", category: "Academic", description: "Explore CRISPR, genetic engineering, and molecular techniques.", commitment: "3 hrs/week", teamSize: "20-30 members", rating: 4.8, meetingDay: "Tuesdays", skills: ["Molecular Biology", "Genetics", "Lab Technique"], why: "Perfect for biology and pre-med majors." },
+  { title: "Urban Planning Club", category: "Academic", description: "Design sustainable cities and study urban development.", commitment: "3 hrs/week", teamSize: "15-25 members", rating: 4.6, meetingDay: "Wednesdays", skills: ["City Planning", "Sustainability", "Design"], why: "Great for environmental and civil engineering majors." },
+  { title: "Blockchain & Crypto Club", category: "Academic", description: "Learn distributed systems, cryptography, and Web3.", commitment: "3 hrs/week", teamSize: "25-50 members", rating: 4.7, meetingDay: "Fridays", skills: ["Cryptography", "Web3", "Economics"], why: "Cutting-edge for CS and finance majors." },
+  { title: "Immunology Research Lab", category: "Academic", description: "Study immune system function and vaccine development.", commitment: "10 hrs/week", teamSize: "5-10 members", rating: 4.9, meetingDay: "Flexible", skills: ["Lab Technique", "Immunology", "Research"], why: "Essential for immunology and pre-med careers." },
+
+  // Professional (35)
+  { title: "Student Government Association", category: "Leadership", description: "Represent student interests and shape campus policies.", commitment: "5 hrs/week", teamSize: "30-60 members", rating: 4.6, meetingDay: "Mondays", skills: ["Leadership", "Public Speaking", "Advocacy"], why: "Builds leadership skills valued by employers." },
+  { title: "Entrepreneurship Club", category: "Professional", description: "Build startup ideas, pitch competitions, and connect with founders.", commitment: "4 hrs/week", teamSize: "40-80 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Entrepreneurship", "Pitching", "Networking"], why: "Perfect for entrepreneurial career goals." },
+  { title: "McKinsey Consulting Club", category: "Professional", description: "Prepare for consulting interviews and solve real business cases.", commitment: "4 hrs/week", teamSize: "30-60 members", rating: 4.9, meetingDay: "Tuesdays & Fridays", skills: ["Business Analysis", "Consulting", "Presentation"], why: "Target preparation for top consulting firms." },
+  { title: "Goldman Sachs Investment Club", category: "Professional", description: "Learn investment analysis and stock market trading.", commitment: "3 hrs/week", teamSize: "25-50 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Finance", "Analysis", "Trading"], why: "Ideal for finance and business careers." },
+  { title: "Tech Innovation Club", category: "Professional", description: "Explore emerging technologies and startup ecosystems.", commitment: "3 hrs/week", teamSize: "40-80 members", rating: 4.7, meetingDay: "Thursdays", skills: ["Technology", "Innovation", "Entrepreneurship"], why: "Network with tech industry professionals." },
+  { title: "Real Estate Investment Club", category: "Professional", description: "Learn property investment, valuation, and development.", commitment: "2 hrs/week", teamSize: "20-40 members", rating: 4.6, meetingDay: "Mondays", skills: ["Real Estate", "Investment", "Finance"], why: "Great for business and finance majors." },
+  { title: "Private Equity Club", category: "Professional", description: "Study leveraged buyouts and portfolio company management.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.8, meetingDay: "Tuesdays", skills: ["Finance", "M&A", "Valuation"], why: "Top choice for finance careers." },
+  { title: "Venture Capital Club", category: "Professional", description: "Pitch ideas to VCs, learn startup funding, and network.", commitment: "3 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Thursdays", skills: ["Entrepreneurship", "Pitching", "Investment"], why: "Essential for startup founders." },
+  { title: "Management Consulting Club", category: "Professional", description: "Case interviews, client projects, and consulting skills.", commitment: "4 hrs/week", teamSize: "25-45 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Business Analysis", "Consulting", "Teamwork"], why: "Direct prep for consulting interviews." },
+  { title: "Corporate Finance Club", category: "Professional", description: "Learn financial modeling, valuation, and corporate strategy.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Fridays", skills: ["Financial Modeling", "Finance", "Analysis"], why: "Perfect for investment banking prep." },
+  { title: "Marketing Strategy Club", category: "Professional", description: "Analyze brands, develop marketing campaigns, compete in battles.", commitment: "3 hrs/week", teamSize: "25-45 members", rating: 4.6, meetingDay: "Thursdays", skills: ["Marketing", "Strategy", "Branding"], why: "Great for marketing and business majors." },
+  { title: "Product Management Club", category: "Professional", description: "Learn PM skills, build products, and analyze user needs.", commitment: "3 hrs/week", teamSize: "30-60 members", rating: 4.8, meetingDay: "Tuesdays", skills: ["Product Development", "Data Analysis", "User Research"], why: "Essential for PM career path." },
+  { title: "Sales & Trading Club", category: "Professional", description: "Learn trading strategies, derivatives, and market dynamics.", commitment: "3 hrs/week", teamSize: "20-35 members", rating: 4.7, meetingDay: "Wednesdays", skills: ["Trading", "Markets", "Finance"], why: "Direct path to trading careers." },
+  { title: "Corporate Law Club", category: "Professional", description: "Study M&A, securities law, and corporate transactions.", commitment: "2 hrs/week", teamSize: "15-30 members", rating: 4.6, meetingDay: "Mondays", skills: ["Legal Analysis", "M&A", "Contracts"], why: "Perfect for pre-law students." },
+  { title: "Startup Accelerator Program", category: "Professional", description: "Intensive program to launch startups with mentorship and funding.", commitment: "12 hrs/week", teamSize: "5-15 teams", rating: 4.9, meetingDay: "Flexible", skills: ["Entrepreneurship", "All Skills"], why: "Best option for building a startup." },
+  { title: "Digital Marketing Club", category: "Professional", description: "Learn SEO, social media, content marketing, and analytics.", commitment: "3 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Fridays", skills: ["Digital Marketing", "Analytics", "Content"], why: "Essential for modern marketing careers." },
+  { title: "Business Analytics Club", category: "Professional", description: "Master data analytics tools and business intelligence.", commitment: "3 hrs/week", teamSize: "25-40 members", rating: 4.8, meetingDay: "Tuesdays", skills: ["Data Analysis", "Analytics", "Business Acumen"], why: "Top demand in corporate America." },
+  { title: "Executive Leadership Development", category: "Professional", description: "One-on-one executive coaching and leadership mentoring.", commitment: "2 hrs/week", teamSize: "10-20 members", rating: 4.9, meetingDay: "Flexible", skills: ["Leadership", "Communication", "Strategy"], why: "Most exclusive development program." },
+  { title: "Supply Chain Management Club", category: "Professional", description: "Study logistics, procurement, and operations management.", commitment: "2 hrs/week", teamSize: "15-30 members", rating: 4.6, meetingDay: "Wednesdays", skills: ["Supply Chain", "Operations", "Optimization"], why: "Essential for operations and logistics careers." },
+  { title: "Human Resources Club", category: "Professional", description: "Learn HR strategy, recruitment, and employee relations.", commitment: "2 hrs/week", teamSize: "15-30 members", rating: 4.5, meetingDay: "Thursdays", skills: ["HR Strategy", "Recruitment", "Relations"], why: "Great for HR and organizational development." },
+  { title: "Insurance & Risk Management Club", category: "Professional", description: "Study risk assessment and insurance products.", commitment: "2 hrs/week", teamSize: "10-20 members", rating: 4.6, meetingDay: "Mondays", skills: ["Risk Analysis", "Insurance", "Finance"], why: "Perfect for actuaries and risk managers." },
+  { title: "Executive MBA Club", category: "Professional", description: "Prepare for MBA programs through case studies.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.8, meetingDay: "Tuesdays", skills: ["Business Strategy", "Leadership", "Analysis"], why: "Essential MBA exam preparation." },
+  { title: "International Business Club", category: "Professional", description: "Study global markets, trade, and international strategy.", commitment: "2 hrs/week", teamSize: "20-40 members", rating: 4.6, meetingDay: "Fridays", skills: ["Global Business", "Trade", "Strategy"], why: "Great for international business careers." },
+  { title: "Fintech Innovation Club", category: "Professional", description: "Explore financial technology and blockchain applications.", commitment: "3 hrs/week", teamSize: "25-45 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Fintech", "Programming", "Finance"], why: "Perfect for fintech industry careers." },
+  { title: "Sustainability Business Club", category: "Professional", description: "Study ESG investing and corporate sustainability.", commitment: "2 hrs/week", teamSize: "20-35 members", rating: 4.7, meetingDay: "Wednesdays", skills: ["Sustainability", "ESG", "Business"], why: "Growing field in responsible investing." },
+  { title: "Negotiation & Conflict Resolution", category: "Professional", description: "Develop negotiation skills through simulations and case studies.", commitment: "2 hrs/week", teamSize: "15-30 members", rating: 4.7, meetingDay: "Thursdays", skills: ["Negotiation", "Communication", "Strategy"], why: "Essential skill for all business roles." },
+  { title: "Executive Networking Breakfast", category: "Professional", description: "Monthly breakfast with C-level executives and industry leaders.", commitment: "1 hr/month", teamSize: "50-100 members", rating: 4.9, meetingDay: "Monthly", skills: ["Networking", "Professional Development"], why: "Unmatched networking opportunities." },
+  { title: "Business Ethics & Compliance Club", category: "Professional", description: "Study corporate ethics, compliance, and corporate governance.", commitment: "2 hrs/week", teamSize: "15-25 members", rating: 4.6, meetingDay: "Tuesdays", skills: ["Ethics", "Compliance", "Governance"], why: "Essential for corporate careers." },
+  { title: "Corporate Innovation Lab", category: "Professional", description: "Develop innovation strategies for large corporations.", commitment: "4 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "Flexible", skills: ["Innovation", "Strategy", "Entrepreneurship"], why: "Bridge between corporate and startup thinking." },
+
+  // Leadership (25)
+  { title: "Volunteer Tutoring Corps", category: "Community", description: "Tutor local high school students in STEM subjects.", commitment: "2 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Saturdays", skills: ["Communication", "Mentorship", "Patience"], why: "Strengthens your own knowledge while giving back." },
+  { title: "Community Service Steering Committee", category: "Leadership", description: "Lead community service initiatives and volunteer programs.", commitment: "4 hrs/week", teamSize: "10-20 members", rating: 4.8, meetingDay: "Mondays", skills: ["Leadership", "Organization", "Community"], why: "Direct leadership in social impact." },
+  { title: "Class President", category: "Leadership", description: "Lead your class with events, decisions, and representation.", commitment: "3 hrs/week", teamSize: "300-500 members", rating: 4.7, meetingDay: "Flexible", skills: ["Leadership", "Communication", "Organization"], why: "Most prestigious student leadership role." },
+  { title: "Resident Advisor (RA)", category: "Leadership", description: "Lead residential community with mentoring and programming.", commitment: "10 hrs/week", teamSize: "30-50 members", rating: 4.8, meetingDay: "Flexible", skills: ["Leadership", "Mentorship", "Community Building"], why: "Paid position with residential leadership." },
+  { title: "Orientation Leader", category: "Leadership", description: "Welcome new students and lead first-year orientation.", commitment: "6 hrs/week", teamSize: "30-60 leaders", rating: 4.7, meetingDay: "Summer/Fall", skills: ["Leadership", "Communication", "Mentorship"], why: "Shape first impressions for new students." },
+  { title: "Dean's Student Leadership Council", category: "Leadership", description: "Direct advisory role to deans on student issues.", commitment: "3 hrs/week", teamSize: "12-25 members", rating: 4.9, meetingDay: "Tuesdays", skills: ["Leadership", "Advocacy", "Strategy"], why: "Highest advisory position for students." },
+  { title: "Campus Safe Ride Coordinator", category: "Leadership", description: "Manage safe ride programs and volunteer drivers.", commitment: "4 hrs/week", teamSize: "20-40 drivers", rating: 4.8, meetingDay: "Flexible", skills: ["Organization", "Safety", "Coordination"], why: "Directly impacts campus safety." },
+  { title: "Student Ambassador Program", category: "Leadership", description: "Represent campus at recruitment events and school visits.", commitment: "3 hrs/week", teamSize: "20-40 ambassadors", rating: 4.6, meetingDay: "Flexible", skills: ["Communication", "Representation", "Networking"], why: "Face of the institution." },
+  { title: "Peer Mentoring Program", category: "Leadership", description: "Mentor first-year students through transition to college.", commitment: "2 hrs/week", teamSize: "30-60 mentors", rating: 4.7, meetingDay: "Flexible", skills: ["Mentorship", "Communication", "Support"], why: "Meaningful impact on new student success." },
+  { title: "Cultural Affinity Group President", category: "Leadership", description: "Lead cultural community celebrations and advocacy.", commitment: "5 hrs/week", teamSize: "30-80 members", rating: 4.8, meetingDay: "Flexible", skills: ["Leadership", "Cultural Awareness", "Advocacy"], why: "Build inclusive campus community." },
+  { title: "Sports Club President", category: "Leadership", description: "Lead student-run sports club with officers and members.", commitment: "5 hrs/week", teamSize: "20-100 members", rating: 4.7, meetingDay: "Flexible", skills: ["Leadership", "Sports Management", "Organization"], why: "Leadership in athletic community." },
+  { title: "Greek Life Officer", category: "Leadership", description: "Lead Greek letter organization with chapter responsibilities.", commitment: "8 hrs/week", teamSize: "50-150 members", rating: 4.6, meetingDay: "Flexible", skills: ["Leadership", "Community", "Organization"], why: "Significant leadership in brotherhood/sisterhood." },
+  { title: "Student Media Director", category: "Leadership", description: "Lead student newspaper, magazine, or broadcast media.", commitment: "8 hrs/week", teamSize: "20-50 members", rating: 4.8, meetingDay: "Flexible", skills: ["Leadership", "Journalism", "Communication"], why: "Guide campus media and student voice." },
+  { title: "Accessibility & Disability Services Peer Advocate", category: "Leadership", description: "Advocate for students with disabilities and lead accessibility initiatives.", commitment: "3 hrs/week", teamSize: "10-20 advocates", rating: 4.9, meetingDay: "Flexible", skills: ["Advocacy", "Leadership", "Accessibility"], why: "Champion inclusive campus environment." },
+  { title: "International Student Mentor", category: "Leadership", description: "Guide international students in campus adjustment.", commitment: "2 hrs/week", teamSize: "20-40 mentors", rating: 4.7, meetingDay: "Flexible", skills: ["Mentorship", "Communication", "Cultural Awareness"], why: "Support global student community." },
+  { title: "Academic Success Coach", category: "Leadership", description: "Coach peers on study skills, time management, and academics.", commitment: "2 hrs/week", teamSize: "15-30 coaches", rating: 4.8, meetingDay: "Flexible", skills: ["Coaching", "Mentorship", "Teaching"], why: "Direct impact on peer academic success." },
+  { title: "Career Services Student Ambassador", category: "Leadership", description: "Promote career services and help peers with job search.", commitment: "2 hrs/week", teamSize: "10-20 ambassadors", rating: 4.7, meetingDay: "Flexible", skills: ["Career Guidance", "Mentorship", "Networking"], why: "Guide peers in career exploration." },
+  { title: "Environmental Sustainability Leader", category: "Leadership", description: "Spearhead campus sustainability and green initiatives.", commitment: "3 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Leadership", "Sustainability", "Advocacy"], why: "Lead environmental change on campus." },
+  { title: "Mental Health Awareness Advocate", category: "Leadership", description: "Champion mental health awareness and peer support programs.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.9, meetingDay: "Flexible", skills: ["Advocacy", "Mental Health", "Community"], why: "Vital role in student wellbeing." },
+  { title: "Diversity & Inclusion Officer", category: "Leadership", description: "Lead diversity initiatives and inclusive programming.", commitment: "4 hrs/week", teamSize: "20-40 members", rating: 4.8, meetingDay: "Flexible", skills: ["Leadership", "Diversity", "Advocacy"], why: "Build equitable campus culture." },
+
+  // Community (30)
+  { title: "Habitat for Humanity", category: "Community", description: "Build homes for families in need in your local community.", commitment: "3 hrs/week", teamSize: "40-80 members", rating: 4.8, meetingDay: "Saturdays", skills: ["Construction", "Teamwork", "Community Service"], why: "Direct impact on housing for vulnerable families." },
+  { title: "Local Food Bank Volunteer", category: "Community", description: "Sort, pack, and distribute food to low-income families.", commitment: "2 hrs/week", teamSize: "50-100 members", rating: 4.6, meetingDay: "Sundays", skills: ["Organization", "Teamwork", "Compassion"], why: "Address food insecurity in your community." },
+  { title: "Big Brothers Big Sisters Mentoring", category: "Community", description: "Mentor at-risk youth one-on-one for positive growth.", commitment: "4 hrs/week", teamSize: "30-60 mentors", rating: 4.9, meetingDay: "Flexible", skills: ["Mentorship", "Compassion", "Patience"], why: "Transform lives of vulnerable youth." },
+  { title: "Crisis Hotline Counselor", category: "Community", description: "Provide peer support to people in emotional crisis.", commitment: "4 hrs/week", teamSize: "20-50 counselors", rating: 4.9, meetingDay: "Evening", skills: ["Listening", "Crisis Support", "Compassion"], why: "Life-saving peer mental health support." },
+  { title: "Animal Shelter Volunteer", category: "Community", description: "Care for animals and assist with adoptions.", commitment: "2 hrs/week", teamSize: "40-80 volunteers", rating: 4.7, meetingDay: "Weekends", skills: ["Animal Care", "Compassion", "Communication"], why: "Help find homes for animals in need." },
+  { title: "Environmental Cleanup Initiative", category: "Community", description: "Organize and participate in local environmental restoration.", commitment: "2 hrs/week", teamSize: "30-60 members", rating: 4.6, meetingDay: "Saturdays", skills: ["Environmental Stewardship", "Teamwork", "Leadership"], why: "Direct environmental impact." },
+  { title: "Hospital Patient Advocate", category: "Community", description: "Support hospitalized patients and their families.", commitment: "3 hrs/week", teamSize: "20-40 volunteers", rating: 4.8, meetingDay: "Flexible", skills: ["Compassion", "Communication", "Support"], why: "Improve hospital experiences for patients." },
+  { title: "Elderly Community Center Assistant", category: "Community", description: "Provide companionship and assistance to seniors.", commitment: "2 hrs/week", teamSize: "25-50 volunteers", rating: 4.7, meetingDay: "Flexible", skills: ["Compassion", "Patience", "Communication"], why: "Combat elderly isolation and loneliness." },
+  { title: "Elementary School Science Outreach", category: "Community", description: "Lead science activities for elementary students.", commitment: "2 hrs/week", teamSize: "20-40 volunteers", rating: 4.7, meetingDay: "Saturdays", skills: ["Science", "Teaching", "Communication"], why: "Inspire young students in STEM." },
+  { title: "Homeless Services Volunteer", category: "Community", description: "Provide meals, clothing, and support to homeless individuals.", commitment: "3 hrs/week", teamSize: "40-80 volunteers", rating: 4.8, meetingDay: "Flexible", skills: ["Compassion", "Service", "Teamwork"], why: "Direct assistance to homeless community." },
+  { title: "Literacy Program Tutor", category: "Community", description: "Teach adult literacy and basic education skills.", commitment: "2 hrs/week", teamSize: "20-40 tutors", rating: 4.7, meetingDay: "Evenings", skills: ["Teaching", "Patience", "Education"], why: "Empower adults through education." },
+  { title: "Disaster Relief Volunteer", category: "Community", description: "Respond to natural disasters with immediate aid.", commitment: "Variable", teamSize: "Variable", rating: 4.9, meetingDay: "As needed", skills: ["Crisis Response", "Teamwork", "Resilience"], why: "Help communities recover from disasters." },
+  { title: "Youth Sports Coach", category: "Community", description: "Coach youth sports and teach athletic fundamentals.", commitment: "3 hrs/week", teamSize: "20-50 coaches", rating: 4.8, meetingDay: "Weekends", skills: ["Coaching", "Sports", "Mentorship"], why: "Develop young athletes and character." },
+  { title: "Afterschool Mentoring Program", category: "Community", description: "Provide homework help and mentoring to disadvantaged youth.", commitment: "3 hrs/week", teamSize: "30-60 mentors", rating: 4.8, meetingDay: "Weekday Afternoons", skills: ["Mentorship", "Teaching", "Support"], why: "Critical academic support for at-risk youth." },
+  { title: "Park Restoration Project", category: "Community", description: "Maintain and restore local parks and green spaces.", commitment: "2 hrs/week", teamSize: "30-60 volunteers", rating: 4.6, meetingDay: "Saturdays", skills: ["Environmental Stewardship", "Teamwork", "Landscaping"], why: "Improve community quality of life." },
+  { title: "Community Garden Organizer", category: "Community", description: "Organize and maintain community gardens for food access.", commitment: "2 hrs/week", teamSize: "25-50 members", rating: 4.7, meetingDay: "Flexible", skills: ["Gardening", "Organization", "Community"], why: "Promote food security and sustainability." },
+  { title: "Free Legal Clinic Volunteer", category: "Community", description: "Assist with free legal aid for low-income families.", commitment: "2 hrs/week", teamSize: "15-30 volunteers", rating: 4.7, meetingDay: "Evenings", skills: ["Legal Research", "Communication", "Service"], why: "Expand access to legal justice." },
+  { title: "Refugee Integration Mentor", category: "Community", description: "Help refugee families integrate into community.", commitment: "3 hrs/week", teamSize: "20-40 mentors", rating: 4.9, meetingDay: "Flexible", skills: ["Cultural Awareness", "Mentorship", "Compassion"], why: "Welcome vulnerable new community members." },
+  { title: "School Supply Drive Organizer", category: "Community", description: "Organize drives to provide school supplies to students in need.", commitment: "Variable", teamSize: "50-100 volunteers", rating: 4.6, meetingDay: "Flexible", skills: ["Organization", "Leadership", "Community"], why: "Remove barriers to education access." },
+  { title: "Mental Health Peer Support Group", category: "Community", description: "Facilitate peer support for mental health and wellness.", commitment: "2 hrs/week", teamSize: "10-20 members", rating: 4.8, meetingDay: "Flexible", skills: ["Peer Support", "Active Listening", "Compassion"], why: "Create safe space for mental health." },
+  { title: "Community Health Clinic Assistant", category: "Community", description: "Assist with free community health screenings and education.", commitment: "2 hrs/week", teamSize: "20-40 volunteers", rating: 4.7, meetingDay: "Saturdays", skills: ["Healthcare", "Community Outreach", "Compassion"], why: "Improve health equity in community." },
+  { title: "Job Training Workshop Mentor", category: "Community", description: "Coach unemployed adults in job search and interview skills.", commitment: "2 hrs/week", teamSize: "15-30 mentors", rating: 4.7, meetingDay: "Evenings", skills: ["Career Coaching", "Communication", "Mentorship"], why: "Help adults gain employment." },
+  { title: "Prison Pen Pal Program", category: "Community", description: "Provide correspondence and support to incarcerated individuals.", commitment: "1 hr/week", teamSize: "20-40 participants", rating: 4.6, meetingDay: "Flexible", skills: ["Communication", "Compassion", "Perspective"], why: "Maintain human connection for incarcerated." },
+  { title: "Community Art Center Volunteer", category: "Community", description: "Assist with art programs in underserved neighborhoods.", commitment: "2 hrs/week", teamSize: "20-40 volunteers", rating: 4.7, meetingDay: "Flexible", skills: ["Art", "Community Outreach", "Creativity"], why: "Bring art access to all communities." },
+  { title: "Disability Services Peer Mentor", category: "Community", description: "Support people with disabilities in community integration.", commitment: "2 hrs/week", teamSize: "15-30 mentors", rating: 4.8, meetingDay: "Flexible", skills: ["Accessibility", "Mentorship", "Compassion"], why: "Champion disability inclusion." },
+
+  // Arts (30)
+  { title: "Photography & Media Society", category: "Arts", description: "Document campus life, learn editing, and build a creative portfolio.", commitment: "2-3 hrs/week", teamSize: "25-50 members", rating: 4.5, meetingDay: "Fridays", skills: ["Creativity", "Visual Storytelling", "Design"], why: "Great creative outlet to balance academic stress." },
+  { title: "Theater & Performing Arts Club", category: "Arts", description: "Act, direct, and produce theatrical productions.", commitment: "5-8 hrs/week", teamSize: "30-80 members", rating: 4.8, meetingDay: "Flexible", skills: ["Acting", "Creativity", "Performance"], why: "Express yourself through dramatic arts." },
+  { title: "Student Film Festival", category: "Arts", description: "Create, edit, and showcase short films.", commitment: "4 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Flexible", skills: ["Filmmaking", "Editing", "Storytelling"], why: "Perfect for aspiring filmmakers." },
+  { title: "Creative Writing Club", category: "Arts", description: "Share and critique original fiction, poetry, and essays.", commitment: "2 hrs/week", teamSize: "15-35 members", rating: 4.6, meetingDay: "Thursdays", skills: ["Writing", "Creativity", "Feedback"], why: "Develop writing voice and craft." },
+  { title: "Musical Theater Production", category: "Arts", description: "Sing, dance, and act in full-scale musical productions.", commitment: "8-10 hrs/week", teamSize: "50-150 members", rating: 4.9, meetingDay: "Flexible", skills: ["Singing", "Acting", "Dancing"], why: "Combine music, theater, and dance." },
+  { title: "Improv & Comedy Club", category: "Arts", description: "Learn improvisation and perform at comedy shows.", commitment: "3 hrs/week", teamSize: "20-50 members", rating: 4.7, meetingDay: "Tuesdays & Thursdays", skills: ["Humor", "Creativity", "Performance"], why: "Build confidence through comedy." },
+  { title: "Jazz Ensemble", category: "Arts", description: "Play jazz music and perform at campus events.", commitment: "3-4 hrs/week", teamSize: "10-20 musicians", rating: 4.8, meetingDay: "Tuesdays & Thursdays", skills: ["Music", "Jazz", "Collaboration"], why: "Perfect for jazz enthusiasts." },
+  { title: "String Quartet", category: "Arts", description: "Perform chamber music with strings.", commitment: "3 hrs/week", teamSize: "4-8 members", rating: 4.8, meetingDay: "Mondays & Thursdays", skills: ["Music", "Strings", "Precision"], why: "Refined classical music experience." },
+  { title: "A Cappella Singing Group", category: "Arts", description: "Sing in harmony without instruments.", commitment: "4 hrs/week", teamSize: "15-30 singers", rating: 4.8, meetingDay: "Tuesdays & Thursdays", skills: ["Singing", "Harmony", "Performance"], why: "Showcase vocal talents." },
+  { title: "Rock Band", category: "Arts", description: "Play rock music with drums, guitar, bass, and vocals.", commitment: "4 hrs/week", teamSize: "4-6 members", rating: 4.7, meetingDay: "Flexible", skills: ["Instruments", "Rock Music", "Collaboration"], why: "Electric music and stage performance." },
+  { title: "Hip Hop Dance Crew", category: "Arts", description: "Learn and perform hip hop choreography.", commitment: "3 hrs/week", teamSize: "15-30 dancers", rating: 4.8, meetingDay: "Mondays & Fridays", skills: ["Dance", "Hip Hop", "Performance"], why: "Modern urban dance expression." },
+  { title: "Ballet Company", category: "Arts", description: "Study and perform classical ballet.", commitment: "6-8 hrs/week", teamSize: "20-40 dancers", rating: 4.9, meetingDay: "Flexible", skills: ["Ballet", "Grace", "Discipline"], why: "Master classical dance technique." },
+  { title: "Visual Art Studio", category: "Arts", description: "Paint, draw, and sculpt in open studio setting.", commitment: "4 hrs/week", teamSize: "20-40 artists", rating: 4.7, meetingDay: "Saturdays", skills: ["Painting", "Drawing", "Sculpture"], why: "Develop visual art portfolio." },
+  { title: "Digital Art & Design Studio", category: "Arts", description: "Create digital art, graphics, and design projects.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Thursdays", skills: ["Digital Design", "Software", "Creativity"], why: "Master modern digital art tools." },
+  { title: "Ceramics & Pottery Club", category: "Arts", description: "Learn pottery wheel and hand-building techniques.", commitment: "3 hrs/week", teamSize: "15-30 members", rating: 4.6, meetingDay: "Tuesdays", skills: ["Pottery", "Craftsmanship", "Creativity"], why: "Create functional and artistic ceramics." },
+  { title: "Photography Competition Team", category: "Arts", description: "Compete in national photography competitions.", commitment: "4 hrs/week", teamSize: "10-20 members", rating: 4.8, meetingDay: "Flexible", skills: ["Photography", "Competition", "Technical Skills"], why: "Showcase photography at highest level." },
+  { title: "Graphic Design Club", category: "Arts", description: "Design logos, posters, websites, and branding.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Wednesdays", skills: ["Graphic Design", "Branding", "Software"], why: "Build professional design portfolio." },
+  { title: "Fashion Design & Styling Club", category: "Arts", description: "Design clothes, host fashion shows, and learn styling.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.6, meetingDay: "Fridays", skills: ["Fashion Design", "Styling", "Creativity"], why: "Express yourself through fashion." },
+  { title: "Sculpture & Installation Art", category: "Arts", description: "Create large-scale sculptures and installations.", commitment: "4 hrs/week", teamSize: "15-25 members", rating: 4.7, meetingDay: "Saturdays", skills: ["Sculpture", "Spatial Design", "Craftsmanship"], why: "Create impactful public art." },
+  { title: "Comic Book & Graphic Novel Club", category: "Arts", description: "Create and share comic books and graphic novels.", commitment: "2 hrs/week", teamSize: "15-30 members", rating: 4.6, meetingDay: "Thursdays", skills: ["Comic Art", "Storytelling", "Drawing"], why: "Combine art and narrative." },
+  { title: "Poetry Slam", category: "Arts", description: "Write and perform spoken word poetry.", commitment: "2 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Poetry", "Performance", "Expression"], why: "Powerful personal expression through poetry." },
+  { title: "Mural & Street Art Initiative", category: "Arts", description: "Create public art murals in the community.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.8, meetingDay: "Saturdays", skills: ["Street Art", "Community Engagement", "Design"], why: "Transform communities with public art." },
+  { title: "Animation Studio", category: "Arts", description: "Learn 2D and 3D animation techniques.", commitment: "4 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "Flexible", skills: ["Animation", "Software", "Storytelling"], why: "Master modern animation." },
+  { title: "Documentary Film Society", category: "Arts", description: "Create and screen documentary films.", commitment: "3 hrs/week", teamSize: "15-30 members", rating: 4.7, meetingDay: "Fridays", skills: ["Documentary", "Filmmaking", "Storytelling"], why: "Tell important stories through film." },
+  { title: "Music Production Club", category: "Arts", description: "Learn music production, mixing, and beat-making.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.8, meetingDay: "Tuesdays", skills: ["Music Production", "Software", "Audio"], why: "Produce professional-quality music." },
+
+  // Sports (40)
+  { title: "Varsity Soccer", category: "Sports", description: "Compete in collegiate soccer with top-tier athletes.", commitment: "15 hrs/week", teamSize: "25-35 members", rating: 4.9, meetingDay: "Daily", skills: ["Soccer", "Athleticism", "Teamwork"], why: "Elite athletic competition." },
+  { title: "Club Volleyball", category: "Sports", description: "Competitive club volleyball without NCAA commitment.", commitment: "8-10 hrs/week", teamSize: "15-20 members", rating: 4.7, meetingDay: "3x/week", skills: ["Volleyball", "Teamwork", "Athleticism"], why: "Competitive volleyball without varsity demands." },
+  { title: "Ultimate Frisbee Club", category: "Sports", description: "Play competitive ultimate frisbee tournaments.", commitment: "4-6 hrs/week", teamSize: "20-30 members", rating: 4.6, meetingDay: "Tuesdays & Thursdays", skills: ["Ultimate", "Athleticism", "Strategy"], why: "Growing competitive sport." },
+  { title: "Rock Climbing Club", category: "Sports", description: "Indoor and outdoor rock climbing expeditions.", commitment: "3-4 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Weekends", skills: ["Climbing", "Problem Solving", "Strength"], why: "Adventure and physical challenge." },
+  { title: "Marathons & Running Club", category: "Sports", description: "Train and run marathons with community support.", commitment: "4-6 hrs/week", teamSize: "30-60 members", rating: 4.8, meetingDay: "Flexible", skills: ["Running", "Endurance", "Discipline"], why: "Build running endurance and community." },
+  { title: "Cycling Club", category: "Sports", description: "Road cycling and mountain biking adventures.", commitment: "4 hrs/week", teamSize: "25-50 members", rating: 4.7, meetingDay: "Weekends", skills: ["Cycling", "Endurance", "Bike Maintenance"], why: "Explore outdoors by bike." },
+  { title: "Club Swimming", category: "Sports", description: "Competitive club swimming without NCAA constraints.", commitment: "8 hrs/week", teamSize: "15-25 members", rating: 4.7, meetingDay: "3x/week", skills: ["Swimming", "Technique", "Endurance"], why: "Competitive swimming community." },
+  { title: "Martial Arts Society", category: "Sports", description: "Learn karate, taekwondo, kung fu, or judo.", commitment: "3-4 hrs/week", teamSize: "20-40 members", rating: 4.8, meetingDay: "2x/week", skills: ["Martial Arts", "Discipline", "Self Defense"], why: "Master martial arts techniques." },
+  { title: "Rowing Club", category: "Sports", description: "Compete in rowing with team racing events.", commitment: "10-12 hrs/week", teamSize: "20-40 members", rating: 4.9, meetingDay: "Daily", skills: ["Rowing", "Teamwork", "Water Skills"], why: "Elite rowing competition." },
+  { title: "Tennis Club", category: "Sports", description: "Competitive tennis with singles and doubles play.", commitment: "4-6 hrs/week", teamSize: "20-30 members", rating: 4.6, meetingDay: "3x/week", skills: ["Tennis", "Athleticism", "Strategy"], why: "Competitive individual and team sport." },
+  { title: "Basketball Intramural League", category: "Sports", description: "Recreational basketball games and tournaments.", commitment: "3-4 hrs/week", teamSize: "Team varies", rating: 4.5, meetingDay: "Flexible", skills: ["Basketball", "Teamwork", "Athleticism"], why: "Casual competitive basketball." },
+  { title: "Cricket Club", category: "Sports", description: "Competitive cricket with matches and tournaments.", commitment: "6-8 hrs/week", teamSize: "15-25 members", rating: 4.7, meetingDay: "Weekends", skills: ["Cricket", "Teamwork", "Athleticism"], why: "Popular international sport." },
+  { title: "Rugby Club", category: "Sports", description: "Competitive rugby with scrums and tackles.", commitment: "6-8 hrs/week", teamSize: "20-30 members", rating: 4.8, meetingDay: "3x/week", skills: ["Rugby", "Strength", "Teamwork"], why: "High-intensity contact sport." },
+  { title: "Badminton Club", category: "Sports", description: "Play competitive badminton matches.", commitment: "3 hrs/week", teamSize: "15-30 members", rating: 4.6, meetingDay: "2x/week", skills: ["Badminton", "Hand-Eye Coordination", "Agility"], why: "Fast-paced racket sport." },
+  { title: "Squash Club", category: "Sports", description: "Competitive squash with professional coaching.", commitment: "3-4 hrs/week", teamSize: "15-25 members", rating: 4.7, meetingDay: "2x/week", skills: ["Squash", "Agility", "Endurance"], why: "Elite racket sport." },
+  { title: "Bowling Team", category: "Sports", description: "Competitive bowling league and tournaments.", commitment: "2-3 hrs/week", teamSize: "8-15 members", rating: 4.5, meetingDay: "Fridays", skills: ["Bowling", "Precision", "Teamwork"], why: "Social competitive sport." },
+  { title: "Hockey Club", category: "Sports", description: "Ice hockey with competitive matches.", commitment: "8-10 hrs/week", teamSize: "20-30 members", rating: 4.8, meetingDay: "3x/week", skills: ["Ice Hockey", "Athleticism", "Teamwork"], why: "Fast-paced ice sport." },
+  { title: "Skiing & Snowboarding Club", category: "Sports", description: "Winter sports trips and slope adventures.", commitment: "Variable", teamSize: "30-60 members", rating: 4.7, meetingDay: "Winter weekends", skills: ["Skiing", "Snowboarding", "Risk Management"], why: "Winter adventure and athleticism." },
+  { title: "Lacrosse Club", category: "Sports", description: "Competitive lacrosse with matches and tournaments.", commitment: "6-8 hrs/week", teamSize: "20-30 members", rating: 4.8, meetingDay: "3x/week", skills: ["Lacrosse", "Agility", "Teamwork"], why: "High-speed ball sport." },
+  { title: "Field Hockey Club", category: "Sports", description: "Competitive field hockey games.", commitment: "6 hrs/week", teamSize: "15-20 members", rating: 4.6, meetingDay: "2x/week", skills: ["Field Hockey", "Strategy", "Teamwork"], why: "Strategic field sport." },
+  { title: "Water Polo Club", category: "Sports", description: "Competitive water polo with intense matches.", commitment: "6-8 hrs/week", teamSize: "12-20 members", rating: 4.8, meetingDay: "3x/week", skills: ["Water Polo", "Swimming", "Athleticism"], why: "Intense pool sport." },
+  { title: "Fencing Club", category: "Sports", description: "Competitive fencing in foil, épée, and sabre.", commitment: "4-6 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "2x/week", skills: ["Fencing", "Strategy", "Precision"], why: "Elegant combat sport." },
+  { title: "Archery Club", category: "Sports", description: "Target archery and competitive tournaments.", commitment: "3 hrs/week", teamSize: "15-25 members", rating: 4.7, meetingDay: "Weekends", skills: ["Archery", "Precision", "Focus"], why: "Precision ancient sport." },
+  { title: "Equestrian Club", category: "Sports", description: "Horseback riding and show jumping events.", commitment: "6-8 hrs/week", teamSize: "15-25 members", rating: 4.8, meetingDay: "Flexible", skills: ["Horseback Riding", "Equine Care", "Athleticism"], why: "Elite equestrian sport." },
+  { title: "Golf Club", category: "Sports", description: "Competitive golf tournaments and practice.", commitment: "4-5 hrs/week", teamSize: "20-35 members", rating: 4.6, meetingDay: "Weekends", skills: ["Golf", "Precision", "Patience"], why: "Gentleman's sport." },
+  { title: "Volleyball Intramural", category: "Sports", description: "Recreational volleyball league.", commitment: "2 hrs/week", teamSize: "Team varies", rating: 4.5, meetingDay: "Flexible", skills: ["Volleyball", "Teamwork", "Athleticism"], why: "Casual volleyball fun." },
+  { title: "Racquetball Club", category: "Sports", description: "Competitive racquetball matches.", commitment: "3 hrs/week", teamSize: "10-20 members", rating: 4.6, meetingDay: "2x/week", skills: ["Racquetball", "Agility", "Hand-Eye Coordination"], why: "Fast indoor racket sport." },
+  { title: "Gymnastics Club", category: "Sports", description: "Acrobatics, tumbling, and artistic gymnastics.", commitment: "5-6 hrs/week", teamSize: "15-25 members", rating: 4.8, meetingDay: "3x/week", skills: ["Gymnastics", "Strength", "Flexibility"], why: "Elite acrobatic sport." },
+  { title: "Parkour Club", category: "Sports", description: "Learn parkour, free-running, and urban exploration.", commitment: "3 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Weekends", skills: ["Parkour", "Athleticism", "Creativity"], why: "Urban athletic expression." },
+  { title: "Ballroom Dance Club", category: "Sports", description: "Learn and compete in ballroom dancing.", commitment: "3-4 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "2x/week", skills: ["Ballroom Dance", "Coordination", "Elegance"], why: "Graceful competitive dancing." },
+  { title: "American Football Intramural", category: "Sports", description: "Recreational American football leagues.", commitment: "3-4 hrs/week", teamSize: "20-30 members", rating: 4.6, meetingDay: "Flexible", skills: ["Football", "Strategy", "Teamwork"], why: "Casual competitive football." },
+]
 
 export default function Extracurriculars({ userProfile, addCalendarEvent, calendarEvents }) {
   const [query, setQuery] = useState('')
@@ -57,20 +184,6 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
   const [hasSearched, setHasSearched] = useState(false)
   const [addedIds, setAddedIds] = useState(new Set())
   const [activeFilter, setActiveFilter] = useState('All')
-  const [selectedMajor, setSelectedMajor] = useState(() => {
-    const saved = localStorage.getItem('userMajor')
-    return saved || userProfile?.major || 'Computer Science'
-  })
-
-  const tips = TIPS_BY_MAJOR[selectedMajor] || TIPS_BY_MAJOR.default
-
-  // Sync major from localStorage whenever component mounts
-  useEffect(() => {
-    const saved = localStorage.getItem('userMajor')
-    if (saved) {
-      setSelectedMajor(saved)
-    }
-  }, [])
 
   const FILTERS = ['All', 'Academic', 'Sports', 'Arts', 'Community', 'Professional', 'Leadership']
   const alreadyInCalendar = (title) => calendarEvents.some(e => e.title === title)
@@ -80,125 +193,23 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
     return map[cat] || '#7c6af7'
   }
 
-const ALL_EXTRACURRICULARS = [
-  // Academic - Tech Heavy
-  { title: "Computer Science Club", category: "Academic", description: "Collaborate on projects, hackathons, and competitive programming.", commitment: "3 hrs/week", teamSize: "50-100 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Problem Solving", "Teamwork", "Coding"], why: "Perfect for CS majors - boost your portfolio." },
-  { title: "Competitive Programming Club", category: "Academic", description: "Prepare for coding competitions and improve algorithmic skills.", commitment: "5 hrs/week", teamSize: "25-40 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Algorithms", "C++/Java", "Problem-Solving"], why: "Direct path to FAANG internships." },
-  { title: "Data Science Society", category: "Academic", description: "Learn machine learning, data analysis, and build real projects.", commitment: "4 hrs/week", teamSize: "30-60 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Python", "Analytics", "ML"], why: "Essential for data science majors." },
-  { title: "Artificial Intelligence Club", category: "Academic", description: "Explore AI/ML concepts and build intelligent systems.", commitment: "4 hrs/week", teamSize: "40-70 members", rating: 4.8, meetingDay: "Mondays", skills: ["Machine Learning", "Python", "Innovation"], why: "Cutting-edge field with high demand." },
-  { title: "Cybersecurity Club", category: "Academic", description: "Learn hacking, security, and participate in CTF competitions.", commitment: "4 hrs/week", teamSize: "35-50 members", rating: 4.7, meetingDay: "Wednesdays", skills: ["Security", "Hacking", "Networking"], why: "Perfect for cybersecurity majors." },
-  { title: "Web Development Club", category: "Academic", description: "Build full-stack web applications and deploy live projects.", commitment: "4-5 hrs/week", teamSize: "40-60 members", rating: 4.8, meetingDay: "Fridays", skills: ["React", "Node.js", "Databases"], why: "Build portfolio projects that impress employers." },
-  { title: "Mobile App Development Club", category: "Academic", description: "Create iOS and Android apps from scratch.", commitment: "5 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Mondays & Wednesdays", skills: ["Swift", "Kotlin", "UI Design"], why: "Great for software engineering majors." },
-  { title: "Game Development Club", category: "Academic", description: "Design and program video games using Unity/Unreal.", commitment: "6-8 hrs/week", teamSize: "35-60 members", rating: 4.8, meetingDay: "Weekends", skills: ["Game Dev", "Graphics", "C#"], why: "Fun and challenging creative outlet." },
-  { title: "Robotics Team", category: "Academic", description: "Build and compete with robots in national competitions.", commitment: "10-15 hrs/week", teamSize: "20-40 members", rating: 4.9, meetingDay: "Daily", skills: ["Engineering", "Electronics", "Teamwork"], why: "Hands-on experience employers love." },
-  { title: "Undergraduate Research Program", category: "Academic", description: "Work alongside faculty on cutting-edge research projects.", commitment: "8-10 hrs/week", teamSize: "5-15 members", rating: 4.9, meetingDay: "Flexible", skills: ["Research", "Critical Thinking", "Writing"], why: "Essential for grad school." },
-  { title: "Blockchain & Crypto Club", category: "Academic", description: "Learn blockchain technology and cryptocurrency development.", commitment: "3-4 hrs/week", teamSize: "25-40 members", rating: 4.7, meetingDay: "Thursdays", skills: ["Blockchain", "Smart Contracts", "Finance"], why: "Future-proof tech skills." },
-  { title: "Chemical Society", category: "Academic", description: "Conduct experiments, attend seminars, and network with chemists.", commitment: "3 hrs/week", teamSize: "40-60 members", rating: 4.6, meetingDay: "Fridays", skills: ["Chemistry", "Lab Work", "Analysis"], why: "Essential for chemistry majors." },
-  { title: "Physics Club", category: "Academic", description: "Discuss physics concepts, conduct experiments, and compete.", commitment: "3-4 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Physics", "Problem-Solving", "Experimentation"], why: "Great for physics majors." },
-  { title: "Mathematics Club", category: "Academic", description: "Solve challenging proofs and compete in math competitions.", commitment: "3 hrs/week", teamSize: "20-35 members", rating: 4.8, meetingDay: "Mondays", skills: ["Abstract Math", "Proofs", "Competition"], why: "Perfect for math majors." },
-  { title: "Pre-Med Club", category: "Academic", description: "Prepare for medical school with MCAT prep and shadowing.", commitment: "4-5 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Wednesdays", skills: ["MCAT Prep", "Healthcare", "Science"], why: "Essential for pre-med students." },
-  { title: "Biology Club", category: "Academic", description: "Explore biology through field trips, seminars, and research.", commitment: "2-3 hrs/week", teamSize: "25-40 members", rating: 4.6, meetingDay: "Thursdays", skills: ["Biology", "Lab Work", "Ecology"], why: "Great for biology majors." },
-  { title: "Environmental Science Club", category: "Academic", description: "Work on climate research and conservation projects.", commitment: "3-4 hrs/week", teamSize: "35-55 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Environmental Science", "Conservation", "Research"], why: "Perfect for environmental majors." },
-  { title: "Neuroscience Research Club", category: "Academic", description: "Study brain science and conduct neuroscience experiments.", commitment: "4-5 hrs/week", teamSize: "20-35 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Neuroscience", "Lab Work", "Research"], why: "Ideal for neuroscience majors." },
-
-  // Professional & Business
-  { title: "Business Case Competition Team", category: "Professional", description: "Solve business cases and compete in regional/national competitions.", commitment: "5-6 hrs/week", teamSize: "8-15 members", rating: 4.9, meetingDay: "Saturdays", skills: ["Business Analysis", "Strategy", "Presentation"], why: "Direct networking with recruiters." },
-  { title: "Consulting Club", category: "Professional", description: "Learn consulting frameworks and solve business problems.", commitment: "4 hrs/week", teamSize: "30-60 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Consulting", "Analysis", "Communication"], why: "Gateway to McKinsey, BCG, Bain." },
-  { title: "Finance & Investment Club", category: "Professional", description: "Analyze stocks, manage a portfolio, and learn about markets.", commitment: "3-4 hrs/week", teamSize: "40-70 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Finance", "Trading", "Valuation"], why: "Essential for business and finance majors." },
-  { title: "Product Management Club", category: "Professional", description: "Learn product thinking and work on real product problems.", commitment: "3-4 hrs/week", teamSize: "25-45 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Product Strategy", "Analytics", "User Research"], why: "Perfect for PM internship prep." },
-  { title: "Entrepreneurship Club", category: "Professional", description: "Build startup ideas and connect with founders.", commitment: "4 hrs/week", teamSize: "40-80 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Entrepreneurship", "Pitching", "Innovation"], why: "For future founders." },
-  { title: "Marketing & Brand Strategy Club", category: "Professional", description: "Develop marketing campaigns and learn brand strategy.", commitment: "3 hrs/week", teamSize: "35-55 members", rating: 4.7, meetingDay: "Fridays", skills: ["Marketing", "Branding", "Analytics"], why: "Essential for marketing majors." },
-  { title: "Real Estate Club", category: "Professional", description: "Learn real estate investing and development principles.", commitment: "2-3 hrs/week", teamSize: "20-35 members", rating: 4.6, meetingDay: "Mondays", skills: ["Real Estate", "Finance", "Negotiation"], why: "Great for business students." },
-  { title: "Accounting Society", category: "Professional", description: "Prepare for CPA exam and learn accounting practices.", commitment: "3-4 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Wednesdays", skills: ["Accounting", "Excel", "Tax"], why: "Essential for accounting majors." },
-  { title: "Economics Society", category: "Professional", description: "Study economic theory and analyze global markets.", commitment: "2-3 hrs/week", teamSize: "25-40 members", rating: 4.6, meetingDay: "Mondays", skills: ["Economics", "Analysis", "Research"], why: "Perfect for economics majors." },
-  { title: "Sales & Business Development Club", category: "Professional", description: "Learn sales techniques and B2B business development.", commitment: "3 hrs/week", teamSize: "30-45 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Sales", "Negotiation", "Relationship Building"], why: "Great for business development careers." },
-  { title: "Private Equity Club", category: "Professional", description: "Learn LBO modeling and investment strategies.", commitment: "4-5 hrs/week", teamSize: "15-25 members", rating: 4.8, meetingDay: "Saturdays", skills: ["Finance", "Modeling", "Valuation"], why: "Ideal for finance career paths." },
-  { title: "Startup Accelerator Program", category: "Professional", description: "Incubate your startup idea with mentorship and funding.", commitment: "10+ hrs/week", teamSize: "10-20 teams", rating: 4.9, meetingDay: "Flexible", skills: ["Entrepreneurship", "Fundraising", "Execution"], why: "Launch your own company." },
-
-  // Leadership & Service
-  { title: "Student Government Association", category: "Leadership", description: "Represent student interests and shape campus policies.", commitment: "5 hrs/week", teamSize: "30-60 members", rating: 4.6, meetingDay: "Mondays", skills: ["Leadership", "Public Speaking", "Advocacy"], why: "Develop leadership skills." },
-  { title: "Debate Team", category: "Leadership", description: "Compete in debates on policy, public forum, and parliamentary.", commitment: "6-8 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "Tuesdays & Thursdays", skills: ["Public Speaking", "Critical Thinking", "Debate"], why: "Perfect for law and politics majors." },
-  { title: "Model United Nations", category: "Leadership", description: "Represent countries in UN simulations and develop diplomacy.", commitment: "4-5 hrs/week", teamSize: "50-100 members", rating: 4.7, meetingDay: "Mondays & Wednesdays", skills: ["Diplomacy", "Public Speaking", "Research"], why: "Ideal for IR majors." },
-  { title: "Toastmasters Public Speaking Club", category: "Leadership", description: "Develop public speaking and leadership skills.", commitment: "2 hrs/week", teamSize: "20-35 members", rating: 4.9, meetingDay: "Thursdays", skills: ["Public Speaking", "Leadership", "Confidence"], why: "Universally valuable skill." },
-  { title: "Leadership Honor Society", category: "Leadership", description: "Exclusive organization for emerging student leaders.", commitment: "3 hrs/week", teamSize: "30-50 members", rating: 4.8, meetingDay: "Varies", skills: ["Leadership", "Service", "Networking"], why: "Prestigious credential." },
-  { title: "Residential Advisor Program", category: "Leadership", description: "Lead residence hall communities and mentor residents.", commitment: "8-10 hrs/week", teamSize: "40-60 members", rating: 4.8, meetingDay: "Flexible", skills: ["Leadership", "Mentorship", "Communication"], why: "Great leadership experience." },
-  { title: "Orientation Leader Program", category: "Leadership", description: "Guide new students through orientation week.", commitment: "5-7 hrs/week", teamSize: "50-100 members", rating: 4.7, meetingDay: "Variable", skills: ["Leadership", "Public Speaking", "Mentorship"], why: "Shape campus culture." },
-  { title: "Greek Life Leadership", category: "Leadership", description: "Lead fraternity/sorority organizations and communities.", commitment: "5-8 hrs/week", teamSize: "Varies", rating: 4.7, meetingDay: "Variable", skills: ["Leadership", "Community Building", "Fundraising"], why: "Build lifelong networks." },
-  { title: "Class Officer Council", category: "Leadership", description: "Represent and organize your class year.", commitment: "3-4 hrs/week", teamSize: "8-12 members", rating: 4.6, meetingDay: "Bi-weekly", skills: ["Leadership", "Organization", "Event Planning"], why: "Get involved in class activities." },
-
-  // Community Service
-  { title: "Volunteer Tutoring Corps", category: "Community", description: "Tutor local high school students in STEM subjects.", commitment: "2 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Saturdays", skills: ["Teaching", "Mentorship", "Communication"], why: "Give back while reinforcing knowledge." },
-  { title: "Community Outreach Program", category: "Community", description: "Organize community service events and help communities.", commitment: "3-4 hrs/week", teamSize: "60-100 members", rating: 4.6, meetingDay: "Saturdays & Sundays", skills: ["Service", "Organization", "Empathy"], why: "Make real community impact." },
-  { title: "Habitat for Humanity", category: "Community", description: "Build homes for families in need.", commitment: "4-6 hrs/week", teamSize: "50-80 members", rating: 4.8, meetingDay: "Saturdays", skills: ["Teamwork", "Service", "Construction"], why: "Meaningful work with direct impact." },
-  { title: "Food Bank Volunteer Program", category: "Community", description: "Organize and distribute food to families in need.", commitment: "2 hrs/week", teamSize: "40-60 members", rating: 4.7, meetingDay: "Sundays", skills: ["Organization", "Service", "Teamwork"], why: "Fight food insecurity." },
-  { title: "Mentorship for First-Generation Students", category: "Community", description: "Mentor first-generation college students.", commitment: "2-3 hrs/week", teamSize: "30-50 members", rating: 4.9, meetingDay: "Flexible", skills: ["Mentorship", "Guidance", "Support"], why: "Help future leaders succeed." },
-  { title: "Environmental Club", category: "Community", description: "Work on campus sustainability and conservation.", commitment: "3 hrs/week", teamSize: "40-70 members", rating: 4.7, meetingDay: "Tuesdays", skills: ["Environmentalism", "Activism", "Sustainability"], why: "Protect the planet." },
-  { title: "Community Health Outreach", category: "Community", description: "Provide health education and wellness programs to communities.", commitment: "3-4 hrs/week", teamSize: "25-40 members", rating: 4.7, meetingDay: "Saturdays", skills: ["Healthcare", "Education", "Community Health"], why: "Promote public health." },
-  { title: "Animal Shelter Volunteering", category: "Community", description: "Care for animals and help at local shelters.", commitment: "2-3 hrs/week", teamSize: "20-35 members", rating: 4.6, meetingDay: "Weekends", skills: ["Compassion", "Care", "Teamwork"], why: "Help animals in need." },
-  { title: "Senior Citizen Mentorship", category: "Community", description: "Mentor and spend time with senior citizens.", commitment: "2 hrs/week", teamSize: "15-25 members", rating: 4.8, meetingDay: "Flexible", skills: ["Mentorship", "Compassion", "Listening"], why: "Build intergenerational bonds." },
-  { title: "Homeless Outreach Initiative", category: "Community", description: "Provide support and resources to homeless populations.", commitment: "3-4 hrs/week", teamSize: "35-50 members", rating: 4.8, meetingDay: "Saturdays & Sundays", skills: ["Compassion", "Organization", "Advocacy"], why: "Combat homelessness." },
-  { title: "International Service Corps", category: "Community", description: "Volunteer internationally in underserved communities.", commitment: "Variable", teamSize: "15-30 members", rating: 4.9, meetingDay: "Flexible", skills: ["Service", "Global Awareness", "Leadership"], why: "Make worldwide impact." },
-  { title: "Youth Mentorship Program", category: "Community", description: "Be a positive role model for at-risk youth.", commitment: "3 hrs/week", teamSize: "30-50 members", rating: 4.8, meetingDay: "Flexible", skills: ["Mentorship", "Patience", "Leadership"], why: "Change lives." },
-
-  // Arts & Culture
-  { title: "Theater & Performing Arts Club", category: "Arts", description: "Perform in plays, musicals, and theatrical productions.", commitment: "6-10 hrs/week", teamSize: "40-70 members", rating: 4.8, meetingDay: "Daily rehearsals", skills: ["Acting", "Performance", "Creativity"], why: "Great for performing arts majors." },
-  { title: "Music Performance Ensemble", category: "Arts", description: "Join orchestra, band, or choir and perform.", commitment: "3-4 hrs/week", teamSize: "30-60 members", rating: 4.7, meetingDay: "Tuesdays & Thursdays", skills: ["Music", "Teamwork", "Performance"], why: "Essential for music majors." },
-  { title: "Visual Arts Studio Club", category: "Arts", description: "Paint, sculpt, draw, and develop artistic skills.", commitment: "3 hrs/week", teamSize: "20-35 members", rating: 4.6, meetingDay: "Wednesdays & Saturdays", skills: ["Drawing", "Painting", "Sculpture"], why: "Essential for art majors." },
-  { title: "Film & Videography Club", category: "Arts", description: "Create short films, documentaries, and videos.", commitment: "5-6 hrs/week", teamSize: "30-50 members", rating: 4.8, meetingDay: "Weekends", skills: ["Filmmaking", "Editing", "Storytelling"], why: "Perfect for film majors." },
-  { title: "Photography & Media Society", category: "Arts", description: "Explore photography, editing, and visual storytelling.", commitment: "2-3 hrs/week", teamSize: "25-50 members", rating: 4.5, meetingDay: "Fridays", skills: ["Photography", "Design", "Composition"], why: "Build creative portfolio." },
-  { title: "Comic & Graphic Novel Club", category: "Arts", description: "Create comics and develop illustration skills.", commitment: "2-3 hrs/week", teamSize: "20-40 members", rating: 4.5, meetingDay: "Fridays", skills: ["Illustration", "Storytelling", "Design"], why: "Fun creative community." },
-  { title: "Creative Writing Club", category: "Arts", description: "Write poetry, prose, and share your work.", commitment: "2-3 hrs/week", teamSize: "20-35 members", rating: 4.7, meetingDay: "Mondays", skills: ["Writing", "Storytelling", "Critique"], why: "Perfect for writing majors." },
-  { title: "Poetry & Slam Club", category: "Arts", description: "Write and perform spoken word poetry.", commitment: "2-3 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Poetry", "Performance", "Expression"], why: "Artistic expression." },
-  { title: "Improv Comedy Club", category: "Arts", description: "Perform improvisational comedy and sketches.", commitment: "3 hrs/week", teamSize: "20-35 members", rating: 4.7, meetingDay: "Fridays", skills: ["Comedy", "Performance", "Creativity"], why: "Have fun while performing." },
-  { title: "Design & UX Club", category: "Arts", description: "Learn design principles, UX/UI, and create digital designs.", commitment: "3-4 hrs/week", teamSize: "25-40 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Design", "UX", "Creativity"], why: "Great for design majors." },
-  { title: "Music Production Club", category: "Arts", description: "Learn music production and create original tracks.", commitment: "4-5 hrs/week", teamSize: "15-30 members", rating: 4.8, meetingDay: "Tuesdays & Thursdays", skills: ["Music Production", "Sound Design", "Creativity"], why: "Perfect for aspiring producers." },
-  { title: "Dance Club", category: "Arts", description: "Learn various dance styles and perform.", commitment: "3-4 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Mondays & Wednesdays", skills: ["Dance", "Performance", "Fitness"], why: "Artistic expression through movement." },
-
-  // Sports & Recreation
-  { title: "Soccer Club", category: "Sports", description: "Play recreational soccer in intramural leagues.", commitment: "4-5 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Tuesdays & Thursdays", skills: ["Teamwork", "Fitness", "Strategy"], why: "Great fitness and bonding." },
-  { title: "Rowing Team", category: "Sports", description: "Competitive rowing with water and gym training.", commitment: "8-10 hrs/week", teamSize: "40-60 members", rating: 4.8, meetingDay: "Daily", skills: ["Teamwork", "Strength", "Discipline"], why: "Builds incredible bonds." },
-  { title: "Rock Climbing Club", category: "Sports", description: "Indoor and outdoor rock climbing.", commitment: "3-4 hrs/week", teamSize: "25-40 members", rating: 4.6, meetingDay: "Wednesdays & Weekends", skills: ["Problem-Solving", "Strength", "Courage"], why: "Fun challenge activity." },
-  { title: "Running & Cross Country Club", category: "Sports", description: "Train for and compete in running races.", commitment: "4-5 hrs/week", teamSize: "30-50 members", rating: 4.7, meetingDay: "Daily", skills: ["Fitness", "Discipline", "Perseverance"], why: "Build endurance." },
-  { title: "Ultimate Frisbee Club", category: "Sports", description: "Play competitive ultimate frisbee.", commitment: "3-4 hrs/week", teamSize: "40-60 members", rating: 4.8, meetingDay: "Tuesdays & Thursdays", skills: ["Athleticism", "Teamwork", "Agility"], why: "Fast-paced and fun." },
-  { title: "Martial Arts Club", category: "Sports", description: "Learn karate, taekwondo, or boxing.", commitment: "3-4 hrs/week", teamSize: "30-50 members", rating: 4.8, meetingDay: "Mondays & Wednesdays", skills: ["Discipline", "Self-Defense", "Confidence"], why: "Build confidence." },
-  { title: "Tennis Club", category: "Sports", description: "Play tennis competitively or recreationally.", commitment: "3-4 hrs/week", teamSize: "25-40 members", rating: 4.6, meetingDay: "Tuesdays & Thursdays", skills: ["Racquet Skills", "Fitness", "Precision"], why: "Lifetime sport." },
-  { title: "Basketball Club", category: "Sports", description: "Play competitive and recreational basketball.", commitment: "3-4 hrs/week", teamSize: "35-55 members", rating: 4.7, meetingDay: "Mondays & Wednesdays", skills: ["Teamwork", "Fitness", "Strategy"], why: "Classic team sport." },
-  { title: "Volleyball Club", category: "Sports", description: "Play competitive and intramural volleyball.", commitment: "3-4 hrs/week", teamSize: "30-50 members", rating: 4.6, meetingDay: "Tuesdays & Thursdays", skills: ["Teamwork", "Coordination", "Fitness"], why: "Fun team sport." },
-  { title: "Swimming & Diving Club", category: "Sports", description: "Swim competitively and recreationally.", commitment: "4-6 hrs/week", teamSize: "25-40 members", rating: 4.7, meetingDay: "Daily", skills: ["Swimming", "Fitness", "Endurance"], why: "Full-body workout." },
-  { title: "Cycling Club", category: "Sports", description: "Road cycling, mountain biking, and bike touring.", commitment: "3-4 hrs/week", teamSize: "30-45 members", rating: 4.7, meetingDay: "Weekends", skills: ["Cycling", "Endurance", "Outdoor Skills"], why: "Explore outdoors." },
-  { title: "Fitness & Wellness Club", category: "Sports", description: "Yoga, pilates, and general fitness activities.", commitment: "2-3 hrs/week", teamSize: "50-100 members", rating: 4.8, meetingDay: "Flexible", skills: ["Fitness", "Wellness", "Mindfulness"], why: "Holistic health." },
-  { title: "Outdoor Adventure Club", category: "Sports", description: "Hiking, camping, rock climbing, and outdoor exploration.", commitment: "4-5 hrs/week", teamSize: "35-55 members", rating: 4.8, meetingDay: "Weekends", skills: ["Outdoor Skills", "Leadership", "Teamwork"], why: "Explore nature." },
-]
-
   const handleSearch = async (customQuery) => {
     const searchQ = (customQuery || query).toLowerCase()
-    setLoading(true)
-    setHasSearched(true)
-    setResults([])
+    setLoading(true); setHasSearched(true); setResults([])
     
-    // Simulate API delay
+    // Filter ALL_EXTRACURRICULARS by search query
+    const filtered = searchQ ? ALL_EXTRACURRICULARS.filter(ec => {
+      const titleMatch = ec.title.toLowerCase().includes(searchQ)
+      const descMatch = ec.description.toLowerCase().includes(searchQ)
+      const skillsMatch = ec.skills?.some(s => s.toLowerCase().includes(searchQ))
+      const catMatch = ec.category.toLowerCase().includes(searchQ)
+      return titleMatch || descMatch || skillsMatch || catMatch
+    }) : ALL_EXTRACURRICULARS
+    
     setTimeout(() => {
-      let filtered = ALL_EXTRACURRICULARS
-      
-      // Filter by search query
-      if (searchQ.trim()) {
-        filtered = filtered.filter(ec => 
-          ec.title.toLowerCase().includes(searchQ) ||
-          ec.description.toLowerCase().includes(searchQ) ||
-          ec.skills.some(skill => skill.toLowerCase().includes(searchQ)) ||
-          ec.category.toLowerCase().includes(searchQ)
-        )
-      }
-      
       setResults(filtered)
       setLoading(false)
-    }, 500)
-  }
-
-  const handleAdd = (activity) => {
-    if (alreadyInCalendar(activity.title)) return
-    addCalendarEvent({ title: activity.title, category: activity.category, description: activity.description, commitment: activity.commitment, meetingDay: activity.meetingDay, color: getCategoryColor(activity.category), type: 'extracurricular' })
-    setAddedIds(prev => new Set([...prev, activity.title]))
+    }, 300)
   }
 
   const handleBrowseAll = () => {
@@ -206,6 +217,12 @@ const ALL_EXTRACURRICULARS = [
     setResults(ALL_EXTRACURRICULARS)
     setHasSearched(true)
     setActiveFilter('All')
+  }
+
+  const handleAdd = (activity) => {
+    if (alreadyInCalendar(activity.title)) return
+    addCalendarEvent({ title: activity.title, category: activity.category, description: activity.description, commitment: activity.commitment, meetingDay: activity.meetingDay, color: getCategoryColor(activity.category), type: 'extracurricular' })
+    setAddedIds(prev => new Set([...prev, activity.title]))
   }
 
   const filtered = activeFilter === 'All' ? results : results.filter(r => r.category === activeFilter)
@@ -226,8 +243,8 @@ const ALL_EXTRACURRICULARS = [
         <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem' }}>
             <div style={{ flex: 1, position: 'relative' }}>
-              <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)' }} />
-              <input className="input" style={{ paddingLeft: '42px' }} placeholder={`Find ECs for ${selectedMajor || 'your major'}...`} value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSearch()} />
+              <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)', zIndex: 1 }} />
+              <input className="input" style={{ paddingLeft: '42px' }} placeholder={`Find ECs for ${userProfile?.major || 'your major'}...`} value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSearch()} />
             </div>
             <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="btn btn-primary" onClick={() => handleSearch()} disabled={loading}>
               {loading ? <Loader size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <Sparkles size={16} />}
@@ -236,7 +253,7 @@ const ALL_EXTRACURRICULARS = [
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
             <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>Try:</span>
-            {[`Best ECs for ${selectedMajor || 'CS'} students`, 'Leadership opportunities', 'ECs for grad school', 'Community service'].map(p => (
+            {[`Best ECs for ${userProfile?.major || 'CS'} students`, 'Leadership opportunities', 'ECs for grad school', 'Community service'].map(p => (
               <button key={p} onClick={() => { setQuery(p); handleSearch(p) }} style={{ padding: '5px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', fontSize: '0.78rem', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-body)' }}
                 onMouseOver={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.color = 'var(--accent)' }}
                 onMouseOut={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.color = 'var(--text-muted)' }}>
@@ -275,94 +292,14 @@ const ALL_EXTRACURRICULARS = [
           </div>
         )}
 
-        {!loading && hasSearched && filtered.length === 0 && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>😅</div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>No ECs found for "{query}"</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', maxWidth: 500, margin: '0 auto 1.5rem' }}>Try a different search term or explore all ECs in our community.</p>
-            <button className="btn btn-primary" onClick={() => handleBrowseAll()}><Sparkles size={16} /> Browse All ECs</button>
-          </motion.div>
-        )}
-
         {!loading && !hasSearched && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '4rem 2rem' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🔍</div>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>Ready to discover your extracurriculars?</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Ask AI to find activities tailored to your major and goals.</p>
-            <button className="btn btn-primary" onClick={() => handleBrowseAll()}><Sparkles size={16} /> Browse All ECs for {selectedMajor}</button>
+            <button className="btn btn-primary" onClick={() => handleSearch()}><Sparkles size={16} /> Show me ECs for my major</button>
           </motion.div>
         )}
-
-        {/* Tips Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          style={{
-            marginTop: '4rem',
-            paddingTop: '2rem',
-            borderTop: '1px solid var(--border)'
-          }}
-        >
-          <h2 style={{
-            fontSize: '1.4rem',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 700,
-            marginBottom: '2rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
-            <BookOpen size={24} color="var(--accent2)" /> Tips for {selectedMajor || 'Your Major'}
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {tips.map((tip, i) => (
-              <motion.div
-                key={tip}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
-                whileHover={{ scale: 1.06, boxShadow: '0 12px 40px rgba(247,162,106,0.15)' }}
-                style={{
-                  display: 'flex',
-                  gap: '1.5rem',
-                  background: 'linear-gradient(135deg, rgba(247,162,106,0.05), rgba(247,162,106,0.02))',
-                  border: '1px solid rgba(247,162,106,0.2)',
-                  borderRadius: '12px',
-                  padding: '1.5rem',
-                  transition: 'all 0.3s ease',
-                  cursor: 'default'
-                }}
-              >
-                <div style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #f7a26a, #e8915a)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 700,
-                  fontSize: '1rem',
-                  flexShrink: 0
-                }}>
-                  {i + 1}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{
-                    fontSize: '1rem',
-                    color: 'var(--text)',
-                    margin: 0,
-                    lineHeight: 1.6
-                  }}>
-                    {tip}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </motion.div>
     </div>
   )
