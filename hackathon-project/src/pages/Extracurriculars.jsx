@@ -3,8 +3,56 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Sparkles, Plus, Check, MapPin, Clock, Users, Star, Filter, Loader } from 'lucide-react'
 
 const ALL_EXTRACURRICULARS = [
-  // Academic (40)
-  { title: "Computer Science Club", category: "Academic", description: "Collaborate on projects, hackathons, and competitive programming.", commitment: "3 hrs/week", teamSize: "50-100 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Problem Solving", "Teamwork", "Coding"], why: "Directly boosts technical skills and networking." },
+  // One-Time Events & Competitions (25)
+  { title: "Hackathon: MLH Local Hack Day", category: "Competition", description: "24-hour coding competition with prizes and networking.", commitment: "24 hrs (one-time)", teamSize: "1-4 members", rating: 4.9, meetingDay: "One weekend", skills: ["Coding", "Problem Solving", "Teamwork"], why: "Build portfolio projects and network with tech companies.", type: "one-time", prepTime: "2-4 weeks", website: "https://mlh.io", location: "Campus", date: "March 15-16, 2026", prizes: "$5,000+", sponsors: ["Google", "Microsoft", "Amazon"] },
+  { title: "Case Competition: Deloitte Challenge", category: "Competition", description: "Solve real business cases against top teams.", commitment: "48 hrs (one-time)", teamSize: "3-5 members", rating: 4.8, meetingDay: "One weekend", skills: ["Business Analysis", "Presentation", "Strategy"], why: "Direct consulting interview prep.", type: "one-time", prepTime: "1-2 weeks", website: "https://deloitte.com", location: "Campus", date: "April 5-6, 2026", prizes: "$10,000+", sponsors: ["Deloitte", "PwC", "EY"] },
+  { title: "Hackathon: PennApps", category: "Competition", description: "University of Pennsylvania's premier hackathon.", commitment: "36 hrs (one-time)", teamSize: "1-4 members", rating: 4.9, meetingDay: "One weekend", skills: ["Full-Stack Development", "Innovation", "Prototyping"], why: "Most prestigious East Coast hackathon.", type: "one-time", prepTime: "3-6 weeks", website: "https://pennapps.com", location: "Philadelphia, PA", date: "September 12-14, 2026", prizes: "$15,000+", sponsors: ["Facebook", "Apple", "Stripe"] },
+  { title: "Startup Pitch Competition", category: "Competition", description: "Pitch startup ideas to real venture capitalists.", commitment: "2 hrs (one-time)", teamSize: "1-3 members", rating: 4.7, meetingDay: "One evening", skills: ["Pitching", "Entrepreneurship", "Business Planning"], why: "Real VC feedback and potential funding.", type: "one-time", prepTime: "1 month", website: "https://startupcompetition.edu", location: "Campus", date: "May 20, 2026", prizes: "$50,000+", sponsors: ["Y Combinator", "Sequoia", "Andreessen Horowitz"] },
+  { title: "Data Science Competition: Kaggle Challenge", category: "Competition", description: "Compete in machine learning and data science challenges.", commitment: "Variable (one-time)", teamSize: "1-3 members", rating: 4.8, meetingDay: "Flexible", skills: ["Machine Learning", "Data Analysis", "Python"], why: "Build ML portfolio and Kaggle ranking.", type: "one-time", prepTime: "1-3 weeks", website: "https://kaggle.com", location: "Online", date: "Ongoing", prizes: "$100,000+", sponsors: ["Google", "NVIDIA", "Microsoft"] },
+  { title: "Robotics Competition: FIRST Robotics", category: "Competition", description: "Build and compete with robots in regional tournaments.", commitment: "6 months prep + 3 days", teamSize: "10-20 members", rating: 4.9, meetingDay: "Seasonal", skills: ["Robotics", "Engineering", "Programming"], why: "Premier robotics competition worldwide.", type: "seasonal", prepTime: "6 months", website: "https://firstinspires.org", location: "Regional venues", date: "March-April 2026", prizes: "Championship berth", sponsors: ["NASA", "Boeing", "Google"] },
+  { title: "Math Competition: Putnam Exam", category: "Competition", description: "America's premier undergraduate mathematics competition.", commitment: "6 hrs (one-time)", teamSize: "Individual", rating: 4.9, meetingDay: "One day", skills: ["Advanced Mathematics", "Problem Solving", "Logic"], why: "Most prestigious math competition.", type: "one-time", prepTime: "Semester-long", website: "https://maa.org", location: "Campus", date: "December 6, 2025", prizes: "$2,500", sponsors: ["MAA", "NSF"] },
+  { title: "Debate Tournament: CEDA Nationals", category: "Competition", description: "National parliamentary debate championship.", commitment: "3 days (one-time)", teamSize: "2 members", rating: 4.8, meetingDay: "One weekend", skills: ["Debate", "Public Speaking", "Research"], why: "Highest level of competitive debate.", type: "one-time", prepTime: "Year-round", website: "https://cedadebate.org", location: "National venues", date: "April 2026", prizes: "National title", sponsors: ["CEDA", "Universities"] },
+  { title: "Business Plan Competition", category: "Competition", description: "Develop and pitch comprehensive business plans.", commitment: "3 months prep + 1 day", teamSize: "3-5 members", rating: 4.7, meetingDay: "One day", skills: ["Business Planning", "Financial Modeling", "Pitching"], why: "Real-world entrepreneurship experience.", type: "one-time", prepTime: "3 months", website: "https://businessplan.edu", location: "Campus", date: "November 2025", prizes: "$25,000+", sponsors: ["Local VCs", "Corporations"] },
+  { title: "Hackathon: HackMIT", category: "Competition", description: "MIT's annual hackathon with global participants.", commitment: "24 hrs (one-time)", teamSize: "1-4 members", rating: 4.9, meetingDay: "One weekend", skills: ["Innovation", "Rapid Prototyping", "Collaboration"], why: "Most selective and prestigious hackathon.", type: "one-time", prepTime: "1-2 months", website: "https://hackmit.org", location: "Cambridge, MA", date: "September 2026", prizes: "$50,000+", sponsors: ["MIT", "Google", "Facebook"] },
+  { title: "Science Fair: Intel ISEF", category: "Competition", description: "International Science and Engineering Fair.", commitment: "1 year prep + 1 week", teamSize: "1-3 members", rating: 4.9, meetingDay: "One week", skills: ["Scientific Research", "Experimentation", "Presentation"], why: "World's largest science competition.", type: "annual", prepTime: "1 year", website: "https://societyforscience.org", location: "National venues", date: "May 2026", prizes: "$75,000+", sponsors: ["Intel", "Google", "Regeneron"] },
+  { title: "Entrepreneurship Competition: Hult Prize", category: "Competition", description: "Solve global challenges with social entrepreneurship.", commitment: "6 months prep + 1 day", teamSize: "3-4 members", rating: 4.8, meetingDay: "One day", skills: ["Social Entrepreneurship", "Innovation", "Global Issues"], why: "Address real-world problems with business.", type: "annual", prepTime: "6 months", website: "https://hultprize.org", location: "Campus", date: "March 2026", prizes: "$1M+", sponsors: ["Hult International", "UN"] },
+  { title: "Design Competition: Adobe Design Achievement Awards", category: "Competition", description: "Showcase creative design work and digital media.", commitment: "3 months prep + 1 day", teamSize: "Individual", rating: 4.7, meetingDay: "One day", skills: ["Design", "Digital Media", "Creativity"], why: "Premier design competition for students.", type: "annual", prepTime: "3 months", website: "https://adobe.com", location: "Online", date: "June 2026", prizes: "$20,000+", sponsors: ["Adobe", "Design Schools"] },
+  { title: "Engineering Competition: ASME Design Competition", category: "Competition", description: "Design and build engineering solutions.", commitment: "4 months prep + 2 days", teamSize: "4-6 members", rating: 4.8, meetingDay: "Two days", skills: ["Engineering Design", "Prototyping", "CAD"], why: "Professional engineering competition.", type: "annual", prepTime: "4 months", website: "https://asme.org", location: "Regional venues", date: "April 2026", prizes: "Scholarships", sponsors: ["ASME", "Engineering Firms"] },
+  { title: "AI Competition: NeurIPS Challenge", category: "Competition", description: "Compete in cutting-edge AI and machine learning.", commitment: "3 months prep + 1 day", teamSize: "1-4 members", rating: 4.9, meetingDay: "One day", skills: ["AI/ML", "Research", "Innovation"], why: "Top-tier AI research competition.", type: "annual", prepTime: "3 months", website: "https://neurips.cc", location: "Online", date: "December 2025", prizes: "$50,000+", sponsors: ["Google", "OpenAI", "Meta"] },
+
+  // Conferences & Workshops (20)
+  { title: "TEDx University Conference", category: "Conference", description: "Organize and attend TED-style talks on campus.", commitment: "6 months prep + 1 day", teamSize: "20-50 members", rating: 4.8, meetingDay: "One day", skills: ["Event Planning", "Public Speaking", "Networking"], why: "Build event management and speaking skills.", type: "annual", prepTime: "6 months", website: "https://tedx.com", location: "Campus", date: "October 2025", cost: "$25", speakers: "15+", sponsors: ["TED", "Local Sponsors"] },
+  { title: "Career Fair: Tech Companies", category: "Conference", description: "Network with top tech companies and interview on-site.", commitment: "1 day (one-time)", teamSize: "500+ attendees", rating: 4.7, meetingDay: "One day", skills: ["Networking", "Interviewing", "Professional Development"], why: "Direct access to tech internships.", type: "one-time", prepTime: "1 week", website: "https://careerfair.edu", location: "Campus", date: "February 15, 2026", cost: "Free", companies: "50+", sponsors: ["Major Tech Firms"] },
+  { title: "Research Symposium", category: "Conference", description: "Present research findings to faculty and peers.", commitment: "3 months prep + 1 day", teamSize: "100-200 attendees", rating: 4.8, meetingDay: "One day", skills: ["Research Presentation", "Academic Writing", "Public Speaking"], why: "Essential for graduate school applications.", type: "annual", prepTime: "3 months", website: "https://researchsymposium.edu", location: "Campus", date: "April 2026", cost: "Free", sponsors: ["University", "Research Grants"] },
+  { title: "Leadership Summit", category: "Conference", description: "Leadership workshops and networking with executives.", commitment: "2 days (one-time)", teamSize: "200-300 attendees", rating: 4.7, meetingDay: "Two days", skills: ["Leadership", "Networking", "Professional Development"], why: "Accelerate leadership development.", type: "annual", prepTime: "1 month", website: "https://leadershipsummit.edu", location: "Campus", date: "January 2026", cost: "$50", speakers: "20+", sponsors: ["Corporate Partners"] },
+  { title: "Innovation Workshop Series", category: "Workshop", description: "Hands-on workshops in emerging technologies.", commitment: "3 hrs/session (6 sessions)", teamSize: "20-30 participants", rating: 4.6, meetingDay: "Weekly", skills: ["Innovation", "Technology", "Prototyping"], why: "Learn cutting-edge skills from industry experts.", type: "series", prepTime: "None", website: "https://innovationworkshops.edu", location: "Campus", date: "Ongoing", cost: "$10/session", instructors: "Industry Experts" },
+  { title: "Entrepreneurship Bootcamp", category: "Workshop", description: "Intensive startup creation and business planning.", commitment: "40 hrs (one week)", teamSize: "25-40 participants", rating: 4.8, meetingDay: "One week", skills: ["Entrepreneurship", "Business Planning", "Pitching"], why: "Launch your startup idea.", type: "intensive", prepTime: "2 weeks", website: "https://entrepreneurshipbootcamp.edu", location: "Campus", date: "Summer 2026", cost: "$200", mentors: "10+", sponsors: ["Local VCs"] },
+  { title: "Data Science Workshop", category: "Workshop", description: "Learn Python, R, and machine learning fundamentals.", commitment: "20 hrs (one month)", teamSize: "30-50 participants", rating: 4.7, meetingDay: "Weekly", skills: ["Data Science", "Programming", "Statistics"], why: "Fast-track data science career.", type: "course", prepTime: "None", website: "https://datascienceworkshop.edu", location: "Campus", date: "Spring 2026", cost: "$150", instructors: "PhD Students" },
+  { title: "Public Speaking Masterclass", category: "Workshop", description: "Overcome fear and master presentation skills.", commitment: "8 hrs (one weekend)", teamSize: "20-30 participants", rating: 4.6, meetingDay: "One weekend", skills: ["Public Speaking", "Presentation", "Confidence"], why: "Essential communication skills.", type: "weekend", prepTime: "None", website: "https://publicspeaking.edu", location: "Campus", date: "March 2026", cost: "$75", instructor: "Professional Speaker" },
+  { title: "UX/UI Design Workshop", category: "Workshop", description: "Learn user-centered design and prototyping.", commitment: "16 hrs (two weeks)", teamSize: "25-35 participants", rating: 4.7, meetingDay: "Weekly", skills: ["UX Design", "Prototyping", "User Research"], why: "Build design portfolio.", type: "course", prepTime: "None", website: "https://uxworkshop.edu", location: "Campus", date: "Fall 2025", cost: "$125", tools: ["Figma", "Adobe XD"] },
+  { title: "Blockchain Development Workshop", category: "Workshop", description: "Build decentralized applications and smart contracts.", commitment: "24 hrs (three weeks)", teamSize: "20-30 participants", rating: 4.8, meetingDay: "Weekly", skills: ["Blockchain", "Smart Contracts", "Web3"], why: "Enter the Web3 space.", type: "course", prepTime: "Basic programming", website: "https://blockchainworkshop.edu", location: "Campus", date: "Spring 2026", cost: "$200", languages: ["Solidity", "JavaScript"] },
+
+  // Internships & Programs (15)
+  { title: "Summer Research Internship", category: "Internship", description: "Paid research position with faculty mentor.", commitment: "40 hrs/week (10 weeks)", teamSize: "Individual", rating: 4.9, meetingDay: "Full-time", skills: ["Research", "Lab Work", "Academic Writing"], why: "Essential for graduate school and research careers.", type: "summer", prepTime: "Application process", website: "https://researchinternship.edu", location: "Campus/Remote", date: "Summer 2026", stipend: "$5,000-$8,000", departments: "All STEM" },
+  { title: "Tech Startup Internship", category: "Internship", description: "Work at local startup with equity potential.", commitment: "40 hrs/week (12 weeks)", teamSize: "Individual", rating: 4.8, meetingDay: "Full-time", skills: ["Software Development", "Agile", "Innovation"], why: "Real startup experience.", type: "summer", prepTime: "Portfolio prep", website: "https://startupinternship.edu", location: "Local startups", date: "Summer 2026", compensation: "$20-30/hr + equity", companies: "50+" },
+  { title: "Consulting Case Team", category: "Internship", description: "Work on real consulting projects for nonprofits.", commitment: "20 hrs/week (semester)", teamSize: "4-6 members", rating: 4.7, meetingDay: "Flexible", skills: ["Consulting", "Business Analysis", "Client Management"], why: "Consulting interview prep.", type: "semester", prepTime: "Case prep", website: "https://consultinginternship.edu", location: "Campus", date: "Fall/Spring", compensation: "Unpaid", clients: "Local nonprofits" },
+  { title: "Teaching Assistant Program", category: "Internship", description: "Assist professors and lead discussion sections.", commitment: "15 hrs/week (semester)", teamSize: "Individual", rating: 4.6, meetingDay: "Flexible", skills: ["Teaching", "Communication", "Subject Expertise"], why: "Develop teaching skills.", type: "semester", prepTime: "GPA requirement", website: "https://teachingassistant.edu", location: "Campus", date: "Fall/Spring", stipend: "$1,500/semester", courses: "Undergraduate" },
+  { title: "Journalism Internship", category: "Internship", description: "Write articles and produce content for student media.", commitment: "20 hrs/week (semester)", teamSize: "Individual", rating: 4.7, meetingDay: "Flexible", skills: ["Writing", "Journalism", "Multimedia"], why: "Build media portfolio.", type: "semester", prepTime: "Writing samples", website: "https://journalisminternship.edu", location: "Campus", date: "Fall/Spring", compensation: "Unpaid", publications: "Student newspaper" },
+
+  // Volunteer & Service (15)
+  { title: "Hospital Volunteer Program", category: "Service", description: "Assist patients and staff at local hospital.", commitment: "4 hrs/week (semester)", teamSize: "Individual", rating: 4.8, meetingDay: "Flexible", skills: ["Compassion", "Healthcare", "Communication"], why: "Healthcare experience for pre-med.", type: "ongoing", prepTime: "Background check", website: "https://hospitalvolunteer.edu", location: "Local hospital", date: "Ongoing", impact: "Patient care", requirements: "18+ years old" },
+  { title: "Environmental Cleanup Initiative", category: "Service", description: "Organize and participate in local environmental restoration.", commitment: "3 hrs/week (seasonal)", teamSize: "20-50 volunteers", rating: 4.6, meetingDay: "Weekends", skills: ["Environmental Stewardship", "Teamwork", "Leadership"], why: "Direct environmental impact.", type: "seasonal", prepTime: "None", website: "https://environmentalcleanup.edu", location: "Local parks", date: "Spring/Fall", impact: "Habitat restoration", partners: "Local government" },
+  { title: "Youth Mentorship Program", category: "Service", description: "Mentor high school students in academic and career guidance.", commitment: "2 hrs/week (semester)", teamSize: "Individual", rating: 4.7, meetingDay: "Flexible", skills: ["Mentorship", "Communication", "Leadership"], why: "Make difference in young lives.", type: "semester", prepTime: "Interview", website: "https://youthmentorship.edu", location: "Local schools", date: "Fall/Spring", impact: "Academic success", mentees: "5-10 students" },
+  { title: "Food Bank Distribution", category: "Service", description: "Sort, pack, and distribute food to low-income families.", commitment: "2 hrs/week (ongoing)", teamSize: "20-40 volunteers", rating: 4.6, meetingDay: "Flexible", skills: ["Organization", "Teamwork", "Compassion"], why: "Address food insecurity.", type: "ongoing", prepTime: "None", website: "https://foodbank.edu", location: "Local food bank", date: "Ongoing", impact: "Meals distributed", partners: "Local charities" },
+  { title: "Animal Shelter Care", category: "Service", description: "Care for animals and assist with adoptions.", commitment: "3 hrs/week (ongoing)", teamSize: "30-60 volunteers", rating: 4.7, meetingDay: "Flexible", skills: ["Animal Care", "Compassion", "Communication"], why: "Help find homes for animals.", type: "ongoing", prepTime: "None", website: "https://animalshelter.edu", location: "Local shelter", date: "Ongoing", impact: "Animals helped", animals: "Dogs, cats, others" },
+
+  // Travel & Cultural (10)
+  { title: "Study Abroad Program", category: "Travel", description: "Academic semester in another country.", commitment: "Full semester", teamSize: "Class sizes vary", rating: 4.9, meetingDay: "Full-time", skills: ["Cultural Adaptation", "Language", "Independence"], why: "Transformative cultural experience.", type: "semester", prepTime: "Application process", website: "https://studyabroad.edu", location: "International", date: "Fall/Spring", cost: "$15,000-$25,000", countries: "50+", languages: "Multiple" },
+  { title: "Cultural Immersion Trip", category: "Travel", description: "Short cultural exchange and language immersion.", commitment: "2 weeks (one-time)", teamSize: "15-25 participants", rating: 4.8, meetingDay: "Two weeks", skills: ["Cultural Awareness", "Language", "Adaptability"], why: "Intensive cultural experience.", type: "short", prepTime: "Language prep", website: "https://culturalimmersion.edu", location: "International", date: "Summer 2026", cost: "$3,000-$5,000", activities: "Language classes, cultural activities" },
+  { title: "Service Learning Trip", category: "Travel", description: "Volunteer work combined with cultural learning.", commitment: "3 weeks (one-time)", teamSize: "20-30 participants", rating: 4.7, meetingDay: "Three weeks", skills: ["Service", "Cultural Learning", "Teamwork"], why: "Service with global perspective.", type: "short", prepTime: "None", website: "https://servicelearning.edu", location: "Developing countries", date: "Summer 2026", cost: "$4,000-$6,000", projects: "Community development" },
+
+  // Academic (40) - keeping existing ones but adding new properties
+  { title: "Computer Science Club", category: "Academic", description: "Collaborate on projects, hackathons, and competitive programming.", commitment: "3 hrs/week", teamSize: "50-100 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Problem Solving", "Teamwork", "Coding"], why: "Directly boosts technical skills and networking.", type: "club", website: "https://csclub.edu", location: "Campus", meetings: "Weekly", leadership: "President, Officers" },
   { title: "Undergraduate Research Program", category: "Academic", description: "Work alongside faculty on cutting-edge research projects.", commitment: "8-10 hrs/week", teamSize: "5-15 members", rating: 4.9, meetingDay: "Flexible", skills: ["Research", "Critical Thinking", "Writing"], why: "Essential for graduate school applications." },
   { title: "Debate Club", category: "Academic", description: "Compete in parliamentary and policy debate tournaments.", commitment: "6 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Tuesdays & Thursdays", skills: ["Public Speaking", "Critical Thinking", "Research"], why: "Improves communication and persuasion skills." },
   { title: "Math Olympiad Team", category: "Academic", description: "Prepare for national and international math competitions.", commitment: "4 hrs/week", teamSize: "15-25 members", rating: 4.9, meetingDay: "Saturdays", skills: ["Problem Solving", "Mathematical Thinking", "Persistence"], why: "Top choice for STEM majors and grad school." },
@@ -184,12 +232,27 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
   const [hasSearched, setHasSearched] = useState(false)
   const [addedIds, setAddedIds] = useState(new Set())
   const [activeFilter, setActiveFilter] = useState('All')
+  const [selectedEC, setSelectedEC] = useState(null)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
 
-  const FILTERS = ['All', 'Academic', 'Sports', 'Arts', 'Community', 'Professional', 'Leadership']
+  const FILTERS = ['All', 'Competition', 'Conference', 'Workshop', 'Internship', 'Service', 'Travel', 'Academic', 'Sports', 'Arts', 'Community', 'Professional', 'Leadership']
   const alreadyInCalendar = (title) => calendarEvents.some(e => e.title === title)
 
   const getCategoryColor = (cat) => {
-    const map = { Academic: '#7c6af7', Sports: '#f76a6a', Arts: '#f7a26a', Community: '#6af7a2', Professional: '#6ab8f7', Leadership: '#f76af7' }
+    const map = { 
+      Academic: '#7c6af7', 
+      Sports: '#f76a6a', 
+      Arts: '#f7a26a', 
+      Community: '#6af7a2', 
+      Professional: '#6ab8f7', 
+      Leadership: '#f76af7',
+      Competition: '#ff6b6b',
+      Conference: '#4ecdc4',
+      Workshop: '#45b7d1',
+      Internship: '#96ceb4',
+      Service: '#ffeaa7',
+      Travel: '#dda0dd'
+    }
     return map[cat] || '#7c6af7'
   }
 
@@ -223,6 +286,15 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
     if (alreadyInCalendar(activity.title)) return
     addCalendarEvent({ title: activity.title, category: activity.category, description: activity.description, commitment: activity.commitment, meetingDay: activity.meetingDay, color: getCategoryColor(activity.category), type: 'extracurricular' })
     setAddedIds(prev => new Set([...prev, activity.title]))
+  }
+
+  const handleLearnMore = (ec) => {
+    setSelectedEC(ec)
+    setShowDetailsModal(true)
+  }
+
+  const handleVisitWebsite = (website) => {
+    window.open(website, '_blank')
   }
 
   const filtered = activeFilter === 'All' ? results : results.filter(r => r.category === activeFilter)
@@ -301,6 +373,14 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
           </motion.div>
         )}
       </motion.div>
+      <ECDetailsModal
+        ec={selectedEC}
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+        onAdd={() => handleAdd(selectedEC)}
+        isAdded={selectedEC ? addedIds.has(selectedEC.title) || alreadyInCalendar(selectedEC.title) : false}
+        color={selectedEC ? getCategoryColor(selectedEC.category) : '#7c6af7'}
+      />
     </div>
   )
 }
@@ -339,6 +419,217 @@ function ECCard({ ec, index, isAdded, onAdd, color }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.78rem', color: 'var(--text-dim)' }}><MapPin size={12} /> {ec.meetingDay}</div>
       </div>
       {ec.skills && <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>{ec.skills.map(s => <span key={s} className="tag">{s}</span>)}</div>}
+      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handleLearnMore(ec)}
+          className="btn btn-ghost"
+          style={{ flex: 1, fontSize: '0.8rem', padding: '8px 12px' }}
+        >
+          Learn More
+        </motion.button>
+        {ec.website && (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleVisitWebsite(ec.website)}
+            className="btn btn-ghost"
+            style={{ fontSize: '0.8rem', padding: '8px 12px' }}
+          >
+            🌐 Website
+          </motion.button>
+        )}
+      </div>
+    </motion.div>
+  )
+}
+
+// Details Modal Component
+function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
+  if (!isOpen || !ec) return null
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,0.7)',
+        backdropFilter: 'blur(10px)',
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem'
+      }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        style={{
+          background: 'var(--bg2)',
+          border: '1px solid var(--border)',
+          borderRadius: '20px',
+          padding: '2rem',
+          width: '100%',
+          maxWidth: '600px',
+          maxHeight: '80vh',
+          overflow: 'auto'
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+              <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontFamily: 'var(--font-display)', fontWeight: 600, background: `${color}22`, color, border: `1px solid ${color}44` }}>{ec.category}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Star size={14} fill="var(--accent2)" color="var(--accent2)" />
+                <span style={{ fontSize: '0.85rem', color: 'var(--accent2)', fontWeight: 600 }}>{ec.rating}</span>
+              </div>
+              {ec.type && (
+                <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontFamily: 'var(--font-display)', fontWeight: 600, background: 'var(--bg3)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+                  {ec.type === 'one-time' ? 'One-Time Event' : ec.type === 'seasonal' ? 'Seasonal' : ec.type === 'annual' ? 'Annual' : ec.type === 'series' ? 'Series' : ec.type === 'intensive' ? 'Intensive' : ec.type === 'course' ? 'Course' : ec.type === 'semester' ? 'Semester' : ec.type === 'short' ? 'Short Program' : ec.type === 'ongoing' ? 'Ongoing' : 'Club'}
+                </span>
+              )}
+            </div>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.5rem', marginBottom: '0.5rem' }}>{ec.title}</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6 }}>{ec.description}</p>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+              fontSize: '1.5rem',
+              padding: '4px',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            ×
+          </button>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Clock size={16} color="var(--text-dim)" />
+            <div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Commitment</div>
+              <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.commitment}</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Users size={16} color="var(--text-dim)" />
+            <div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Team Size</div>
+              <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.teamSize}</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <MapPin size={16} color="var(--text-dim)" />
+            <div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Meeting Day</div>
+              <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.meetingDay}</div>
+            </div>
+          </div>
+          {ec.location && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <MapPin size={16} color="var(--text-dim)" />
+              <div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Location</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.location}</div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {ec.prepTime && (
+          <div style={{ marginBottom: '1rem' }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Preparation Time</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>⏰ {ec.prepTime}</div>
+          </div>
+        )}
+
+        {ec.date && (
+          <div style={{ marginBottom: '1rem' }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Date</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>📅 {ec.date}</div>
+          </div>
+        )}
+
+        {(ec.prizes || ec.cost || ec.stipend || ec.compensation) && (
+          <div style={{ marginBottom: '1rem' }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Compensation/Prizes</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>
+              {ec.prizes && `🏆 ${ec.prizes}`}
+              {ec.stipend && `💰 ${ec.stipend}`}
+              {ec.compensation && `💼 ${ec.compensation}`}
+              {ec.cost && `💵 ${ec.cost}`}
+            </div>
+          </div>
+        )}
+
+        {ec.sponsors && (
+          <div style={{ marginBottom: '1rem' }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Sponsors</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>🤝 {Array.isArray(ec.sponsors) ? ec.sponsors.join(', ') : ec.sponsors}</div>
+          </div>
+        )}
+
+        {ec.why && (
+          <div style={{ marginBottom: '1.5rem', padding: '1rem', borderRadius: '12px', background: 'rgba(124,106,247,0.08)', border: '1px solid rgba(124,106,247,0.15)' }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--accent)', fontWeight: 600, marginBottom: '0.5rem' }}>✨ Why Join?</div>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text)', margin: 0, lineHeight: 1.5 }}>{ec.why}</p>
+          </div>
+        )}
+
+        {ec.skills && (
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.5rem' }}>Skills You'll Gain</div>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {ec.skills.map(skill => (
+                <span key={skill} className="tag" style={{ background: `${color}22`, color, border: `1px solid ${color}44` }}>{skill}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+          {ec.website && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => window.open(ec.website, '_blank')}
+              className="btn btn-ghost"
+              style={{ fontSize: '0.9rem', padding: '10px 16px' }}
+            >
+              🌐 Visit Website
+            </motion.button>
+          )}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onAdd}
+            disabled={isAdded}
+            className="btn btn-primary"
+            style={{ fontSize: '0.9rem', padding: '10px 16px' }}
+          >
+            {isAdded ? '✓ Added to Calendar' : '+ Add to Calendar'}
+          </motion.button>
+        </div>
+      </motion.div>
     </motion.div>
   )
 }
