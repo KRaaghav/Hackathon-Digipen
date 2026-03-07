@@ -25,7 +25,7 @@ const WELLNESS_TIPS = [
 export default function Calendar({ calendarEvents, addCalendarEvent, removeCalendarEvent }) {
   const [showAddModal, setShowAddModal] = useState(false)
   const [view, setView] = useState('year') // 'year' | 'list' | 'week'
-  const [newEvent, setNewEvent] = useState({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low' })
+  const [newEvent, setNewEvent] = useState({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low', frequency: 'weekly', startDate: new Date().toISOString().split('T')[0] })
   const [currentTip, setCurrentTip] = useState(WELLNESS_TIPS[Math.floor(Math.random() * WELLNESS_TIPS.length)])
   const [selectedDate, setSelectedDate] = useState(null)
 
@@ -35,6 +35,39 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
   const COLORS = ['#7c6af7', '#f7a26a', '#6af7c8', '#f76a6a', '#6ab8f7', '#f76af7', '#f7f76a']
   const CATEGORIES = ['Academic', 'Sports', 'Arts', 'Community', 'Professional', 'Leadership', 'Personal']
   const DAYS_OF_WEEK = ['Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays', 'Sundays', 'Flexible']
+
+  // Helper function to check if event should appear on a given date
+  const shouldShowEventOnDate = (event, date) => {
+    const dayMap = {
+      'Mondays': 1, 'Tuesdays': 2, 'Wednesdays': 3, 'Thursdays': 4,
+      'Fridays': 5, 'Saturdays': 6, 'Sundays': 0
+    }
+    
+    // Check if day of week matches
+    if (event.meetingDay && event.meetingDay !== 'Flexible' && dayMap[event.meetingDay] !== date.getDay()) {
+      return false
+    }
+    
+    // Check frequency
+    if (event.frequency === 'one-time') {
+      const eventDate = event.startDate ? new Date(event.startDate) : new Date()
+      return eventDate.toDateString() === date.toDateString()
+    }
+    
+    if (event.frequency === 'weekly') {
+      return true
+    }
+    
+    if (event.frequency === 'biweekly') {
+      const startDate = event.startDate ? new Date(event.startDate) : new Date()
+      const diffTime = Math.abs(date - startDate)
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      const weeksDiff = Math.floor(diffDays / 7)
+      return weeksDiff % 2 === 0
+    }
+    
+    return true
+  }
 
   const groupedByDay = DAYS_OF_WEEK.reduce((acc, day) => {
     const evs = calendarEvents.filter(e => e.meetingDay === day || (day === 'Flexible' && e.meetingDay === 'Flexible'))
@@ -52,7 +85,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
   const handleAdd = () => {
     if (!newEvent.title.trim()) return
     addCalendarEvent({ ...newEvent, type: 'manual' })
-    setNewEvent({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low' })
+    setNewEvent({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low', frequency: 'weekly', startDate: new Date().toISOString().split('T')[0] })
     setShowAddModal(false)
   }
 
@@ -234,9 +267,29 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
             <div style={{ overflowX: 'auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(130px, 1fr))', gap: '0.5rem', minWidth: 900 }}>
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => {
+                // Determine which actual date this day of the week represents
+                let displayDate = new Date()
+                if (selectedDate) {
+                  // If a date was selected (from year view), find that week's Monday and calculate from there
+                  const weekStart = new Date(selectedDate)
+                  weekStart.setDate(weekStart.getDate() - (weekStart.getDay() || 7) + 1) // Set to Monday
+                  displayDate = new Date(weekStart)
+                  displayDate.setDate(displayDate.getDate() + (i === 6 ? 6 : i)) // Adjust for day
+                } else {
+                  // Show current week
+                  const currentDate = new Date()
+                  const weekStart = new Date(currentDate)
+                  weekStart.setDate(weekStart.getDate() - (weekStart.getDay() || 7) + 1) // Set to Monday
+                  displayDate = new Date(weekStart)
+                  displayDate.setDate(displayDate.getDate() + (i === 6 ? 6 : i)) // Adjust for day
+                }
+                
                 const fullDay = ['Mondays','Tuesdays','Wednesdays','Thursdays','Fridays','Saturdays','Sundays'][i]
-                const dayEvents = calendarEvents.filter(e => e.meetingDay === fullDay)
-                const isToday = today.getDay() === (i + 1) % 7
+                const dayEvents = calendarEvents.filter(e => {
+                  if (e.meetingDay === 'Flexible') return e.meetingDay === 'Flexible'
+                  return shouldShowEventOnDate(e, displayDate)
+                })
+                const isToday = today.toDateString() === displayDate.toDateString()
                 const stress = getDayStress(dayEvents)
                 return (
                   <div key={day}>
@@ -329,6 +382,21 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                     <select className="input" value={newEvent.meetingDay} onChange={e => setNewEvent(p => ({ ...p, meetingDay: e.target.value }))}>
                       {DAYS_OF_WEEK.map(d => <option key={d} value={d}>{d}</option>)}
                     </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>Frequency</label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    {['one-time', 'weekly', 'biweekly'].map(freq => (
+                      <button key={freq} onClick={() => setNewEvent(p => ({ ...p, frequency: freq }))} style={{
+                        padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: newEvent.frequency === freq ? 'var(--accent)' : 'var(--bg3)',
+                        color: newEvent.frequency === freq ? 'white' : 'var(--text)',
+                        cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, transition: 'all 0.2s ease'
+                      }}>
+                        {freq === 'one-time' ? 'One-Time' : freq === 'weekly' ? 'Weekly' : 'Biweekly'}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -443,6 +511,11 @@ function EventCard({ event, index, onRemove }) {
               {event.stressLevel} Stress
             </span>
           )}
+          {event.frequency && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>
+              🔄 {event.frequency === 'one-time' ? 'One-Time' : event.frequency === 'weekly' ? 'Weekly' : 'Biweekly'}
+            </span>
+          )}
         </div>
       </div>
 
@@ -474,7 +547,33 @@ function YearCalendar({ events, year, onDateClick }) {
         'Mondays': 1, 'Tuesdays': 2, 'Wednesdays': 3, 'Thursdays': 4,
         'Fridays': 5, 'Saturdays': 6, 'Sundays': 0
       }
-      return dayMap[e.meetingDay] === date.getDay()
+      
+      // Check if day of week matches
+      if (dayMap[e.meetingDay] !== date.getDay()) return false
+      
+      // Check frequency
+      if (e.frequency === 'one-time') {
+        // For one-time events, check if it's the exact date
+        const eventDate = e.startDate ? new Date(e.startDate) : new Date()
+        return eventDate.toDateString() === date.toDateString()
+      }
+      
+      if (e.frequency === 'weekly') {
+        // Weekly events always show if day matches
+        return true
+      }
+      
+      if (e.frequency === 'biweekly') {
+        // For biweekly, calculate week difference from start date
+        const startDate = e.startDate ? new Date(e.startDate) : new Date()
+        const diffTime = Math.abs(date - startDate)
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+        const weeksDiff = Math.floor(diffDays / 7)
+        // Show on event start week and every other week after
+        return weeksDiff % 2 === 0
+      }
+      
+      return false
     })
   }
 
