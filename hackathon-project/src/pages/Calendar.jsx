@@ -1,14 +1,32 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CalendarDays, Plus, Trash2, Clock, Tag, Sparkles, X, Check } from 'lucide-react'
+import { CalendarDays, Plus, Trash2, Clock, Tag, Sparkles, X, Check, Heart, Wind } from 'lucide-react'
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
+const STRESS_LEVELS = ['Low', 'Medium', 'High']
+const STRESS_COLORS = { Low: '#6af7c8', Medium: '#f7a26a', High: '#f76a6a' }
+const STRESS_POINTS = { Low: 1, Medium: 2, High: 3 }
+
+const WELLNESS_TIPS = [
+  "Take deep breaths: Inhale for 4 counts, hold for 4, exhale for 6.",
+  "Step away from screens for 10 minutes and go for a walk.",
+  "Write down 3 things you're grateful for today.",
+  "Talk to a friend about how you're feeling.",
+  "Do something creative that brings you joy.",
+  "Set a small, achievable goal for the day.",
+  "Practice positive self-talk and be kind to yourself.",
+  "Get enough sleep - aim for 8 hours tonight.",
+  "Eat a healthy snack and stay hydrated.",
+  "Listen to your favorite music and dance it out."
+]
+
 export default function Calendar({ calendarEvents, addCalendarEvent, removeCalendarEvent }) {
   const [showAddModal, setShowAddModal] = useState(false)
   const [view, setView] = useState('list') // 'list' | 'week'
-  const [newEvent, setNewEvent] = useState({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7' })
+  const [newEvent, setNewEvent] = useState({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low' })
+  const [currentTip, setCurrentTip] = useState(WELLNESS_TIPS[Math.floor(Math.random() * WELLNESS_TIPS.length)])
 
   const today = new Date()
 
@@ -22,10 +40,17 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
     return acc
   }, {})
 
+  const getDayStress = (events) => {
+    const total = events.reduce((sum, ev) => sum + (STRESS_POINTS[ev.stressLevel] || 1), 0)
+    if (total <= 2) return { level: 'Low', color: STRESS_COLORS.Low }
+    if (total <= 4) return { level: 'Medium', color: STRESS_COLORS.Medium }
+    return { level: 'High', color: STRESS_COLORS.High }
+  }
+
   const handleAdd = () => {
     if (!newEvent.title.trim()) return
     addCalendarEvent({ ...newEvent, type: 'manual' })
-    setNewEvent({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7' })
+    setNewEvent({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low' })
     setShowAddModal(false)
   }
 
@@ -69,8 +94,57 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
             >
               <Plus size={16} /> Add Activity
             </motion.button>
+            <motion.a
+              href="/zen-game"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn btn-ghost"
+              style={{ textDecoration: 'none' }}
+            >
+              <Wind size={16} /> Relax
+            </motion.a>
           </div>
         </div>
+
+        {/* Wellness Tip */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            background: 'linear-gradient(135deg, #6af7c8, #7c6af7)',
+            borderRadius: '16px',
+            padding: '1.5rem',
+            marginBottom: '2rem',
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, right: 0, opacity: 0.1, fontSize: '4rem' }}>💚</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.5rem' }}>
+            <Heart size={20} />
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem' }}>Wellness Tip</span>
+          </div>
+          <p style={{ fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>
+            {currentTip}
+          </p>
+          <button
+            onClick={() => setCurrentTip(WELLNESS_TIPS[Math.floor(Math.random() * WELLNESS_TIPS.length)])}
+            style={{
+              marginTop: '1rem',
+              background: 'rgba(255,255,255,0.2)',
+              border: 'none',
+              color: 'white',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '0.8rem',
+              fontWeight: 600
+            }}
+          >
+            New Tip
+          </button>
+        </motion.div>
 
         {/* Empty state */}
         {calendarEvents.length === 0 && (
@@ -83,6 +157,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button className="btn btn-primary" onClick={() => setShowAddModal(true)}><Plus size={16} /> Add Manually</button>
               <a href="/explore" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Sparkles size={16} /> Explore ECs</a>
+              <a href="/zen-game" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Wind size={16} /> Take a Break</a>
             </div>
           </motion.div>
         )}
@@ -90,22 +165,35 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
         {/* List view */}
         {calendarEvents.length > 0 && view === 'list' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {Object.entries(groupedByDay).map(([day, events]) => (
-              <motion.div key={day} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.75rem' }}>
-                  <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                    {day}
-                  </span>
-                  <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>{events.length}</span>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '0.75rem' }}>
-                  {events.map((ev, i) => (
-                    <EventCard key={ev.id} event={ev} index={i} onRemove={() => removeCalendarEvent(ev.id)} />
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+            {Object.entries(groupedByDay).map(([day, events]) => {
+              const stress = getDayStress(events)
+              return (
+                <motion.div key={day} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.75rem' }}>
+                    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                      {day}
+                    </span>
+                    <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{
+                        width: 8, height: 8, borderRadius: '50%',
+                        background: stress.color,
+                        boxShadow: `0 0 8px ${stress.color}40`
+                      }} />
+                      <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: 500 }}>
+                        {stress.level} Stress
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>{events.length}</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '0.75rem' }}>
+                    {events.map((ev, i) => (
+                      <EventCard key={ev.id} event={ev} index={i} onRemove={() => removeCalendarEvent(ev.id)} />
+                    ))}
+                  </div>
+                </motion.div>
+              )
+            })}
 
             {/* Events without specific day */}
             {calendarEvents.filter(e => !DAYS_OF_WEEK.includes(e.meetingDay)).length > 0 && (
@@ -132,6 +220,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                 const fullDay = ['Mondays','Tuesdays','Wednesdays','Thursdays','Fridays','Saturdays','Sundays'][i]
                 const dayEvents = calendarEvents.filter(e => e.meetingDay === fullDay)
                 const isToday = today.getDay() === (i + 1) % 7
+                const stress = getDayStress(dayEvents)
                 return (
                   <div key={day}>
                     <div style={{
@@ -143,6 +232,15 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                       marginBottom: '0.5rem'
                     }}>
                       {day}
+                      {dayEvents.length > 0 && (
+                        <div style={{
+                          marginTop: '4px',
+                          width: 6, height: 6, borderRadius: '50%',
+                          background: stress.color,
+                          boxShadow: `0 0 6px ${stress.color}40`,
+                          margin: '4px auto 0'
+                        }} />
+                      )}
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', minHeight: 200 }}>
                       {dayEvents.map(ev => (
@@ -221,8 +319,21 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                   <input className="input" placeholder="e.g. 2-3 hrs/week" value={newEvent.commitment} onChange={e => setNewEvent(p => ({ ...p, commitment: e.target.value }))} />
                 </div>
 
-                <div>
-                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>Description (optional)</label>
+                <div>                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>Stress Level</label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    {STRESS_LEVELS.map(level => (
+                      <button key={level} onClick={() => setNewEvent(p => ({ ...p, stressLevel: level }))} style={{
+                        padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: newEvent.stressLevel === level ? STRESS_COLORS[level] : 'var(--bg3)',
+                        color: newEvent.stressLevel === level ? 'white' : 'var(--text)',
+                        cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, transition: 'all 0.2s ease'
+                      }}>
+                        {level}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>Description (optional)</label>
                   <input className="input" placeholder="Brief description..." value={newEvent.description} onChange={e => setNewEvent(p => ({ ...p, description: e.target.value }))} />
                 </div>
 
@@ -299,6 +410,19 @@ function EventCard({ event, index, onRemove }) {
           {event.category && (
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'var(--text-dim)' }}>
               <Tag size={10} /> {event.category}
+            </span>
+          )}
+          {event.stressLevel && (
+            <span style={{
+              display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem',
+              color: STRESS_COLORS[event.stressLevel] || 'var(--text-dim)',
+              fontWeight: 600
+            }}>
+              <div style={{
+                width: 6, height: 6, borderRadius: '50%',
+                background: STRESS_COLORS[event.stressLevel] || '#ccc'
+              }} />
+              {event.stressLevel} Stress
             </span>
           )}
         </div>
