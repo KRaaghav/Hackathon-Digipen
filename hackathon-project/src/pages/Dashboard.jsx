@@ -4,12 +4,67 @@ import { Link } from 'react-router-dom'
 import { Sparkles, TrendingUp, CalendarDays, Search, ArrowRight, BookOpen, Target, Clock, Star } from 'lucide-react'
 import Antigravity from '../components/Antigravity'
 
+const MAJORS = [
+  "Computer Science", "Software Engineering", "Data Science", "Cybersecurity",
+  "Business Administration", "Finance", "Marketing", "Accounting", "Economics",
+  "Psychology", "Sociology", "Political Science", "International Relations",
+  "Biology", "Chemistry", "Physics", "Environmental Science", "Neuroscience",
+  "Mechanical Engineering", "Electrical Engineering", "Civil Engineering", "Biomedical Engineering",
+  "Pre-Med", "Nursing", "Public Health", "Pharmacy",
+  "English Literature", "Journalism", "Communications", "Media Studies",
+  "Art & Design", "Architecture", "Film & Media", "Music",
+  "History", "Philosophy", "Anthropology", "Religious Studies",
+  "Mathematics", "Statistics", "Actuarial Science",
+  "Education", "Social Work", "Criminal Justice",
+  "Undecided / Exploring"
+]
+
 const TIPS_BY_MAJOR = {
   "Computer Science": ["Build a GitHub portfolio", "Contribute to open source", "Learn system design", "Practice LeetCode daily"],
+  "Software Engineering": ["Master full-stack development", "Deploy side projects", "Learn DevOps basics", "Study clean code principles"],
+  "Data Science": ["Build predictive models", "Master Python & SQL", "Create visualizations", "Participate in Kaggle competitions"],
+  "Cybersecurity": ["Get security certifications", "Capture The Flag competitions", "Learn penetration testing", "Study network security"],
   "Business Administration": ["Network on LinkedIn", "Join a business club", "Read the WSJ daily", "Find a mentor in industry"],
-  "Biology": ["Find a research lab", "Shadow a professional", "Study for MCAT early", "Join science honor society"],
+  "Finance": ["Learn financial modeling", "Follow the market daily", "Get CFA certifications", "Intern at investment firms"],
+  "Marketing": ["Build a personal brand", "Study consumer psychology", "Create marketing campaigns", "Learn analytics tools"],
+  "Accounting": ["Master Excel & accounting software", "Get CPA exam prep started", "Intern at accounting firms", "Stay updated on tax law"],
+  "Economics": ["Study economic theory deeply", "Read economics journals", "Learn econometrics", "Analyze real-world markets"],
   "Psychology": ["Volunteer at a counseling center", "Read academic journals", "Join APA student division", "Apply for research positions"],
-  "default": ["Join a club related to your major", "Find an internship or research position", "Build your LinkedIn profile", "Connect with a faculty mentor"]
+  "Sociology": ["Conduct field research", "Read sociological studies", "Join sociology club", "Explore social issues deeply"],
+  "Political Science": ["Intern in government", "Follow current politics", "Mock debate competitions", "Study policy papers"],
+  "International Relations": ["Learn multiple languages", "Study geopolitics", "Join Model UN", "Intern at international orgs"],
+  "Biology": ["Find a research lab", "Shadow a professional", "Study for MCAT early", "Join science honor society"],
+  "Chemistry": ["Master lab techniques", "Join research groups", "Study for GRE early", "Participate in science olympiad"],
+  "Physics": ["Build physics projects", "Study quantum mechanics deeply", "Join physics clubs", "Attend physics symposiums"],
+  "Environmental Science": ["Work on conservation projects", "Study climate change research", "Join environmental clubs", "Volunteer for cleanups"],
+  "Neuroscience": ["Find brain research labs", "Study neurobiology deeply", "Read neuroscience journals", "Shadow neuroscientists"],
+  "Mechanical Engineering": ["Build robots or engines", "Learn CAD software", "Join engineering competitions", "Intern at tech companies"],
+  "Electrical Engineering": ["Master circuit design", "Build electronics projects", "Learn microcontrollers", "Intern at tech firms"],
+  "Civil Engineering": ["Design infrastructure projects", "Use CAD software", "Intern at engineering firms", "Study sustainability"],
+  "Biomedical Engineering": ["Research medical devices", "Study human physiology", "Join biomedical clubs", "Intern at medical companies"],
+  "Pre-Med": ["Volunteer at hospitals", "Maintain high GPA", "Get clinical experience", "Prepare for MCAT"],
+  "Nursing": ["Get clinical certifications", "Volunteer in hospitals", "Study anatomy thoroughly", "Network with nurses"],
+  "Public Health": ["Work on health projects", "Study epidemiology", "Intern at health organizations", "Learn data analysis"],
+  "Pharmacy": ["Intern at pharmacies", "Study biochemistry deeply", "Prepare for PCAT", "Get healthcare certifications"],
+  "English Literature": ["Read widely and critically", "Join writing workshops", "Build writing portfolio", "Submit to literary journals"],
+  "Journalism": ["Write for student publications", "Build journalism portfolio", "Learn multimedia reporting", "Intern at news outlets"],
+  "Communications": ["Study media & rhetoric", "Build communication skills", "Intern in communications", "Create media projects"],
+  "Media Studies": ["Analyze films & media", "Create media projects", "Intern at media companies", "Study digital culture"],
+  "Art & Design": ["Build visual portfolio", "Practice design daily", "Exhibit your work", "Follow design trends"],
+  "Architecture": ["Master architecture software", "Explore building design", "Intern at firms", "Attend architecture lectures"],
+  "Film & Media": ["Create short films", "Build filmmaking portfolio", "Attend film festivals", "Study cinematography"],
+  "Music": ["Practice your instrument", "Perform regularly", "Learn music theory deeply", "Collaborate with musicians"],
+  "History": ["Read historical sources", "Write research papers", "Study primary documents", "Intern at museums"],
+  "Philosophy": ["Read philosophy widely", "Engage in debates", "Write analytical essays", "Explore ethics deeply"],
+  "Anthropology": ["Study human cultures", "Read ethnographies", "Volunteer in communities", "Explore fieldwork methods"],
+  "Religious Studies": ["Study world religions", "Read sacred texts", "Engage in discussions", "Explore comparative religion"],
+  "Mathematics": ["Solve complex problems", "Study pure math deeply", "Join math clubs", "Participate in competitions"],
+  "Statistics": ["Learn R and Python", "Analyze real datasets", "Study statistical theory", "Intern at data companies"],
+  "Actuarial Science": ["Pass actuarial exams", "Study probability deeply", "Learn financial math", "Intern at insurance firms"],
+  "Education": ["Tutor students regularly", "Intern at schools", "Study pedagogy", "Volunteer in classrooms"],
+  "Social Work": ["Volunteer with communities", "Get certifications", "Intern at social agencies", "Study social policy"],
+  "Criminal Justice": ["Intern in law enforcement", "Study criminology", "Shadow professionals", "Learn investigative methods"],
+  "Undecided / Exploring": ["Explore various majors", "Take diverse electives", "Talk to career advisors", "Attend major info sessions"]
 }
 
 const QUICK_STATS = [
@@ -22,8 +77,69 @@ export default function Dashboard({ userProfile, calendarEvents }) {
   const [aiInsight, setAiInsight] = useState('')
   const [loadingInsight, setLoadingInsight] = useState(false)
   const [insightFetched, setInsightFetched] = useState(false)
+  const [selectedMajor, setSelectedMajor] = useState(userProfile?.major || 'Computer Science')
+  const [majorInput, setMajorInput] = useState(userProfile?.major || 'Computer Science')
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [suggestions, setSuggestions] = useState([])
 
-  const tips = TIPS_BY_MAJOR[userProfile?.major] || TIPS_BY_MAJOR.default
+  const tips = TIPS_BY_MAJOR[selectedMajor] || TIPS_BY_MAJOR.default
+
+  // Fuzzy search to find matching majors
+  const findMatchingMajors = (query) => {
+    if (!query.trim()) return MAJORS
+    
+    const lowerQuery = query.toLowerCase()
+    
+    // Exact match
+    const exactMatch = MAJORS.filter(m => m.toLowerCase() === lowerQuery)
+    if (exactMatch.length > 0) return exactMatch
+    
+    // Starts with
+    const startsWithMatch = MAJORS.filter(m => m.toLowerCase().startsWith(lowerQuery))
+    if (startsWithMatch.length > 0) return startsWithMatch
+    
+    // Contains
+    const containsMatch = MAJORS.filter(m => m.toLowerCase().includes(lowerQuery))
+    if (containsMatch.length > 0) return containsMatch
+    
+    // Fuzzy: matching individual words
+    const words = lowerQuery.split(' ')
+    const fuzzyMatch = MAJORS.filter(major => {
+      const majorWords = major.toLowerCase().split(' ')
+      return words.some(word => majorWords.some(mWord => mWord.startsWith(word)))
+    })
+    
+    return fuzzyMatch.length > 0 ? fuzzyMatch : []
+  }
+
+  const handleMajorInputChange = (value) => {
+    setMajorInput(value)
+    const matches = findMatchingMajors(value)
+    setSuggestions(matches)
+    setShowSuggestions(matches.length > 0)
+  }
+
+  const handleMajorSelect = (major) => {
+    setSelectedMajor(major)
+    setMajorInput(major)
+    setShowSuggestions(false)
+    setSuggestions([])
+    // TODO: Update in database
+    // await updateUserProfile({ major })
+  }
+
+  const handleMajorInputBlur = () => {
+    setTimeout(() => setShowSuggestions(false), 150)
+  }
+
+  const handleMajorKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      const matches = findMatchingMajors(majorInput)
+      if (matches.length > 0) {
+        handleMajorSelect(matches[0])
+      }
+    }
+  }
 
   const fetchInsight = async () => {
     if (insightFetched) return
@@ -120,16 +236,17 @@ export default function Dashboard({ userProfile, calendarEvents }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
           style={{
-            fontSize: 'clamp(1.1rem, 3vw, 1.6rem)',
+            fontSize: 'clamp(1.25rem, 3.5vw, 1.8rem)',
             color: 'var(--text-muted)',
-            maxWidth: 600,
-            lineHeight: 1.8,
+            maxWidth: 700,
+            lineHeight: 1.9,
             marginBottom: '3rem',
             fontWeight: 400,
-            letterSpacing: '0.5px'
+            letterSpacing: '0.3px',
+            textAlign: 'center'
           }}
         >
-          Your personalized academic command center. Find extracurriculars, plan your journey, and achieve your goals.
+          Here's your personalized academic command center. Let's make today count.
         </motion.p>
 
         <motion.div
@@ -209,45 +326,121 @@ export default function Dashboard({ userProfile, calendarEvents }) {
           transition={{ delay: 0.1, duration: 0.6, ease: [0.23, 1, 0.320, 1] }}
           style={{ marginBottom: '3rem' }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
             <motion.span
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.95 }}
               className="chip chip-accent"
               style={{
-                backdropFilter: 'blur(10px)',
-                background: 'rgba(124,106,247,0.1)',
-                border: '1px solid rgba(124,106,247,0.3)',
-                boxShadow: '0 8px 32px rgba(124,106,247,0.1)'
+                backdropFilter: 'blur(12px)',
+                background: 'linear-gradient(135deg, rgba(124,106,247,0.15), rgba(124,106,247,0.05))',
+                border: '1.5px solid rgba(124,106,247,0.4)',
+                borderRadius: '50px',
+                padding: '10px 20px',
+                fontSize: '1rem',
+                fontWeight: 600,
+                boxShadow: '0 12px 40px rgba(124,106,247,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
+                cursor: 'pointer',
+                transition: 'all 0.05s ease'
               }}
             >
-              <Sparkles size={10} /> AI-Powered
+              <Sparkles size={14} style={{ marginRight: '6px' }} /> AI-Powered
             </motion.span>
-            <motion.span
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.25, duration: 0.5 }}
-              className="chip chip-orange"
-              style={{
-                backdropFilter: 'blur(10px)',
-                background: 'rgba(247,162,106,0.1)',
-                border: '1px solid rgba(247,162,106,0.3)',
-                boxShadow: '0 8px 32px rgba(247,162,106,0.1)'
-              }}
-            >
-              {userProfile?.major || 'Student'}
-            </motion.span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', flex: '0 1 auto' }}>
+              <motion.input
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.25, duration: 0.5 }}
+                type="text"
+                placeholder="What's your major?"
+                value={majorInput}
+                onChange={(e) => handleMajorInputChange(e.target.value)}
+                onFocus={() => setShowSuggestions(majorInput.trim().length > 0)}
+                onBlur={handleMajorInputBlur}
+                onKeyDown={handleMajorKeyDown}
+                style={{
+                  backdropFilter: 'blur(12px)',
+                  background: 'linear-gradient(135deg, rgba(247,162,106,0.15), rgba(247,162,106,0.05))',
+                  border: '1.5px solid rgba(247,162,106,0.4)',
+                  borderRadius: '50px',
+                  padding: '12px 20px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  boxShadow: '0 12px 40px rgba(247,162,106,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
+                  color: 'var(--text)',
+                  outline: 'none',
+                  width: '280px',
+                  transition: 'all 0.2s ease',
+                  '::placeholder': {
+                    color: 'var(--text-muted)'
+                  }
+                }}
+              />
+              {showSuggestions && suggestions.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    marginTop: '8px',
+                    background: 'linear-gradient(135deg, rgba(50,30,100,0.95), rgba(40,20,80,0.95))',
+                    backdropFilter: 'blur(20px)',
+                    border: '1.5px solid rgba(247,162,106,0.3)',
+                    borderRadius: '20px',
+                    maxHeight: '300px',
+                    overflowY: 'auto',
+                    zIndex: 100,
+                    boxShadow: '0 16px 40px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  {suggestions.slice(0, 8).map(major => (
+                    <motion.div
+                      key={major}
+                      whileHover={{ backgroundColor: 'rgba(247,162,106,0.1)' }}
+                      onClick={() => handleMajorSelect(major)}
+                      style={{
+                        padding: '12px 20px',
+                        cursor: 'pointer',
+                        color: selectedMajor === major ? 'var(--accent)' : 'var(--text)',
+                        fontWeight: selectedMajor === major ? 700 : 500,
+                        transition: 'all 0.1s ease',
+                        borderBottom: major !== suggestions[Math.min(7, suggestions.length - 1)] ? '1px solid rgba(247,162,106,0.1)' : 'none'
+                      }}
+                    >
+                      {major}
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </div>
             <motion.span
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.95 }}
               className="chip chip-green"
               style={{
-                backdropFilter: 'blur(10px)',
-                background: 'rgba(106,247,162,0.1)',
-                border: '1px solid rgba(106,247,162,0.3)',
-                boxShadow: '0 8px 32px rgba(106,247,162,0.1)'
+                backdropFilter: 'blur(12px)',
+                background: 'linear-gradient(135deg, rgba(106,247,162,0.15), rgba(106,247,162,0.05))',
+                border: '1.5px solid rgba(106,247,162,0.4)',
+                borderRadius: '50px',
+                padding: '10px 20px',
+                fontSize: '1rem',
+                fontWeight: 600,
+                boxShadow: '0 12px 40px rgba(106,247,162,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
+                cursor: 'pointer',
+                transition: 'all 0.05s ease'
               }}
             >
               {userProfile?.year || ''}
@@ -276,12 +469,18 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.42, duration: 0.6 }}
             style={{
-              color: 'var(--text-muted)',
-              fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
-              maxWidth: 550,
-              lineHeight: 1.7,
-              fontWeight: 400,
-              letterSpacing: '0.3px'
+              color: 'var(--text)',
+              fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
+              maxWidth: 650,
+              lineHeight: 1.8,
+              fontWeight: 700,
+              letterSpacing: '0.3px',
+              padding: '2rem 2.5rem',
+              borderRadius: '80px',
+              background: 'linear-gradient(135deg, rgba(247,100,100,0.12), rgba(247,100,100,0.06))',
+              border: '1.5px solid rgba(247,100,100,0.25)',
+              boxShadow: '0 8px 32px rgba(247,100,100,0.15), inset 0 1px 2px rgba(255,255,255,0.1)',
+              margin: '0 auto'
             }}
           >
             Here's your personalized academic command center. Let's make today count.
