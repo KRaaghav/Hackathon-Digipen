@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Compass, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu } from 'lucide-react'
+import { Compass, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 
 const NAV_ITEMS = [
   { path: '/', icon: <LayoutDashboard size={17} />, label: 'Dashboard' },
   { path: '/explore', icon: <Search size={17} />, label: 'Explore ECs' },
+  { path: '/courses', icon: <BookOpen size={17} />, label: 'Courses' },
   { path: '/calendar', icon: <CalendarDays size={17} />, label: 'My Calendar' },
   { path: '/zen', icon: <Gamepad2 size={17} />, label: 'Zen Space' },
 ]
