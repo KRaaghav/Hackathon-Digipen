@@ -81,6 +81,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
   const [majorInput, setMajorInput] = useState(userProfile?.major || 'Computer Science')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState([])
+  const [cursorTrails, setCursorTrails] = useState([])
 
   const tips = TIPS_BY_MAJOR[selectedMajor] || TIPS_BY_MAJOR.default
 
@@ -157,11 +158,73 @@ export default function Dashboard({ userProfile, calendarEvents }) {
     }
   }, [userProfile])
 
+  // Cursor trail effect
+  useEffect(() => {
+    let mouseX = 0
+    let mouseY = 0
+    let lastTime = Date.now()
+
+    const handleMouseMove = (e) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+
+      const now = Date.now()
+      // Create trail particles every 30ms for smooth effect
+      if (now - lastTime > 30) {
+        const newTrail = {
+          id: Math.random(),
+          x: mouseX,
+          y: mouseY,
+          createdAt: now
+        }
+        
+        setCursorTrails(prev => {
+          const updated = [...prev, newTrail]
+          // Remove trails older than 600ms
+          return updated.filter(trail => now - trail.createdAt < 600)
+        })
+        
+        lastTime = now
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
 
   return (
     <div className="page-container" style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative' }}>
+      {/* Cursor Trail Effect */}
+      {cursorTrails.map(trail => {
+        const age = Date.now() - trail.createdAt
+        const opacity = 1 - (age / 600) // Fade from 1 to 0 over 600ms
+        const scale = 1 - (age / 600) * 0.5 // Shrink from 1 to 0.5
+        
+        return (
+          <div
+            key={trail.id}
+            style={{
+              position: 'fixed',
+              left: trail.x,
+              top: trail.y,
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: `radial-gradient(circle, rgba(124,106,247,${opacity * 0.8}), rgba(247,162,106,${opacity * 0.4}))`,
+              boxShadow: `0 0 12px rgba(124,106,247,${opacity * 0.6}), 0 0 24px rgba(247,162,106,${opacity * 0.3})`,
+              pointerEvents: 'none',
+              zIndex: 999,
+              transform: `translate(-50%, -50%) scale(${scale})`,
+              filter: `blur(${age / 600 * 2}px)`,
+              transition: 'none'
+            }}
+          />
+        )
+      })}
+
       {/* Antigravity Background */}
       <div style={{ 
         position: 'fixed',
