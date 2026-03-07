@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard'
 import Extracurriculars from './pages/Extracurriculars'
 import Calendar from './pages/Calendar'
 import ZenGame from './pages/ZenGame'
+import Courses from './pages/Courses'
 
 export default function App() {
   const [userProfile, setUserProfile] = useState(() => {
@@ -93,6 +94,17 @@ export default function App() {
                     userProfile={userProfile}
                     addCalendarEvent={addCalendarEvent}
                     calendarEvents={calendarEvents}
+                  />
+                }
+              />
+              <Route
+                path="/courses"
+                element={
+                  <Courses
+                    userProfile={userProfile}
+                    calendarEvents={calendarEvents}
+                    addCalendarEvent={addCalendarEvent}
+                    removeCalendarEvent={removeCalendarEvent}
                   />
                 }
               />
