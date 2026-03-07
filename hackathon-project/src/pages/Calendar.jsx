@@ -24,11 +24,13 @@ const WELLNESS_TIPS = [
 
 export default function Calendar({ calendarEvents, addCalendarEvent, removeCalendarEvent }) {
   const [showAddModal, setShowAddModal] = useState(false)
-  const [view, setView] = useState('list') // 'list' | 'week'
+  const [view, setView] = useState('year') // 'year' | 'list' | 'week'
   const [newEvent, setNewEvent] = useState({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low' })
   const [currentTip, setCurrentTip] = useState(WELLNESS_TIPS[Math.floor(Math.random() * WELLNESS_TIPS.length)])
+  const [selectedDate, setSelectedDate] = useState(null)
 
   const today = new Date()
+  const currentYear = today.getFullYear()
 
   const COLORS = ['#7c6af7', '#f7a26a', '#6af7c8', '#f76a6a', '#6ab8f7', '#f76af7', '#f7f76a']
   const CATEGORIES = ['Academic', 'Sports', 'Arts', 'Community', 'Professional', 'Leadership', 'Personal']
@@ -74,15 +76,15 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
             {/* View toggle */}
             <div style={{ display: 'flex', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '3px' }}>
-              {['list', 'week'].map(v => (
-                <button key={v} onClick={() => setView(v)} style={{
+              {['year', 'list', 'week'].map(v => (
+                <button key={v} onClick={() => { setView(v); setSelectedDate(null) }} style={{
                   padding: '6px 14px', borderRadius: '8px', border: 'none', cursor: 'pointer',
                   background: view === v ? 'var(--accent)' : 'transparent',
                   color: view === v ? 'white' : 'var(--text-muted)',
                   fontSize: '0.8rem', fontFamily: 'var(--font-display)', fontWeight: 600,
                   transition: 'all 0.2s ease'
                 }}>
-                  {v === 'list' ? '≡ List' : '⊞ Week'}
+                  {v === 'year' ? '📅 Year' : v === 'list' ? '≡ List' : '⊞ Week'}
                 </button>
               ))}
             </div>
@@ -146,8 +148,16 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
           </button>
         </motion.div>
 
+        {/* Year view */}
+        {view === 'year' && (
+          <YearCalendar events={calendarEvents} year={currentYear} onDateClick={(date) => {
+            setSelectedDate(date)
+            setView('week')
+          }} />
+        )}
+
         {/* Empty state */}
-        {calendarEvents.length === 0 && (
+        {calendarEvents.length === 0 && view !== 'year' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '5rem 2rem' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem', animation: 'float 3s ease-in-out infinite' }}>📅</div>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', marginBottom: '0.75rem' }}>Your calendar is empty</h3>
@@ -214,7 +224,14 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
 
         {/* Week view */}
         {calendarEvents.length > 0 && view === 'week' && (
-          <div style={{ overflowX: 'auto' }}>
+          <div>
+            {selectedDate && (
+              <button onClick={() => { setSelectedDate(null); setView('year') }} 
+                style={{ marginBottom: '1rem', padding: '8px 16px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>
+                ← Back to Year View
+              </button>
+            )}
+            <div style={{ overflowX: 'auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(130px, 1fr))', gap: '0.5rem', minWidth: 900 }}>
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => {
                 const fullDay = ['Mondays','Tuesdays','Wednesdays','Thursdays','Fridays','Saturdays','Sundays'][i]
@@ -266,6 +283,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                   </div>
                 )
               })}
+            </div>
             </div>
           </div>
         )}
@@ -445,6 +463,144 @@ function EventCard({ event, index, onRemove }) {
           </motion.button>
         )}
       </AnimatePresence>
+    </motion.div>
+  )
+}
+
+function YearCalendar({ events, year, onDateClick }) {
+  const getDayEvents = (date) => {
+    return events.filter(e => {
+      const dayMap = {
+        'Mondays': 1, 'Tuesdays': 2, 'Wednesdays': 3, 'Thursdays': 4,
+        'Fridays': 5, 'Saturdays': 6, 'Sundays': 0
+      }
+      return dayMap[e.meetingDay] === date.getDay()
+    })
+  }
+
+  const getMonthDays = (month) => {
+    const firstDay = new Date(year, month, 1)
+    const lastDay = new Date(year, month + 1, 0)
+    const daysInMonth = lastDay.getDate()
+    const startingDayOfWeek = firstDay.getDay()
+    
+    return { daysInMonth, startingDayOfWeek }
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div style={{ marginBottom: '2rem' }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.5rem', marginBottom: '1.5rem', textAlign: 'center' }}>
+          {year} Calendar
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          {MONTHS.map((month, monthIndex) => {
+            const { daysInMonth, startingDayOfWeek } = getMonthDays(monthIndex)
+            const days = []
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < startingDayOfWeek; i++) {
+              days.push(null)
+            }
+            
+            // Add day cells
+            for (let day = 1; day <= daysInMonth; day++) {
+              days.push(day)
+            }
+
+            const today = new Date()
+            const isCurrentMonth = today.getFullYear() === year && today.getMonth() === monthIndex
+
+            return (
+              <motion.div
+                key={month}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: monthIndex * 0.02 }}
+                style={{
+                  background: 'var(--bg2)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '12px',
+                  padding: '1rem',
+                  overflow: 'hidden'
+                }}
+              >
+                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
+                  {month}
+                </h3>
+                
+                {/* Day headers */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', marginBottom: '0.5rem' }}>
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                    <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', padding: '4px 0' }}>
+                      {d}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Calendar days */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+                  {days.map((day, index) => {
+                    if (day === null) {
+                      return <div key={`empty-${index}`} style={{ aspectRatio: '1' }} />
+                    }
+
+                    const date = new Date(year, monthIndex, day)
+                    const dayEvents = getDayEvents(date)
+                    const isToday = isCurrentMonth && day === today.getDate()
+                    const hasEvents = dayEvents.length > 0
+
+                    return (
+                      <motion.button
+                        key={day}
+                        onClick={() => onDateClick(date)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        style={{
+                          aspectRatio: '1',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexDirection: 'column',
+                          gap: '2px',
+                          borderRadius: '8px',
+                          border: isToday ? '2px solid var(--accent)' : hasEvents ? '1px solid var(--border)' : '1px solid transparent',
+                          background: isToday ? 'var(--accent-glow)' : hasEvents ? 'var(--bg3)' : 'transparent',
+                          cursor: hasEvents ? 'pointer' : 'default',
+                          fontSize: '0.8rem',
+                          fontWeight: 600,
+                          color: 'var(--text)',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <span>{day}</span>
+                        {dayEvents.length > 0 && (
+                          <div style={{ display: 'flex', gap: '2px' }}>
+                            {dayEvents.slice(0, 2).map((ev, i) => (
+                              <div
+                                key={i}
+                                style={{
+                                  width: 4,
+                                  height: 4,
+                                  borderRadius: '50%',
+                                  background: ev.color || '#7c6af7'
+                                }}
+                              />
+                            ))}
+                            {dayEvents.length > 2 && (
+                              <div style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>+{dayEvents.length - 2}</div>
+                            )}
+                          </div>
+                        )}
+                      </motion.button>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
     </motion.div>
   )
 }
