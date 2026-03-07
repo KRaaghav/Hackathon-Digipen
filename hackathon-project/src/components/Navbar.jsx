@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Compass, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, X, Menu, BookOpen } from 'lucide-react'
+import { Compass, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
+import { useTheme } from '../contexts/ThemeContext.jsx'
 
 const NAV_ITEMS = [
   { path: '/', icon: <LayoutDashboard size={17} />, label: 'Dashboard' },
@@ -14,6 +15,7 @@ const NAV_ITEMS = [
 export default function Navbar({ userProfile, zenMode, setZenMode, eventCount }) {
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { isDarkMode, toggleTheme } = useTheme()
 
   return (
     <nav style={{
@@ -94,6 +96,25 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
 
         {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleTheme}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '7px',
+              padding: '7px 14px', borderRadius: '10px',
+              border: '1px solid var(--border)',
+              background: 'transparent',
+              color: 'var(--text-muted)',
+              cursor: 'pointer', fontSize: '0.85rem',
+              fontFamily: 'var(--font-display)', fontWeight: 500,
+              transition: 'all 0.2s ease'
+            }}
+          >
+            {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
+            {isDarkMode ? 'Light' : 'Dark'}
+          </motion.button>
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
