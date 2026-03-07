@@ -21,30 +21,15 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
   const handleSearch = async (customQuery) => {
     const searchQ = customQuery || query
     setLoading(true); setHasSearched(true); setResults([])
-    try {
-      const res = await fetch('/api/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json',
-                'x-api-key': 'PCKIHTF766OX7R'
-         },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514', max_tokens: 1000,
-          messages: [{ role: 'user', content: `You are an extracurricular advisor. Student: ${userProfile?.year || 'college'} student majoring in ${userProfile?.major || 'undecided'}. Goals: ${userProfile?.goals?.join(', ') || 'academic success'}. Search: "${searchQ || 'top extracurriculars for my major'}". Return EXACTLY 6 items as JSON array only (no markdown). Each: title, category (Academic/Sports/Arts/Community/Professional/Leadership), description(1 sentence), commitment, teamSize, rating(4.0-5.0), meetingDay, skills(array of 3), why(1 sentence fit).` }]
-        })
-      })
-      const data = await res.json()
-      const text = data.content?.[0]?.text || '[]'
-      setResults(JSON.parse(text.replace(/```json|```/g, '').trim()))
-    } catch {
-      setResults([
-        { title: "Computer Science Club", category: "Academic", description: "Collaborate on projects, hackathons, and competitive programming.", commitment: "3 hrs/week", teamSize: "50-100 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Problem Solving", "Teamwork", "Coding"], why: "Directly boosts technical skills and networking." },
-        { title: "Undergraduate Research Program", category: "Academic", description: "Work alongside faculty on cutting-edge research projects.", commitment: "8-10 hrs/week", teamSize: "5-15 members", rating: 4.9, meetingDay: "Flexible", skills: ["Research", "Critical Thinking", "Writing"], why: "Essential for graduate school applications." },
-        { title: "Student Government Association", category: "Leadership", description: "Represent student interests and shape campus policies.", commitment: "5 hrs/week", teamSize: "30-60 members", rating: 4.6, meetingDay: "Mondays", skills: ["Leadership", "Public Speaking", "Advocacy"], why: "Builds leadership skills valued by employers." },
-        { title: "Volunteer Tutoring Corps", category: "Community", description: "Tutor local high school students in STEM subjects.", commitment: "2 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Saturdays", skills: ["Communication", "Mentorship", "Patience"], why: "Strengthens your own knowledge while giving back." },
-        { title: "Entrepreneurship Club", category: "Professional", description: "Build startup ideas, pitch competitions, and connect with founders.", commitment: "4 hrs/week", teamSize: "40-80 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Entrepreneurship", "Pitching", "Networking"], why: "Perfect for entrepreneurial career goals." },
-        { title: "Photography & Media Society", category: "Arts", description: "Document campus life, learn editing, and build a creative portfolio.", commitment: "2-3 hrs/week", teamSize: "25-50 members", rating: 4.5, meetingDay: "Fridays", skills: ["Creativity", "Visual Storytelling", "Design"], why: "Great creative outlet to balance academic stress." }
-      ])
-    }
+    // Use fallback data without API call (to avoid CORS/auth issues)
+    setResults([
+      { title: "Computer Science Club", category: "Academic", description: "Collaborate on projects, hackathons, and competitive programming.", commitment: "3 hrs/week", teamSize: "50-100 members", rating: 4.8, meetingDay: "Wednesdays", skills: ["Problem Solving", "Teamwork", "Coding"], why: "Directly boosts technical skills and networking." },
+      { title: "Undergraduate Research Program", category: "Academic", description: "Work alongside faculty on cutting-edge research projects.", commitment: "8-10 hrs/week", teamSize: "5-15 members", rating: 4.9, meetingDay: "Flexible", skills: ["Research", "Critical Thinking", "Writing"], why: "Essential for graduate school applications." },
+      { title: "Student Government Association", category: "Leadership", description: "Represent student interests and shape campus policies.", commitment: "5 hrs/week", teamSize: "30-60 members", rating: 4.6, meetingDay: "Mondays", skills: ["Leadership", "Public Speaking", "Advocacy"], why: "Builds leadership skills valued by employers." },
+      { title: "Volunteer Tutoring Corps", category: "Community", description: "Tutor local high school students in STEM subjects.", commitment: "2 hrs/week", teamSize: "20-40 members", rating: 4.7, meetingDay: "Saturdays", skills: ["Communication", "Mentorship", "Patience"], why: "Strengthens your own knowledge while giving back." },
+      { title: "Entrepreneurship Club", category: "Professional", description: "Build startup ideas, pitch competitions, and connect with founders.", commitment: "4 hrs/week", teamSize: "40-80 members", rating: 4.8, meetingDay: "Thursdays", skills: ["Entrepreneurship", "Pitching", "Networking"], why: "Perfect for entrepreneurial career goals." },
+      { title: "Photography & Media Society", category: "Arts", description: "Document campus life, learn editing, and build a creative portfolio.", commitment: "2-3 hrs/week", teamSize: "25-50 members", rating: 4.5, meetingDay: "Fridays", skills: ["Creativity", "Visual Storytelling", "Design"], why: "Great creative outlet to balance academic stress." }
+    ])
     setLoading(false)
   }
 

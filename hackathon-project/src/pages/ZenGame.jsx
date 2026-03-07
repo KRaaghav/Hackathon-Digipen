@@ -208,8 +208,8 @@ export default function ZenGame() {
                 {bubbles.map(bubble => (
                   <motion.button
                     key={bubble.id}
-                    initial={{ y: '110%', x: `${bubble.x}%`, scale: 0 }}
-                    animate={{ y: '-10%', scale: 1, x: `${bubble.x + Math.sin(bubble.id) * 5}%` }}
+                    initial={{ y: '110%', scale: 0 }}
+                    animate={{ y: '-10%', scale: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
                     transition={{ duration: bubble.duration, ease: 'linear', scale: { duration: 0.3 } }}
                     onClick={(e) => popBubble(bubble, e)}
@@ -221,8 +221,9 @@ export default function ZenGame() {
                       border: `2px solid ${bubble.color}`,
                       boxShadow: `0 0 20px ${bubble.color}44, inset 0 0 10px rgba(255,255,255,0.2)`,
                       cursor: 'pointer',
-                      transform: 'translate(-50%, -50%)',
-                      left: 0, top: 0,
+                      left: `${bubble.x}%`,
+                      top: 0,
+                      transform: 'translateX(-50%)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: bubble.size > 60 ? '1rem' : '0.75rem',
                       fontFamily: 'var(--font-display)', fontWeight: 700,
