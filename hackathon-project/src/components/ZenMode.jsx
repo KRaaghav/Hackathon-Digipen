@@ -70,6 +70,7 @@ export default function ZenMode({ onExit }) {
       exit={{ opacity: 0 }}
       style={{
         position: 'fixed', inset: 0, zIndex: 200,
+        width: '100%', height: '100vh',
         background: 'radial-gradient(ellipse at center, #0d0d1a 0%, #06060d 100%)',
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
