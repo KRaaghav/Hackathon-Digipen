@@ -225,278 +225,53 @@ const ALL_EXTRACURRICULARS = [
   { title: "American Football Intramural", category: "Sports", description: "Recreational American football leagues.", commitment: "3-4 hrs/week", teamSize: "20-30 members", rating: 4.6, meetingDay: "Flexible", skills: ["Football", "Strategy", "Teamwork"], why: "Casual competitive football." },
 ]
 
-// Major-specific EC suggestions
+// Major-specific EC suggestions - now functional keywords
 const MAJOR_SUGGESTIONS = {
-  "Computer Science": [
-    "Best coding competitions for CS students",
-    "AI/ML research opportunities",
-    "Tech startup internships",
-    "Open source contributions"
-  ],
-  "Software Engineering": [
-    "Full-stack development projects",
-    "DevOps and cloud computing",
-    "Mobile app development",
-    "Agile development teams"
-  ],
-  "Data Science": [
-    "Machine learning competitions",
-    "Data visualization projects",
-    "Big data analytics",
-    "Statistical research"
-  ],
-  "Cybersecurity": [
-    "Ethical hacking competitions",
-    "Security research labs",
-    "Network defense teams",
-    "Cryptography projects"
-  ],
-  "Business Administration": [
-    "Consulting case competitions",
-    "Entrepreneurship clubs",
-    "Business strategy projects",
-    "Leadership development"
-  ],
-  "Finance": [
-    "Investment banking clubs",
-    "Trading competitions",
-    "Financial modeling",
-    "Portfolio management"
-  ],
-  "Marketing": [
-    "Digital marketing campaigns",
-    "Brand strategy projects",
-    "Social media management",
-    "Market research"
-  ],
-  "Accounting": [
-    "Financial analysis projects",
-    "Tax consulting",
-    "Audit preparation",
-    "Corporate finance"
-  ],
-  "Economics": [
-    "Economic research projects",
-    "Policy analysis",
-    "Market forecasting",
-    "International trade studies"
-  ],
-  "Psychology": [
-    "Research assistant positions",
-    "Counseling internships",
-    "Behavioral studies",
-    "Mental health advocacy"
-  ],
-  "Sociology": [
-    "Social research projects",
-    "Community outreach",
-    "Policy analysis",
-    "Cultural studies"
-  ],
-  "Political Science": [
-    "Model United Nations",
-    "Policy research",
-    "Campaign management",
-    "International relations"
-  ],
-  "International Relations": [
-    "Model UN conferences",
-    "Global policy research",
-    "Cultural exchange programs",
-    "Diplomacy simulations"
-  ],
-  "Biology": [
-    "Research lab positions",
-    "Field biology studies",
-    "Medical internships",
-    "Environmental research"
-  ],
-  "Chemistry": [
-    "Lab research positions",
-    "Chemical analysis",
-    "Pharmaceutical development",
-    "Environmental chemistry"
-  ],
-  "Physics": [
-    "Physics research labs",
-    "Quantum computing",
-    "Astronomy projects",
-    "Engineering physics"
-  ],
-  "Environmental Science": [
-    "Conservation projects",
-    "Climate research",
-    "Sustainability initiatives",
-    "Environmental policy"
-  ],
-  "Neuroscience": [
-    "Brain research labs",
-    "Cognitive studies",
-    "Medical research",
-    "Psychology research"
-  ],
-  "Mechanical Engineering": [
-    "Robotics competitions",
-    "CAD design projects",
-    "Manufacturing internships",
-    "Automotive engineering"
-  ],
-  "Electrical Engineering": [
-    "Circuit design projects",
-    "Embedded systems",
-    "Power engineering",
-    "Telecommunications"
-  ],
-  "Civil Engineering": [
-    "Infrastructure projects",
-    "Sustainable design",
-    "Construction management",
-    "Urban planning"
-  ],
-  "Biomedical Engineering": [
-    "Medical device design",
-    "Biomaterials research",
-    "Healthcare innovation",
-    "Clinical engineering"
-  ],
-  "Pre-Med": [
-    "Medical research",
-    "Hospital volunteering",
-    "Healthcare internships",
-    "Medical mission trips"
-  ],
-  "Nursing": [
-    "Clinical internships",
-    "Patient care volunteering",
-    "Healthcare administration",
-    "Medical research"
-  ],
-  "Public Health": [
-    "Epidemiology research",
-    "Community health projects",
-    "Global health initiatives",
-    "Health policy analysis"
-  ],
-  "Pharmacy": [
-    "Pharmaceutical research",
-    "Clinical trials",
-    "Drug development",
-    "Healthcare consulting"
-  ],
-  "English Literature": [
-    "Writing workshops",
-    "Literary magazines",
-    "Creative writing clubs",
-    "Literature research"
-  ],
-  "Journalism": [
-    "Student newspaper",
-    "Broadcast journalism",
-    "Investigative reporting",
-    "Digital media production"
-  ],
-  "Communications": [
-    "Public relations",
-    "Media production",
-    "Event planning",
-    "Corporate communications"
-  ],
-  "Media Studies": [
-    "Film production",
-    "Digital media",
-    "Media analysis",
-    "Content creation"
-  ],
-  "Art & Design": [
-    "Design competitions",
-    "Art exhibitions",
-    "Creative workshops",
-    "Portfolio development"
-  ],
-  "Architecture": [
-    "Design competitions",
-    "Urban planning",
-    "Sustainable architecture",
-    "Building design"
-  ],
-  "Film & Media": [
-    "Film production",
-    "Video editing",
-    "Screenwriting",
-    "Media festivals"
-  ],
-  "Music": [
-    "Performance ensembles",
-    "Music composition",
-    "Recording studios",
-    "Music education"
-  ],
-  "History": [
-    "Historical research",
-    "Museum internships",
-    "Archaeological projects",
-    "Policy analysis"
-  ],
-  "Philosophy": [
-    "Philosophy clubs",
-    "Ethics discussions",
-    "Research projects",
-    "Debate teams"
-  ],
-  "Anthropology": [
-    "Field research",
-    "Cultural studies",
-    "Archaeological digs",
-    "Ethnographic research"
-  ],
-  "Religious Studies": [
-    "Interfaith dialogue",
-    "Religious research",
-    "Community service",
-    "Ethics discussions"
-  ],
-  "Mathematics": [
-    "Math competitions",
-    "Research projects",
-    "Tutoring programs",
-    "Actuarial studies"
-  ],
-  "Statistics": [
-    "Data analysis projects",
-    "Statistical research",
-    "Survey design",
-    "Machine learning"
-  ],
-  "Actuarial Science": [
-    "Actuarial competitions",
-    "Insurance research",
-    "Risk analysis",
-    "Financial modeling"
-  ],
-  "Education": [
-    "Tutoring programs",
-    "Education research",
-    "Teaching internships",
-    "Curriculum development"
-  ],
-  "Social Work": [
-    "Community service",
-    "Social research",
-    "Advocacy work",
-    "Counseling internships"
-  ],
-  "Criminal Justice": [
-    "Legal research",
-    "Policy analysis",
-    "Community programs",
-    "Law enforcement"
-  ],
-  "Undecided / Exploring": [
-    "Leadership opportunities",
-    "Community service",
-    "Research projects",
-    "Exploratory internships"
-  ]
+  "Computer Science": ["Competition", "AI/ML", "Startup", "Open Source"],
+  "Software Engineering": ["Full-stack", "DevOps", "Mobile", "Backend"],
+  "Data Science": ["Machine Learning", "Analytics", "Data Analysis", "Kaggle"],
+  "Cybersecurity": ["Hacking", "Security", "Network", "CTF"],
+  "Business Administration": ["Consulting", "Business", "Strategy", "Leadership"],
+  "Finance": ["Investment", "Trading", "Financial", "Banking"],
+  "Marketing": ["Marketing", "Digital", "Brand", "Analytics"],
+  "Accounting": ["Accounting", "Finance", "CPA", "Audit"],
+  "Economics": ["Economics", "Market", "Trading", "Analysis"],
+  "Psychology": ["Research", "Counseling", "Behavior", "Mental Health"],
+  "Sociology": ["Research", "Community", "Social", "Culture"],
+  "Political Science": ["Model UN", "Policy", "Government", "Debate"],
+  "International Relations": ["Model UN", "Global", "International", "Travel"],
+  "Biology": ["Research", "Lab", "Medical", "Environmental"],
+  "Chemistry": ["Lab", "Research", "Chemistry", "Experiment"],
+  "Physics": ["Physics", "Research", "Robotics", "Engineering"],
+  "Environmental Science": ["Environmental", "Conservation", "Sustainability", "Climate"],
+  "Neuroscience": ["Research", "Brain", "Medical", "Lab"],
+  "Mechanical Engineering": ["Robotics", "CAD", "Engineering", "Design"],
+  "Electrical Engineering": ["Circuit", "Electronics", "Robotics", "Engineering"],
+  "Civil Engineering": ["Engineering", "Infrastructure", "Sustainability", "Design"],
+  "Biomedical Engineering": ["Medical", "Engineering", "Robotics", "Design"],
+  "Pre-Med": ["Research", "Hospital", "Medical", "Healthcare"],
+  "Nursing": ["Healthcare", "Hospital", "Clinical", "Medical"],
+  "Public Health": ["Health", "Community", "Research", "Policy"],
+  "Pharmacy": ["Healthcare", "Medical", "Research", "Lab"],
+  "English Literature": ["Writing", "Literature", "Creative", "Journal"],
+  "Journalism": ["Journalism", "Writing", "Media", "Publication"],
+  "Communications": ["Communications", "Media", "Public Speaking", "Leadership"],
+  "Media Studies": ["Film", "Media", "Production", "Creative"],
+  "Art & Design": ["Design", "Art", "Creative", "Exhibition"],
+  "Architecture": ["Design", "Architecture", "CAD", "Urban"],
+  "Film & Media": ["Film", "Video", "Production", "Creative"],
+  "Music": ["Music", "Performance", "Ensemble", "Production"],
+  "History": ["Research", "History", "Museum", "Culture"],
+  "Philosophy": ["Philosophy", "Ethics", "Discussion", "Debate"],
+  "Anthropology": ["Research", "Culture", "Anthropology", "Field"],
+  "Religious Studies": ["Religion", "Culture", "Ethics", "Discussion"],
+  "Mathematics": ["Math", "Competition", "Research", "Tutoring"],
+  "Statistics": ["Statistics", "Data", "Analysis", "Research"],
+  "Actuarial Science": ["Actuarial", "Math", "Finance", "Statistics"],
+  "Education": ["Teaching", "Tutoring", "Education", "Leadership"],
+  "Social Work": ["Community", "Social", "Advocacy", "Service"],
+  "Criminal Justice": ["Law", "Policy", "Justice", "Research"],
+  "Undecided / Exploring": ["Leadership", "Community", "Research", "Internship"]
 }
 
 export default function Extracurriculars({ userProfile, addCalendarEvent, calendarEvents }) {
