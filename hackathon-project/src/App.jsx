@@ -89,6 +89,7 @@ export default function App() {
                 element={
                   <Dashboard
                     userProfile={userProfile}
+                    setUserProfile={setUserProfile}
                     calendarEvents={calendarEvents}
                   />
                 }
