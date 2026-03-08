@@ -1,2 +1,2 @@
 # Hackathon-Digipen
-Idk
+Our hackathon project at the DigiPen Institute of Technology
