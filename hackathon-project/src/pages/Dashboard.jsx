@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Sparkles, TrendingUp, CalendarDays, Search, ArrowRight, BookOpen, Target, Clock, Star } from 'lucide-react'
 import Antigravity from '../components/Antigravity'
