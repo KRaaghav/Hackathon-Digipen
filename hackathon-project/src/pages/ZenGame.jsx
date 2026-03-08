@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Gamepad2, RotateCcw, Trophy, Heart, Sparkles, Wind } from 'lucide-react'
+import { Gamepad2, RotateCcw, Trophy, Sparkles, Wind } from 'lucide-react'
 import DotGrid from '../components/DotGrid'
 import { initCalmSounds, calmPop, calmCombo, calmBubbleFade, calmGameStart, calmGameOver } from '../utils/calmSounds'
 
 export default function ZenGame() {
   const [gameMode, setGameMode] = useState('menu') // menu | playing | over
   const [score, setScore] = useState(0)
-  const [lives, setLives] = useState(3)
   const [bubbles, setBubbles] = useState([])
   const [combo, setCombo] = useState(0)
   const [popEffects, setPopEffects] = useState([])
@@ -134,7 +133,6 @@ export default function ZenGame() {
     clearInterval(intervalRef.current)
     setBubbles([])
     setScore(0)
-    setLives(3)
     setCombo(0)
     setPopEffects([])
     setPopBursts([])
@@ -366,17 +364,6 @@ export default function ZenGame() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ display: 'flex', gap: '4px' }}>
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <Heart
-                      key={i}
-                      size={20}
-                      fill={i < lives ? 'var(--danger)' : 'transparent'}
-                      color={i < lives ? 'var(--danger)' : 'var(--border)'}
-                    />
-                  ))}
-                </div>
-
                 {combo >= 3 && (
                   <motion.div
                     initial={{ scale: 0 }}
