@@ -903,6 +903,14 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem' }}>
               <span className="chip chip-accent"><BookOpen size={10} /> {selectedSchool.abbr}</span>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setViewMode('transcript')}
+                style={{ padding: '0.4rem 0.8rem', borderRadius: 'var(--radius)', border: '1px solid var(--accent)', background: 'rgba(124, 106, 247, 0.1)', color: 'var(--accent)', cursor: 'pointer', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.75rem' }}
+              >
+                📋 Transcript
+              </motion.button>
             </div>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, margin: 0 }}>
               Find Your Courses
@@ -984,6 +992,24 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                     }}
                   >
                     Clear All
+                  </motion.button>
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }} 
+                    whileTap={{ scale: 0.98 }} 
+                    onClick={() => setViewMode('transcript')}
+                    style={{ 
+                      padding: '0.4rem 0.8rem', 
+                      borderRadius: 'var(--radius)', 
+                      border: '1px solid var(--accent)', 
+                      background: 'rgba(124, 106, 247, 0.1)', 
+                      color: 'var(--accent)', 
+                      fontSize: '0.8rem', 
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-body)',
+                      fontWeight: 600
+                    }}
+                  >
+                    📋 View Transcript
                   </motion.button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.5rem' }}>
