@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Compass, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
+import GalaxyTree from './GalaxyTree'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 
 const NAV_ITEMS = [
@@ -46,14 +47,14 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
               boxShadow: '0 4px 16px var(--accent-glow)'
             }}
           >
-            <Compass size={18} color="white" />
+            <GalaxyTree size={18} color="white" />
           </motion.div>
           <span style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
             fontSize: '1.15rem', color: 'var(--text)',
             letterSpacing: '-0.02em'
           }}>
-            Path<span style={{ color: 'var(--accent)' }}>Finder</span>
+            Tranquility
           </span>
         </Link>
 

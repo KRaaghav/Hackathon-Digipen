@@ -258,7 +258,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-      {/* Hero Section with Pathfinder */}
+      {/* Hero Section with Tranquility */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -292,7 +292,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             color: 'transparent'
           }}
         >
-          PathFinder
+          Tranquility
         </motion.h1>
 
         <motion.p
@@ -1072,7 +1072,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                   WebkitTextFillColor: 'transparent',
                   marginBottom: '0.5rem'
                 }}>
-                  Welcome to PathFinder
+                  Welcome to Tranquility
                 </h2>
                 <p style={{
                   color: 'var(--text-muted)',
@@ -1242,7 +1242,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                   marginBottom: '1.5rem',
                   lineHeight: 1.6
                 }}>
-                  Join thousands of students who have discovered their perfect extracurricular path with PathFinder.
+                  Join thousands of students who have discovered their perfect extracurricular path with Tranquility.
                 </p>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <motion.button

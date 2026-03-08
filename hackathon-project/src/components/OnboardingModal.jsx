@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, BookOpen, Compass, ChevronRight, ChevronLeft, Check } from 'lucide-react'
+import GalaxyTree from './GalaxyTree'
 
 const MAJORS = [
   "Computer Science", "Software Engineering", "Data Science", "Cybersecurity",
@@ -163,10 +164,10 @@ export default function OnboardingModal({ onComplete }) {
           padding: '1.5rem 2rem', display: 'flex', alignItems: 'center', gap: '12px'
         }}>
           <div style={{ width: 40, height: 40, borderRadius: '12px', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Compass size={20} color="white" />
+            <GalaxyTree size={20} color="white" />
           </div>
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.25rem', color: 'white' }}>PathFinder</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.25rem', color: 'white' }}>Tranquility</div>
             <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>Your academic journey starts here</div>
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px' }}>
@@ -204,7 +205,7 @@ export default function OnboardingModal({ onComplete }) {
             {step === 1 && (
               <div>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>What should we call you?</h2>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>This will personalize your PathFinder experience.</p>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>This will personalize your Tranquility experience.</p>
                 <input className="input" placeholder="Your name or nickname..." value={profile.name} onChange={e => setProfile(p => ({ ...p, name: e.target.value }))} autoFocus style={{ fontSize: '1rem', padding: '14px 16px', marginBottom: '1rem' }} onKeyDown={e => e.key === 'Enter' && canProceed() && handleNext()} />
                 <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>Year in school</label>
                 <select className="input" value={profile.year} onChange={e => setProfile(p => ({ ...p, year: e.target.value }))}>
