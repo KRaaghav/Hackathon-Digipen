@@ -95,7 +95,6 @@ export function calmBubbleFade() {
   const gain = audioCtx.createGain();
 
   osc.type = "sine";
-
   osc.frequency.setValueAtTime(300, t);
   osc.frequency.exponentialRampToValueAtTime(120, t + 0.2);
 
@@ -121,7 +120,6 @@ export function calmGameStart() {
   const gain = audioCtx.createGain();
 
   osc.type = "sine";
-
   osc.frequency.setValueAtTime(300, t);
   osc.frequency.exponentialRampToValueAtTime(700, t + 0.25);
 
@@ -147,7 +145,6 @@ export function calmGameOver() {
   const gain = audioCtx.createGain();
 
   osc.type = "sine";
-
   osc.frequency.setValueAtTime(500, t);
   osc.frequency.exponentialRampToValueAtTime(140, t + 0.5);
 
@@ -157,130 +154,140 @@ export function calmGameOver() {
   osc.connect(gain);
   gain.connect(audioCtx.destination);
 
-<<<<<<< Updated upstream
-  osc.start(t)
-  osc.stop(t + 0.6)
-}
-
-/* -------------------------
-   Zen Dash: jump sound
-------------------------- */
-
-export function calmJump() {
-  if (!audioCtx) return
-  const t = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  const gain = audioCtx.createGain()
-  osc.type = "sine"
-  osc.frequency.setValueAtTime(400, t)
-  osc.frequency.exponentialRampToValueAtTime(700, t + 0.08)
-  gain.gain.setValueAtTime(0.2, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1)
-  osc.connect(gain)
-  gain.connect(audioCtx.destination)
-  osc.start(t)
-  osc.stop(t + 0.1)
-}
-
-/* -------------------------
-   Zen Dash: death / hit sound
-------------------------- */
-
-export function calmDeath() {
-  if (!audioCtx) return
-  const t = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  const gain = audioCtx.createGain()
-  osc.type = "sine"
-  osc.frequency.setValueAtTime(350, t)
-  osc.frequency.exponentialRampToValueAtTime(80, t + 0.35)
-  gain.gain.setValueAtTime(0.22, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4)
-  osc.connect(gain)
-  gain.connect(audioCtx.destination)
-  osc.start(t)
-  osc.stop(t + 0.4)
-}
-
-/* -------------------------
-   Timers: start / resume
-------------------------- */
-
-export function calmTimerStart() {
-  if (!audioCtx) return
-  const t = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  const gain = audioCtx.createGain()
-  osc.type = "sine"
-  osc.frequency.setValueAtTime(520, t)
-  osc.frequency.exponentialRampToValueAtTime(360, t + 0.12)
-  gain.gain.setValueAtTime(0.15, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14)
-  osc.connect(gain)
-  gain.connect(audioCtx.destination)
-  osc.start(t)
-  osc.stop(t + 0.14)
-}
-
-export function calmTimerPause() {
-  if (!audioCtx) return
-  const t = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  const gain = audioCtx.createGain()
-  osc.type = "sine"
-  osc.frequency.setValueAtTime(280, t)
-  osc.frequency.exponentialRampToValueAtTime(180, t + 0.1)
-  gain.gain.setValueAtTime(0.12, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12)
-  osc.connect(gain)
-  gain.connect(audioCtx.destination)
-  osc.start(t)
-  osc.stop(t + 0.12)
-}
-
-export function calmTimerComplete() {
-  if (!audioCtx) return
-  const t = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  const gain = audioCtx.createGain()
-  osc.type = "sine"
-  osc.frequency.setValueAtTime(400, t)
-  osc.frequency.exponentialRampToValueAtTime(800, t + 0.2)
-  gain.gain.setValueAtTime(0.2, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25)
-  osc.connect(gain)
-  gain.connect(audioCtx.destination)
-  osc.start(t)
-  osc.stop(t + 0.25)
-}
-
-export function calmTimerMinimize() {
-  if (!audioCtx) return
-  const t = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  const gain = audioCtx.createGain()
-  osc.type = "sine"
-  osc.frequency.setValueAtTime(300, t)
-  gain.gain.setValueAtTime(0.08, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06)
-  osc.connect(gain)
-  gain.connect(audioCtx.destination)
-  osc.start(t)
-  osc.stop(t + 0.06)
-}
-=======
   osc.start(t);
   osc.stop(t + 0.6);
 }
 
 /* -------------------------
-   Missing stubs for old imports
+   Zen Dash: jump sound
 ------------------------- */
-export function calmJump() { calmPop(); }
-export function calmDeath() { calmGameOver(); }
+export function calmJump() {
+  if (!audioCtx) return;
 
-export function calmTimerStart() { calmGameStart(); }
-export function calmTimerPause() { calmBubbleFade(); }
-export function calmTimerComplete() { calmCombo(); }
-export function calmTimerMinimize() { calmPop(); }
->>>>>>> Stashed changes
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(400, t);
+  osc.frequency.exponentialRampToValueAtTime(700, t + 0.08);
+
+  gain.gain.setValueAtTime(0.2, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start(t);
+  osc.stop(t + 0.1);
+}
+
+/* -------------------------
+   Zen Dash: death / hit sound
+------------------------- */
+export function calmDeath() {
+  if (!audioCtx) return;
+
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(350, t);
+  osc.frequency.exponentialRampToValueAtTime(80, t + 0.35);
+
+  gain.gain.setValueAtTime(0.22, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start(t);
+  osc.stop(t + 0.4);
+}
+
+/* -------------------------
+   Timers: start / resume
+------------------------- */
+export function calmTimerStart() {
+  if (!audioCtx) return;
+
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(520, t);
+  osc.frequency.exponentialRampToValueAtTime(360, t + 0.12);
+
+  gain.gain.setValueAtTime(0.15, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start(t);
+  osc.stop(t + 0.14);
+}
+
+export function calmTimerPause() {
+  if (!audioCtx) return;
+
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(280, t);
+  osc.frequency.exponentialRampToValueAtTime(180, t + 0.1);
+
+  gain.gain.setValueAtTime(0.12, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start(t);
+  osc.stop(t + 0.12);
+}
+
+export function calmTimerComplete() {
+  if (!audioCtx) return;
+
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(400, t);
+  osc.frequency.exponentialRampToValueAtTime(800, t + 0.2);
+
+  gain.gain.setValueAtTime(0.2, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start(t);
+  osc.stop(t + 0.25);
+}
+
+export function calmTimerMinimize() {
+  if (!audioCtx) return;
+
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(300, t);
+
+  gain.gain.setValueAtTime(0.08, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start(t);
+  osc.stop(t + 0.06);
+}
