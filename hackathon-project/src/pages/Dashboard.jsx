@@ -258,7 +258,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-      {/* Hero Section with Tranquility */}
+      {/* Hero Section with Pathfinder */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -292,7 +292,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             color: 'transparent'
           }}
         >
-          Tranquility
+          PathFinder
         </motion.h1>
 
         <motion.p
@@ -526,7 +526,8 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               letterSpacing: '-0.02em',
               background: 'linear-gradient(135deg, var(--text) 0%, var(--accent) 50%, var(--accent2) 100%)',
               WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+              WebkitTextFillColor: 'transparent',
+              textAlign: 'center'
             }}
           >
             {greeting}, {userProfile?.name || 'Scholar'} 👋
@@ -1067,19 +1068,19 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                   fontFamily: 'var(--font-display)',
                   fontSize: '2.5rem',
                   fontWeight: 800,
-                  background: 'linear-gradient(135deg, #7c6af7, #f7a26a, #6af7c8)',
+                  background: 'linear-gradient(135deg, #7c6af7, #f76af7)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   marginBottom: '0.5rem'
                 }}>
-                  Welcome to Tranquility
+                  Welcome to PathFinder
                 </h2>
                 <p style={{
                   color: 'var(--text-muted)',
                   fontSize: '1.1rem',
                   lineHeight: 1.6
                 }}>
-                  Your AI-powered academic companion for discovering extracurriculars and managing your schedule
+                  Your AI-powered companion for discovering opportunities and accelerating your academic journey
                 </p>
               </motion.div>
 
@@ -1242,7 +1243,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                   marginBottom: '1.5rem',
                   lineHeight: 1.6
                 }}>
-                  Join thousands of students who have discovered their perfect extracurricular path with Tranquility.
+                  Join thousands of students who have discovered their perfect extracurricular path with PathFinder.
                 </p>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <motion.button
