@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { initCalmSounds, calmJump, calmDeath } from '../utils/calmSounds'
 
 const GAME_WIDTH = 900
 const GAME_HEIGHT = 320
@@ -294,6 +295,8 @@ export default function GeometryDash() {
       const onGround = currentY >= floorY - PLAYER_SIZE - 0.5
 
       if (jumpQueuedRef.current && onGround) {
+        initCalmSounds()
+        calmJump()
         currentVel = JUMP_VELOCITY
         currentRot = 0
       }
@@ -421,6 +424,8 @@ export default function GeometryDash() {
       setTotalDistance(newDistance)
 
       if (hit) {
+        initCalmSounds()
+        calmDeath()
         setIsGameOver(true)
         isGameOverRef.current = true
         const particles = createDeathParticles(PLAYER_X, nextY)

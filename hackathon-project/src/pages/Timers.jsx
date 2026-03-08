@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createPortal } from 'react-dom'
 import { Timer, Plus, Trash2, Play, Pause, RotateCcw, Clock, Minimize2 } from 'lucide-react'
+import { initCalmSounds, calmTimerStart, calmTimerPause, calmTimerComplete, calmTimerMinimize } from '../utils/calmSounds'
 
 function formatTime(seconds) {
   const h = Math.floor(seconds / 3600)
@@ -13,9 +14,10 @@ function formatTime(seconds) {
   return `${m}:${String(s).padStart(2, '0')}`
 }
 
-function CountdownTimer({ id, initialMinutes, label, onRemove, onStart, onStateReport }) {
+function CountdownTimer({ id, initialMinutes, label, onRemove, onStart, onStateReport, onPause, onComplete }) {
   const [secondsLeft, setSecondsLeft] = useState(initialMinutes * 60)
   const [running, setRunning] = useState(false)
+  const completedRef = useRef(false)
 
   useEffect(() => {
     if (!running) return
@@ -35,15 +37,30 @@ function CountdownTimer({ id, initialMinutes, label, onRemove, onStart, onStateR
     if (onStateReport) onStateReport(id, { running, value: secondsLeft })
   }, [id, running, secondsLeft, onStateReport])
 
+  useEffect(() => {
+    if (secondsLeft === 0 && !completedRef.current) {
+      completedRef.current = true
+      onComplete?.(id)
+    }
+  }, [secondsLeft, id, onComplete])
+
   const reset = () => {
     setRunning(false)
     setSecondsLeft(initialMinutes * 60)
+    completedRef.current = false
   }
 
   const handleStartPause = () => {
     const nextRunning = !running
+    if (nextRunning) {
+      initCalmSounds()
+      calmTimerStart()
+      onStart?.(id)
+    } else {
+      calmTimerPause()
+      onPause?.(id)
+    }
     setRunning(nextRunning)
-    if (nextRunning) onStart?.(id)
   }
 
   const isDone = secondsLeft === 0
@@ -154,8 +171,14 @@ function Stopwatch({ id, onRemove, onStart, onStateReport }) {
 
   const handleStartPause = () => {
     const nextRunning = !running
+    if (nextRunning) {
+      initCalmSounds()
+      calmTimerStart()
+      onStart?.(id)
+    } else {
+      calmTimerPause()
+    }
     setRunning(nextRunning)
-    if (nextRunning) onStart?.(id)
   }
 
   return (
@@ -368,6 +391,11 @@ export default function Timers() {
     }
   }, [activeTimerId])
 
+  const handleTimerComplete = useCallback((id) => {
+    initCalmSounds()
+    calmTimerComplete()
+  }, [])
+
   const handleTimerStart = useCallback((id) => {
     const t = timers.find((x) => x.id === id)
     if (!t) return
@@ -387,6 +415,8 @@ export default function Timers() {
   }, [activeTimerId, timers])
 
   const minimizeOverlay = useCallback(() => {
+    initCalmSounds()
+    calmTimerMinimize()
     setActiveTimerId(null)
     setActiveTimerState(null)
   }, [])
@@ -489,6 +519,8 @@ export default function Timers() {
                   onRemove={removeTimer}
                   onStart={handleTimerStart}
                   onStateReport={handleStateReport}
+                  onPause={() => { initCalmSounds(); calmTimerPause() }}
+                  onComplete={handleTimerComplete}
                 />
               ) : (
                 <Stopwatch

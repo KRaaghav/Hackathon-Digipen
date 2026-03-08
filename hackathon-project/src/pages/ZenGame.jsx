@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Gamepad2, RotateCcw, Trophy, Heart, Sparkles, Wind } from 'lucide-react'
 import DotGrid from '../components/DotGrid'
+import { initCalmSounds, calmPop, calmCombo, calmBubbleFade, calmGameStart, calmGameOver } from '../utils/calmSounds'
 
 export default function ZenGame() {
   const [gameMode, setGameMode] = useState('menu') // menu | playing | over
@@ -10,6 +11,8 @@ export default function ZenGame() {
   const [bubbles, setBubbles] = useState([])
   const [combo, setCombo] = useState(0)
   const [popEffects, setPopEffects] = useState([])
+  const [popBursts, setPopBursts] = useState([])
+  const [popParticles, setPopParticles] = useState([])
   const intervalRef = useRef(null)
   const bubbleIdRef = useRef(0)
 
@@ -22,49 +25,48 @@ export default function ZenGame() {
 
   const spawnBubble = useCallback(() => {
     const id = ++bubbleIdRef.current
-    const size = Math.random() * 40 + 40
-    const x = Math.random() * 80 + 10
-    const duration = Math.random() * 3 + 4
+    const size = Math.random() * 36 + 44
+    const x = Math.random() * 85 + 5
+    const y = Math.random() * 80 + 10
     const color = COLORS[Math.floor(Math.random() * COLORS.length)]
-    const points = Math.round((60 / size) * 20)
+    const points = Math.round((60 / size) * 15)
+    const lifetimeSec = Math.random() * 4 + 8
 
-    setBubbles(prev => [
-      ...prev,
-      {
-        id,
-        x,
-        size,
-        duration,
-        color,
-        points,
-        spawned: Date.now()
-      }
-    ])
-
-    setTimeout(() => {
-      setBubbles(prev => {
-        const exists = prev.find(b => b.id === id)
-
-        if (exists) {
-          setLives(l => {
-            if (l <= 1) {
-              setGameMode('over')
-            }
-            return Math.max(0, l - 1)
-          })
-          setCombo(0)
+    setBubbles(prev => {
+      if (prev.length >= 20) return prev
+      return [
+        ...prev,
+        {
+          id,
+          x,
+          y,
+          size,
+          color,
+          points,
+          spawnedAt: Date.now(),
+          lifetimeSec,
+          fading: false
         }
-
-        return prev.filter(b => b.id !== id)
-      })
-    }, duration * 1000 + 500)
+      ]
+    })
   }, [])
 
   useEffect(() => {
-    if (gameMode === 'playing') {
-      spawnBubble()
+    if (gameMode !== 'playing') return
+    const t = setInterval(() => {
+      const now = Date.now()
+      setBubbles(prev => prev.map(b => ({
+        ...b,
+        fading: b.fading || (now - b.spawnedAt) / 1000 >= b.lifetimeSec
+      })))
+    }, 400)
+    return () => clearInterval(t)
+  }, [gameMode])
 
-      const spawnRate = 1800
+  useEffect(() => {
+    if (gameMode === 'playing') {
+      for (let i = 0; i < 8; i++) spawnBubble()
+      const spawnRate = 2200
       intervalRef.current = setInterval(() => {
         spawnBubble()
       }, spawnRate)
@@ -84,8 +86,17 @@ export default function ZenGame() {
     }
   }, [gameMode, score, highScore])
 
+  const removeFadedBubble = useCallback((id) => {
+    calmBubbleFade()
+    setBubbles(prev => prev.filter(b => b.id !== id))
+    setTimeout(() => spawnBubble(), 300)
+  }, [spawnBubble])
+
   const popBubble = (bubble, e) => {
     e.stopPropagation()
+    initCalmSounds()
+    if (combo + 1 >= 3) calmCombo()
+    else calmPop()
 
     setBubbles(prev => prev.filter(b => b.id !== bubble.id))
 
@@ -98,25 +109,36 @@ export default function ZenGame() {
     const effect = {
       id: Date.now() + Math.random(),
       x: bubble.x,
+      y: bubble.y,
       color: bubble.color,
       pts,
       combo: newCombo
     }
 
     setPopEffects(prev => [...prev, effect])
+    setPopBursts(prev => [...prev, { id: effect.id, x: bubble.x, y: bubble.y, color: bubble.color }])
+    setPopParticles(prev => [...prev, { id: effect.id, x: bubble.x, y: bubble.y, color: bubble.color }])
 
     setTimeout(() => {
       setPopEffects(prev => prev.filter(p => p.id !== effect.id))
-    }, 800)
+      setPopBursts(prev => prev.filter(p => p.id !== effect.id))
+      setPopParticles(prev => prev.filter(p => p.id !== effect.id))
+    }, 1000)
+
+    setTimeout(() => spawnBubble(), 400)
   }
 
   const startGame = () => {
+    initCalmSounds()
+    calmGameStart()
     clearInterval(intervalRef.current)
     setBubbles([])
     setScore(0)
     setLives(3)
     setCombo(0)
     setPopEffects([])
+    setPopBursts([])
+    setPopParticles([])
     bubbleIdRef.current = 0
     setGameMode('playing')
   }
@@ -176,7 +198,7 @@ export default function ZenGame() {
                 margin: '0 auto 2rem'
               }}
             >
-              Pop the bubbles before they float away. Small bubbles score more points. Build combos for a 2× bonus!
+              Tap bubbles to pop them before they fade. Feel the pop — build combos for a 2× bonus!
             </p>
 
             {highScore > 0 && (
@@ -432,40 +454,114 @@ export default function ZenGame() {
                   {bubbles.map(bubble => (
                     <motion.button
                       key={bubble.id}
-                      initial={{ y: '110%', scale: 0 }}
-                      animate={{ y: '-10%', scale: 1 }}
-                      exit={{ scale: 0, opacity: 0 }}
-                      transition={{
-                        duration: bubble.duration,
-                        ease: 'linear',
-                        scale: { duration: 0.3 }
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={
+                        bubble.fading
+                          ? { scale: 0.92, opacity: 0 }
+                          : { scale: 1, opacity: 1 }
+                      }
+                      transition={
+                        bubble.fading
+                          ? { duration: 0.7, ease: [0.4, 0, 0.2, 1] }
+                          : { type: 'spring', stiffness: 200, damping: 15 }
+                      }
+                      onAnimationComplete={() => {
+                        if (bubble.fading) removeFadedBubble(bubble.id)
                       }}
-                      onClick={(e) => popBubble(bubble, e)}
+                      exit={{
+                        scale: [1, 1.4, 0],
+                        opacity: [1, 1, 0],
+                        transition: { duration: 0.4, ease: [0.22, 0.61, 0.36, 1] }
+                      }}
+                      onClick={(e) => !bubble.fading && popBubble(bubble, e)}
                       style={{
                         position: 'absolute',
                         width: bubble.size,
                         height: bubble.size,
                         borderRadius: '50%',
-                        background: `radial-gradient(circle at 35% 35%, ${bubble.color}ff, ${bubble.color}88)`,
-                        border: `2px solid ${bubble.color}`,
-                        boxShadow: `0 0 20px ${bubble.color}44, inset 0 0 10px rgba(255,255,255,0.2)`,
-                        cursor: 'pointer',
                         left: `${bubble.x}%`,
-                        top: 0,
-                        transform: 'translateX(-50%)',
+                        top: `${bubble.y}%`,
+                        transform: 'translate(-50%, -50%)',
+                        background: `radial-gradient(circle at 35% 35%, ${bubble.color}ff, ${bubble.color}99)`,
+                        border: `2px solid ${bubble.color}`,
+                        boxShadow: `0 0 28px ${bubble.color}66, inset 0 0 16px rgba(255,255,255,0.28)`,
+                        cursor: bubble.fading ? 'default' : 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: bubble.size > 60 ? '1rem' : '0.75rem',
+                        fontSize: bubble.size > 55 ? '1rem' : '0.7rem',
                         fontFamily: 'var(--font-display)',
                         fontWeight: 700,
-                        color: 'white'
+                        color: 'white',
+                        pointerEvents: bubble.fading ? 'none' : 'auto'
                       }}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.8 }}
+                      whileHover={bubble.fading ? {} : { scale: 1.14 }}
+                      whileTap={bubble.fading ? {} : { scale: 0.94 }}
                     >
                       {bubble.points}
                     </motion.button>
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              <div style={{ position: 'absolute', inset: 0, zIndex: 2.3, pointerEvents: 'none' }}>
+                <AnimatePresence>
+                  {popParticles.map(pop => (
+                    <div key={pop.id} style={{ position: 'absolute', inset: 0 }}>
+                      {Array.from({ length: 10 }).map((_, i) => {
+                        const angle = (i / 10) * Math.PI * 2 + (i * 0.1)
+                        const dist = 32 + (i % 3) * 8
+                        return (
+                          <motion.div
+                            key={i}
+                            initial={{ x: 0, y: 0, scale: 0.9, opacity: 1 }}
+                            animate={{
+                              x: Math.cos(angle) * dist,
+                              y: Math.sin(angle) * dist,
+                              scale: 0,
+                              opacity: 0
+                            }}
+                            transition={{ duration: 0.5, ease: 'easeOut' }}
+                            style={{
+                              position: 'absolute',
+                              left: `${pop.x}%`,
+                              top: `${pop.y}%`,
+                              width: 8,
+                              height: 8,
+                              borderRadius: '50%',
+                              background: pop.color,
+                              boxShadow: `0 0 10px ${pop.color}`,
+                              transform: 'translate(-50%, -50%)'
+                            }}
+                          />
+                        )
+                      })}
+                    </div>
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              <div style={{ position: 'absolute', inset: 0, zIndex: 2.5, pointerEvents: 'none' }}>
+                <AnimatePresence>
+                  {popBursts.map(burst => (
+                    <motion.div
+                      key={burst.id}
+                      initial={{ scale: 0.2, opacity: 1 }}
+                      animate={{ scale: 3, opacity: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+                      style={{
+                        position: 'absolute',
+                        left: `${burst.x}%`,
+                        top: `${burst.y}%`,
+                        transform: 'translate(-50%, -50%)',
+                        width: 80,
+                        height: 80,
+                        borderRadius: '50%',
+                        background: `radial-gradient(circle, ${burst.color}99 0%, ${burst.color}44 35%, transparent 65%)`,
+                        boxShadow: `0 0 50px ${burst.color}88, 0 0 80px ${burst.color}44`
+                      }}
+                    />
                   ))}
                 </AnimatePresence>
               </div>
@@ -475,20 +571,20 @@ export default function ZenGame() {
                   {popEffects.map(effect => (
                     <motion.div
                       key={effect.id}
-                      initial={{ opacity: 1, scale: 0.5, x: `${effect.x}%`, y: '50%' }}
-                      animate={{ opacity: 0, scale: 1.5, y: '30%' }}
+                      initial={{ opacity: 1, scale: 0.3 }}
+                      animate={{ opacity: 0, scale: 1.4, y: -32 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.8 }}
+                      transition={{ type: 'spring', stiffness: 200, damping: 18, mass: 0.5 }}
                       style={{
                         position: 'absolute',
-                        left: 0,
-                        top: 0,
+                        left: `${effect.x}%`,
+                        top: `${effect.y}%`,
                         transform: 'translate(-50%, -50%)',
                         fontFamily: 'var(--font-display)',
                         fontWeight: 800,
-                        fontSize: effect.combo >= 3 ? '1.5rem' : '1rem',
+                        fontSize: effect.combo >= 3 ? '1.6rem' : '1.1rem',
                         color: effect.color,
-                        textShadow: `0 0 10px ${effect.color}`
+                        textShadow: `0 0 14px ${effect.color}, 0 0 28px ${effect.color}88`
                       }}
                     >
                       +{effect.pts}{effect.combo >= 3 ? ' 🔥' : ''}
@@ -506,16 +602,14 @@ export default function ZenGame() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'var(--text)',
+                    color: 'var(--text-muted)',
                     fontFamily: 'var(--font-display)',
-                    fontSize: '2rem',      // bigger
-                    fontWeight: 800,       // bold
-                    letterSpacing: '0.04em',
-                    textShadow: '0 0 12px rgba(124,106,247,0.6)', // glow
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
                     pointerEvents: 'none'
                     }}
                 >
-                    Bubbles incoming...
+                    Pop to relax...
                 </div>
                 )}
             </div>
@@ -525,6 +619,8 @@ export default function ZenGame() {
                 className="btn btn-ghost"
                 style={{ fontSize: '0.8rem', padding: '6px 16px' }}
                 onClick={() => {
+                  initCalmSounds()
+                  calmGameOver()
                   clearInterval(intervalRef.current)
                   setGameMode('over')
                 }}
