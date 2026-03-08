@@ -20,8 +20,8 @@ const SPIKE_HEIGHT = 22
 const CEILING_SPIKE_HEIGHT = 20
 
 const START_BUFFER = 300
-const MIN_GAP = 100
-const MAX_GAP = 200
+const MIN_GAP = 180
+const MAX_GAP = 320
 
 const REACHABLE_HEIGHTS = [30, 42, 52, 60]
 
@@ -89,8 +89,8 @@ function generateCourse(startX = GAME_WIDTH + START_BUFFER, count = 14) {
     x += rand(MIN_GAP, MAX_GAP)
     const roll = Math.random()
 
-    if (roll < 0.38) {
-      const numSpikes = Math.random() < 0.4 ? 2 : 1
+    if (roll < 0.28) {
+      const numSpikes = Math.random() < 0.25 ? 2 : 1
       for (let s = 0; s < numSpikes; s++) {
         items.push({
           id: `spike-${startX}-${i}-${s}`,
@@ -102,7 +102,7 @@ function generateCourse(startX = GAME_WIDTH + START_BUFFER, count = 14) {
         })
       }
       x += numSpikes * (SPIKE_WIDTH + 4)
-    } else if (roll < 0.55) {
+    } else if (roll < 0.50) {
       const width = rand(PLATFORM_MIN_WIDTH, PLATFORM_MAX_WIDTH)
       const heightOffset = pick(REACHABLE_HEIGHTS)
       items.push({
@@ -113,7 +113,7 @@ function generateCourse(startX = GAME_WIDTH + START_BUFFER, count = 14) {
         width,
         height: 14,
       })
-      if (Math.random() < 0.3) {
+      if (Math.random() < 0.2) {
         x += width + rand(40, 60)
         items.push({
           id: `post-spike-${startX}-${i}`,
@@ -127,7 +127,7 @@ function generateCourse(startX = GAME_WIDTH + START_BUFFER, count = 14) {
       } else {
         x += width
       }
-    } else if (roll < 0.72) {
+    } else if (roll < 0.68) {
       const blockW = BLOCK_SIZE * (rand(1, 3))
       const blockH = BLOCK_SIZE * (rand(1, 2))
       items.push({
@@ -137,10 +137,10 @@ function generateCourse(startX = GAME_WIDTH + START_BUFFER, count = 14) {
         y: GAME_HEIGHT - FLOOR_HEIGHT - blockH,
         width: blockW,
         height: blockH,
-        hasSpike: Math.random() < 0.35,
+        hasSpike: Math.random() < 0.22,
       })
       x += blockW
-    } else if (roll < 0.88) {
+    } else if (roll < 0.84) {
       const w = rand(20, 36)
       items.push({
         id: `ceiling-${startX}-${i}`,
