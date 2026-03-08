@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { path: '/courses', icon: <BookOpen size={17} />, label: 'Courses' },
   { path: '/calendar', icon: <CalendarDays size={17} />, label: 'My Calendar' },
   { path: '/zen', icon: <Gamepad2 size={17} />, label: 'Zen Space' },
-  { path: '/geometry', icon: <Gamepad2 size={17} />, label: 'Geometry Dash' },
+  { path: '/geometry', icon: <Gamepad2 size={17} />, label: 'Zen Dash' },
 ]
 
 export default function Navbar({ userProfile, zenMode, setZenMode, eventCount }) {
