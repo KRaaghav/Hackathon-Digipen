@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { TreePine, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, BookOpen, Timer } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 
+const MotionLink = motion(Link)
+
 const NAV_ITEMS = [
   { path: '/', icon: <LayoutDashboard size={17} />, label: 'Dashboard' },
   { path: '/explore', icon: <Search size={17} />, label: 'ECs' },
@@ -97,9 +99,12 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
             const active = location.pathname === item.path
 
             return (
-              <Link
+              <MotionLink
                 key={item.path}
                 to={item.path}
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -113,7 +118,6 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                   color: active ? 'var(--accent)' : 'var(--text-muted)',
                   background: active ? 'var(--accent-glow)' : 'transparent',
                   border: `1px solid ${active ? 'rgba(124,106,247,0.3)' : 'transparent'}`,
-                  transition: 'all 0.2s ease',
                 }}
               >
                 {item.icon}
@@ -136,7 +140,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                     {eventCount}
                   </span>
                 )}
-              </Link>
+              </MotionLink>
             )
           })}
 
@@ -146,21 +150,26 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
             onMouseEnter={() => setZenOpen(true)}
             style={{ position: 'relative' }}
           >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '7px',
-              padding: '7px 14px',
-              borderRadius: '10px',
-              fontSize: '0.875rem',
-              fontFamily: 'var(--font-display)',
-              fontWeight: 500,
-              color: 'var(--text-muted',
-              cursor: 'pointer'
-            }}>
+            <motion.div
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                padding: '7px 14px',
+                borderRadius: '10px',
+                fontSize: '0.875rem',
+                fontFamily: 'var(--font-display)',
+                fontWeight: 500,
+                color: 'var(--text-muted)',
+                cursor: 'pointer'
+              }}
+            >
               <Gamepad2 size={17} />
               Zen Games
-            </div>
+            </motion.div>
 
             {zenOpen && (
               <div style={{
@@ -177,8 +186,11 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                 minWidth: 150,
                 boxShadow: '0 10px 30px rgba(0,0,0,0.4)'
               }}>
-                <Link
+                <MotionLink
                   to="/zen"
+                  whileHover={{ scale: 1.02, x: 4, backgroundColor: 'rgba(255,255,255,0.06)' }}
+                  whileTap={{ scale: 0.99 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   style={{
                     padding: '8px 10px',
                     borderRadius: '8px',
@@ -188,10 +200,13 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                   }}
                 >
                   Zen Game
-                </Link>
+                </MotionLink>
 
-                <Link
+                <MotionLink
                   to="/geometry"
+                  whileHover={{ scale: 1.02, x: 4, backgroundColor: 'rgba(255,255,255,0.06)' }}
+                  whileTap={{ scale: 0.99 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   style={{
                     padding: '8px 10px',
                     borderRadius: '8px',
@@ -201,7 +216,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                   }}
                 >
                   Zen Dash
-                </Link>
+                </MotionLink>
               </div>
             )}
           </div>

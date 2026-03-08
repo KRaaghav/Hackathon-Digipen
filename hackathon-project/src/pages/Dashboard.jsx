@@ -752,7 +752,8 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                       gap: '1.5rem',
                       padding: '1.5rem 2rem',
                       cursor: 'pointer',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.3s ease',
+                      transformOrigin: 'center center',
                     }}
                   >
                     <motion.div
@@ -766,10 +767,11 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                         fontSize: '1.2rem',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        transformOrigin: 'center center',
                       }}
-                      whileHover={{ rotate: 20, scale: 1.2 }}
-                      transition={{ type: 'spring', stiffness: 400 }}
+                      whileHover={{ scale: 1.2 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                     >
                       {item.icon}
                     </motion.div>

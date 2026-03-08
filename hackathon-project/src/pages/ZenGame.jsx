@@ -224,6 +224,7 @@ export default function ZenGame() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               className="btn btn-primary"
               style={{ fontSize: '1rem', padding: '14px 32px' }}
               onClick={startGame}
@@ -338,15 +339,21 @@ export default function ZenGame() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 className="btn btn-primary"
                 onClick={startGame}
               >
                 <RotateCcw size={16} /> Play Again
               </motion.button>
 
-              <button className="btn btn-ghost" onClick={() => setGameMode('menu')}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn btn-ghost"
+                onClick={() => setGameMode('menu')}
+              >
                 Back to Menu
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         )}
@@ -602,7 +609,10 @@ export default function ZenGame() {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '0.75rem' }}>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 className="btn btn-ghost"
                 style={{ fontSize: '0.8rem', padding: '6px 16px' }}
                 onClick={() => {
@@ -613,7 +623,7 @@ export default function ZenGame() {
                 }}
               >
                 End Game
-              </button>
+              </motion.button>
             </div>
           </div>
         )}

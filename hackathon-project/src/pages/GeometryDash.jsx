@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import { initCalmSounds, calmJump, calmDeath } from '../utils/calmSounds'
 
 const GAME_WIDTH = 900
@@ -720,7 +721,10 @@ export default function GeometryDash() {
               </h2>
               <p style={{ marginBottom: 20, opacity: 0.9 }}>Score: {score} — {progress}%</p>
               <p style={{ marginBottom: 16, fontSize: 14, opacity: 0.8 }}>Press R or click Restart</p>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 onClick={resetGame}
                 style={{
                   padding: '12px 24px',
@@ -735,7 +739,7 @@ export default function GeometryDash() {
                 }}
               >
                 Restart
-              </button>
+              </motion.button>
             </div>
           )}
         </div>
