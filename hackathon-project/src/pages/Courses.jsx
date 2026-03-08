@@ -46,374 +46,374 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
     'RHS': {
       '9th Grade (Freshman)': {
         'English': [
-          { title: 'English 9' },
-          { title: 'English 9 Honors' },
+          { title: 'English 9', difficulty: 'Medium', credits: 1 },
+          { title: 'English 9 Honors', difficulty: 'Hard', credits: 1 },
         ],
         'Mathematics': [
-          { title: 'Algebra 1' },
-          { title: 'Geometry' },
+          { title: 'Algebra 1', difficulty: 'Medium', credits: 1 },
+          { title: 'Geometry', difficulty: 'Medium', credits: 1 },
         ],
         'Science': [
-          { title: 'Biology' },
-          { title: 'Biology Honors' },
+          { title: 'Biology', difficulty: 'Medium', credits: 1 },
+          { title: 'Biology Honors', difficulty: 'Hard', credits: 1 },
         ],
         'Social Studies': [
-          { title: 'World History' },
+          { title: 'World History', difficulty: 'Medium', credits: 1 },
         ],
         'World Languages': [
-          { title: 'Spanish 1' },
-          { title: 'Spanish 2' },
-          { title: 'French 1' },
-          { title: 'French 2' },
-          { title: 'French 3' },
-          { title: 'French 4' },
-          { title: 'Japanese 1' },
-          { title: 'Japanese 2' },
-          { title: 'Japanese 3' },
-          { title: 'Japanese 4' },
-          { title: 'Chinese (Mandarin) 1' },
-          { title: 'Chinese (Mandarin) 2' },
-          { title: 'Chinese (Mandarin) 3' },
-          { title: 'Chinese (Mandarin) 4' },
+          { title: 'Spanish 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Spanish 2', difficulty: 'Medium', credits: 1 },
+          { title: 'French 1', difficulty: 'Easy', credits: 1 },
+          { title: 'French 2', difficulty: 'Medium', credits: 1 },
+          { title: 'French 3', difficulty: 'Hard', credits: 1 },
+          { title: 'French 4', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Japanese 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Japanese 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 4', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Chinese (Mandarin) 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Chinese (Mandarin) 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 4', difficulty: 'Hard', credits: 1 },
         ],
         'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science' },
-          { title: 'Web Design' },
+          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
+          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
         ],
         'Engineering / STEM': [
-          { title: 'Engineering Design' },
-          { title: 'Robotics' },
-          { title: 'Manufacturing / Technology' },
+          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
+          { title: 'Robotics', difficulty: 'Hard', credits: 1 },
+          { title: 'Manufacturing / Technology', difficulty: 'Medium', credits: 1 },
         ],
         'Visual Arts': [
-          { title: 'Drawing' },
-          { title: 'Painting' },
-          { title: 'Ceramics' },
-          { title: 'Sculpture' },
-          { title: 'Photography' },
-          { title: 'Digital Art' },
+          { title: 'Drawing', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Painting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Ceramics', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Sculpture', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Photography', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Digital Art', difficulty: 'Medium', credits: 0.5 },
         ],
         'Music': [
-          { title: 'Concert Band' },
-          { title: 'Symphonic Band' },
-          { title: 'Jazz Band' },
-          { title: 'Orchestra' },
-          { title: 'Choir' },
+          { title: 'Concert Band', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Symphonic Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Jazz Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Orchestra', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Choir', difficulty: 'Easy', credits: 0.5 },
         ],
         'Theater': [
-          { title: 'Drama / Acting' },
-          { title: 'Theater Production' },
-          { title: 'Stagecraft' },
+          { title: 'Drama / Acting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Theater Production', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Stagecraft', difficulty: 'Medium', credits: 0.5 },
         ],
         'Physical Education': [
-          { title: 'PE 9' },
-          { title: 'Health' },
-          { title: 'Fitness / Weight Training' },
-          { title: 'Team Sports' },
+          { title: 'PE 9', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Health', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Fitness / Weight Training', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Team Sports', difficulty: 'Easy', credits: 0.5 },
         ],
         'Other Electives': [
-          { title: 'AVID' },
-          { title: 'Study Skills / Academic Support' },
+          { title: 'AVID', difficulty: 'Medium', credits: 1 },
+          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
         ],
       },
       '10th Grade (Sophomore)': {
         'English': [
-          { title: 'English 10' },
-          { title: 'English 10 Honors' },
-          { title: 'Creative Writing' },
-          { title: 'Journalism' },
-          { title: 'Newspaper / Yearbook' },
-          { title: 'Film Studies' },
-          { title: 'Mythology' },
-          { title: 'Public Speaking' },
+          { title: 'English 10', difficulty: 'Medium', credits: 1 },
+          { title: 'English 10 Honors', difficulty: 'Hard', credits: 1 },
+          { title: 'Creative Writing', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Journalism', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Newspaper / Yearbook', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Film Studies', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Mythology', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Public Speaking', difficulty: 'Medium', credits: 0.5 },
         ],
         'Mathematics': [
-          { title: 'Algebra 1' },
-          { title: 'Geometry' },
-          { title: 'Algebra 2' },
-          { title: 'Algebra 2 Honors' },
+          { title: 'Algebra 1', difficulty: 'Medium', credits: 1 },
+          { title: 'Geometry', difficulty: 'Medium', credits: 1 },
+          { title: 'Algebra 2', difficulty: 'Hard', credits: 1 },
+          { title: 'Algebra 2 Honors', difficulty: 'Hard', credits: 1 },
         ],
         'Science': [
-          { title: 'Chemistry' },
-          { title: 'Chemistry Honors' },
+          { title: 'Chemistry', difficulty: 'Hard', credits: 1 },
+          { title: 'Chemistry Honors', difficulty: 'Hard', credits: 1 },
         ],
         'Social Studies': [
-          { title: 'World History' },
-          { title: 'AP World History' },
+          { title: 'World History', difficulty: 'Medium', credits: 1 },
+          { title: 'AP World History', difficulty: 'Hard', credits: 1 },
         ],
         'World Languages': [
-          { title: 'Spanish 1' },
-          { title: 'Spanish 2' },
-          { title: 'Spanish 3' },
-          { title: 'French 1' },
-          { title: 'French 2' },
-          { title: 'French 3' },
-          { title: 'French 4' },
-          { title: 'Japanese 1' },
-          { title: 'Japanese 2' },
-          { title: 'Japanese 3' },
-          { title: 'Japanese 4' },
-          { title: 'Chinese (Mandarin) 1' },
-          { title: 'Chinese (Mandarin) 2' },
-          { title: 'Chinese (Mandarin) 3' },
-          { title: 'Chinese (Mandarin) 4' },
+          { title: 'Spanish 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Spanish 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Spanish 3', difficulty: 'Hard', credits: 1 },
+          { title: 'French 1', difficulty: 'Easy', credits: 1 },
+          { title: 'French 2', difficulty: 'Medium', credits: 1 },
+          { title: 'French 3', difficulty: 'Hard', credits: 1 },
+          { title: 'French 4', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Japanese 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Japanese 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 4', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Chinese (Mandarin) 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Chinese (Mandarin) 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 4', difficulty: 'Hard', credits: 1 },
         ],
         'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science' },
-          { title: 'AP Computer Science Principles' },
-          { title: 'AP Computer Science A' },
-          { title: 'Web Design' },
-          { title: 'Programming / Software Development' },
+          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
+          { title: 'AP Computer Science Principles', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Computer Science A', difficulty: 'Hard', credits: 1 },
+          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
+          { title: 'Programming / Software Development', difficulty: 'Hard', credits: 1 },
         ],
         'Engineering / STEM': [
-          { title: 'Engineering Design' },
-          { title: 'Robotics' },
-          { title: 'Electronics' },
-          { title: 'Manufacturing / Technology' },
+          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
+          { title: 'Robotics', difficulty: 'Hard', credits: 1 },
+          { title: 'Electronics', difficulty: 'Hard', credits: 1 },
+          { title: 'Manufacturing / Technology', difficulty: 'Medium', credits: 1 },
         ],
         'Visual Arts': [
-          { title: 'Drawing' },
-          { title: 'Painting' },
-          { title: 'Ceramics' },
-          { title: 'Sculpture' },
-          { title: 'Photography' },
-          { title: 'Digital Art' },
+          { title: 'Drawing', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Painting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Ceramics', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Sculpture', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Photography', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Digital Art', difficulty: 'Medium', credits: 0.5 },
         ],
         'Music': [
-          { title: 'Concert Band' },
-          { title: 'Symphonic Band' },
-          { title: 'Jazz Band' },
-          { title: 'Orchestra' },
-          { title: 'Choir' },
+          { title: 'Concert Band', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Symphonic Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Jazz Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Orchestra', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Choir', difficulty: 'Easy', credits: 0.5 },
         ],
         'Theater': [
-          { title: 'Drama / Acting' },
-          { title: 'Theater Production' },
-          { title: 'Stagecraft' },
+          { title: 'Drama / Acting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Theater Production', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Stagecraft', difficulty: 'Medium', credits: 0.5 },
         ],
         'Physical Education': [
-          { title: 'Fitness / Weight Training' },
-          { title: 'Team Sports' },
-          { title: 'Lifetime Fitness' },
+          { title: 'Fitness / Weight Training', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Team Sports', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Lifetime Fitness', difficulty: 'Easy', credits: 0.5 },
         ],
         'Other Electives': [
-          { title: 'Leadership' },
-          { title: 'Service Learning' },
-          { title: 'AVID' },
-          { title: 'Study Skills / Academic Support' },
+          { title: 'Leadership', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Service Learning', difficulty: 'Easy', credits: 0.5 },
+          { title: 'AVID', difficulty: 'Medium', credits: 1 },
+          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
         ],
       },
       '11th Grade (Junior)': {
         'English': [
-          { title: 'American Literature' },
-          { title: 'American Literature Honors' },
-          { title: 'AP English Language & Composition' },
-          { title: 'Creative Writing' },
-          { title: 'Journalism' },
-          { title: 'Newspaper / Yearbook' },
-          { title: 'Film Studies' },
-          { title: 'Mythology' },
-          { title: 'Public Speaking' },
+          { title: 'American Literature', difficulty: 'Medium', credits: 1 },
+          { title: 'American Literature Honors', difficulty: 'Hard', credits: 1 },
+          { title: 'AP English Language & Composition', difficulty: 'Hard', credits: 1 },
+          { title: 'Creative Writing', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Journalism', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Newspaper / Yearbook', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Film Studies', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Mythology', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Public Speaking', difficulty: 'Medium', credits: 0.5 },
         ],
         'Mathematics': [
-          { title: 'Geometry' },
-          { title: 'Algebra 2' },
-          { title: 'Algebra 2 Honors' },
-          { title: 'Precalculus' },
-          { title: 'Precalculus Honors' },
-          { title: 'AP Precalculus' },
-          { title: 'AP Calculus AB' },
-          { title: 'AP Statistics' },
+          { title: 'Geometry', difficulty: 'Medium', credits: 1 },
+          { title: 'Algebra 2', difficulty: 'Hard', credits: 1 },
+          { title: 'Algebra 2 Honors', difficulty: 'Hard', credits: 1 },
+          { title: 'Precalculus', difficulty: 'Hard', credits: 1 },
+          { title: 'Precalculus Honors', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Precalculus', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Calculus AB', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Statistics', difficulty: 'Hard', credits: 1 },
         ],
         'Science': [
-          { title: 'Physics' },
-          { title: 'Physics Honors' },
-          { title: 'AP Biology' },
-          { title: 'AP Chemistry' },
-          { title: 'AP Physics 1' },
-          { title: 'Environmental Science' },
-          { title: 'Anatomy & Physiology' },
-          { title: 'Forensic Science' },
+          { title: 'Physics', difficulty: 'Hard', credits: 1 },
+          { title: 'Physics Honors', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Biology', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Chemistry', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Physics 1', difficulty: 'Hard', credits: 1 },
+          { title: 'Environmental Science', difficulty: 'Medium', credits: 1 },
+          { title: 'Anatomy & Physiology', difficulty: 'Hard', credits: 1 },
+          { title: 'Forensic Science', difficulty: 'Medium', credits: 1 },
         ],
         'Social Studies': [
-          { title: 'U.S. History' },
-          { title: 'AP U.S. History' },
-          { title: 'Psychology' },
-          { title: 'AP Psychology' },
+          { title: 'U.S. History', difficulty: 'Medium', credits: 1 },
+          { title: 'AP U.S. History', difficulty: 'Hard', credits: 1 },
+          { title: 'Psychology', difficulty: 'Medium', credits: 1 },
+          { title: 'AP Psychology', difficulty: 'Hard', credits: 1 },
         ],
         'World Languages': [
-          { title: 'Spanish 1' },
-          { title: 'Spanish 2' },
-          { title: 'Spanish 3' },
-          { title: 'Spanish 4' },
-          { title: 'AP Spanish Language' },
-          { title: 'French 1' },
-          { title: 'French 2' },
-          { title: 'French 3' },
-          { title: 'French 4' },
-          { title: 'AP French' },
-          { title: 'Japanese 1' },
-          { title: 'Japanese 2' },
-          { title: 'Japanese 3' },
-          { title: 'Japanese 4' },
-          { title: 'AP Japanese' },
-          { title: 'Chinese (Mandarin) 1' },
-          { title: 'Chinese (Mandarin) 2' },
-          { title: 'Chinese (Mandarin) 3' },
-          { title: 'Chinese (Mandarin) 4' },
-          { title: 'AP Chinese' },
+          { title: 'Spanish 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Spanish 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Spanish 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Spanish 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Spanish Language', difficulty: 'Hard', credits: 1 },
+          { title: 'French 1', difficulty: 'Easy', credits: 1 },
+          { title: 'French 2', difficulty: 'Medium', credits: 1 },
+          { title: 'French 3', difficulty: 'Hard', credits: 1 },
+          { title: 'French 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP French', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Japanese 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Japanese 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Japanese', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Chinese (Mandarin) 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Chinese (Mandarin) 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Chinese', difficulty: 'Hard', credits: 1 },
         ],
         'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science' },
-          { title: 'AP Computer Science Principles' },
-          { title: 'AP Computer Science A' },
-          { title: 'Web Design' },
-          { title: 'Programming / Software Development' },
+          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
+          { title: 'AP Computer Science Principles', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Computer Science A', difficulty: 'Hard', credits: 1 },
+          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
+          { title: 'Programming / Software Development', difficulty: 'Hard', credits: 1 },
         ],
         'Engineering / STEM': [
-          { title: 'Engineering Design' },
-          { title: 'Robotics' },
-          { title: 'Electronics' },
-          { title: 'Manufacturing / Technology' },
+          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
+          { title: 'Robotics', difficulty: 'Hard', credits: 1 },
+          { title: 'Electronics', difficulty: 'Hard', credits: 1 },
+          { title: 'Manufacturing / Technology', difficulty: 'Medium', credits: 1 },
         ],
         'Visual Arts': [
-          { title: 'Drawing' },
-          { title: 'Painting' },
-          { title: 'Ceramics' },
-          { title: 'Sculpture' },
-          { title: 'Photography' },
-          { title: 'Digital Art' },
-          { title: 'AP Studio Art' },
+          { title: 'Drawing', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Painting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Ceramics', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Sculpture', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Photography', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Digital Art', difficulty: 'Medium', credits: 0.5 },
+          { title: 'AP Studio Art', difficulty: 'Hard', credits: 0.5 },
         ],
         'Music': [
-          { title: 'Concert Band' },
-          { title: 'Symphonic Band' },
-          { title: 'Jazz Band' },
-          { title: 'Orchestra' },
-          { title: 'Choir' },
+          { title: 'Concert Band', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Symphonic Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Jazz Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Orchestra', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Choir', difficulty: 'Easy', credits: 0.5 },
         ],
         'Theater': [
-          { title: 'Drama / Acting' },
-          { title: 'Theater Production' },
-          { title: 'Stagecraft' },
+          { title: 'Drama / Acting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Theater Production', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Stagecraft', difficulty: 'Medium', credits: 0.5 },
         ],
         'Physical Education': [
-          { title: 'Fitness / Weight Training' },
-          { title: 'Team Sports' },
-          { title: 'Lifetime Fitness' },
+          { title: 'Fitness / Weight Training', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Team Sports', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Lifetime Fitness', difficulty: 'Easy', credits: 0.5 },
         ],
         'Other Electives': [
-          { title: 'Leadership' },
-          { title: 'Teacher Assistant' },
-          { title: 'Service Learning' },
-          { title: 'AVID' },
-          { title: 'Study Skills / Academic Support' },
+          { title: 'Leadership', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Teacher Assistant', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Service Learning', difficulty: 'Easy', credits: 0.5 },
+          { title: 'AVID', difficulty: 'Medium', credits: 1 },
+          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
         ],
       },
       '12th Grade (Senior)': {
         'English': [
-          { title: 'AP English Literature & Composition' },
-          { title: 'Creative Writing' },
-          { title: 'Journalism' },
-          { title: 'Newspaper / Yearbook' },
-          { title: 'Film Studies' },
-          { title: 'Mythology' },
-          { title: 'Public Speaking' },
+          { title: 'AP English Literature & Composition', difficulty: 'Hard', credits: 1 },
+          { title: 'Creative Writing', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Journalism', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Newspaper / Yearbook', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Film Studies', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Mythology', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Public Speaking', difficulty: 'Medium', credits: 0.5 },
         ],
         'Mathematics': [
-          { title: 'Precalculus' },
-          { title: 'Precalculus Honors' },
-          { title: 'AP Precalculus' },
-          { title: 'AP Calculus AB' },
-          { title: 'AP Calculus BC' },
-          { title: 'AP Statistics' },
+          { title: 'Precalculus', difficulty: 'Hard', credits: 1 },
+          { title: 'Precalculus Honors', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Precalculus', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Calculus AB', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Calculus BC', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Statistics', difficulty: 'Hard', credits: 1 },
         ],
         'Science': [
-          { title: 'Physics' },
-          { title: 'Physics Honors' },
-          { title: 'AP Biology' },
-          { title: 'AP Chemistry' },
-          { title: 'AP Physics 1' },
-          { title: 'AP Physics C' },
-          { title: 'Environmental Science' },
-          { title: 'Anatomy & Physiology' },
-          { title: 'Forensic Science' },
+          { title: 'Physics', difficulty: 'Hard', credits: 1 },
+          { title: 'Physics Honors', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Biology', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Chemistry', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Physics 1', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Physics C', difficulty: 'Hard', credits: 1 },
+          { title: 'Environmental Science', difficulty: 'Medium', credits: 1 },
+          { title: 'Anatomy & Physiology', difficulty: 'Hard', credits: 1 },
+          { title: 'Forensic Science', difficulty: 'Medium', credits: 1 },
         ],
         'Social Studies': [
-          { title: 'Civics / Government' },
-          { title: 'AP U.S. Government' },
-          { title: 'Economics' },
-          { title: 'AP Macroeconomics' },
-          { title: 'Psychology' },
-          { title: 'AP Psychology' },
+          { title: 'Civics / Government', difficulty: 'Medium', credits: 1 },
+          { title: 'AP U.S. Government', difficulty: 'Hard', credits: 1 },
+          { title: 'Economics', difficulty: 'Medium', credits: 1 },
+          { title: 'AP Macroeconomics', difficulty: 'Hard', credits: 1 },
+          { title: 'Psychology', difficulty: 'Medium', credits: 1 },
+          { title: 'AP Psychology', difficulty: 'Hard', credits: 1 },
         ],
         'World Languages': [
-          { title: 'Spanish 1' },
-          { title: 'Spanish 2' },
-          { title: 'Spanish 3' },
-          { title: 'Spanish 4' },
-          { title: 'AP Spanish Language' },
-          { title: 'French 1' },
-          { title: 'French 2' },
-          { title: 'French 3' },
-          { title: 'French 4' },
-          { title: 'AP French' },
-          { title: 'Japanese 1' },
-          { title: 'Japanese 2' },
-          { title: 'Japanese 3' },
-          { title: 'Japanese 4' },
-          { title: 'AP Japanese' },
-          { title: 'Chinese (Mandarin) 1' },
-          { title: 'Chinese (Mandarin) 2' },
-          { title: 'Chinese (Mandarin) 3' },
-          { title: 'Chinese (Mandarin) 4' },
-          { title: 'AP Chinese' },
+          { title: 'Spanish 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Spanish 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Spanish 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Spanish 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Spanish Language', difficulty: 'Hard', credits: 1 },
+          { title: 'French 1', difficulty: 'Easy', credits: 1 },
+          { title: 'French 2', difficulty: 'Medium', credits: 1 },
+          { title: 'French 3', difficulty: 'Hard', credits: 1 },
+          { title: 'French 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP French', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Japanese 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Japanese 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Japanese 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Japanese', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 1', difficulty: 'Easy', credits: 1 },
+          { title: 'Chinese (Mandarin) 2', difficulty: 'Medium', credits: 1 },
+          { title: 'Chinese (Mandarin) 3', difficulty: 'Hard', credits: 1 },
+          { title: 'Chinese (Mandarin) 4', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Chinese', difficulty: 'Hard', credits: 1 },
         ],
         'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science' },
-          { title: 'AP Computer Science Principles' },
-          { title: 'AP Computer Science A' },
-          { title: 'Web Design' },
-          { title: 'Programming / Software Development' },
+          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
+          { title: 'AP Computer Science Principles', difficulty: 'Hard', credits: 1 },
+          { title: 'AP Computer Science A', difficulty: 'Hard', credits: 1 },
+          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
+          { title: 'Programming / Software Development', difficulty: 'Hard', credits: 1 },
         ],
         'Engineering / STEM': [
-          { title: 'Engineering Design' },
-          { title: 'Robotics' },
-          { title: 'Electronics' },
-          { title: 'Manufacturing / Technology' },
+          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
+          { title: 'Robotics', difficulty: 'Hard', credits: 1 },
+          { title: 'Electronics', difficulty: 'Hard', credits: 1 },
+          { title: 'Manufacturing / Technology', difficulty: 'Medium', credits: 1 },
         ],
         'Visual Arts': [
-          { title: 'Drawing' },
-          { title: 'Painting' },
-          { title: 'Ceramics' },
-          { title: 'Sculpture' },
-          { title: 'Photography' },
-          { title: 'Digital Art' },
-          { title: 'AP Studio Art' },
+          { title: 'Drawing', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Painting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Ceramics', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Sculpture', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Photography', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Digital Art', difficulty: 'Medium', credits: 0.5 },
+          { title: 'AP Studio Art', difficulty: 'Hard', credits: 0.5 },
         ],
         'Music': [
-          { title: 'Concert Band' },
-          { title: 'Symphonic Band' },
-          { title: 'Jazz Band' },
-          { title: 'Orchestra' },
-          { title: 'Choir' },
+          { title: 'Concert Band', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Symphonic Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Jazz Band', difficulty: 'Hard', credits: 0.5 },
+          { title: 'Orchestra', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Choir', difficulty: 'Easy', credits: 0.5 },
         ],
         'Theater': [
-          { title: 'Drama / Acting' },
-          { title: 'Theater Production' },
-          { title: 'Stagecraft' },
+          { title: 'Drama / Acting', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Theater Production', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Stagecraft', difficulty: 'Medium', credits: 0.5 },
         ],
         'Physical Education': [
-          { title: 'Fitness / Weight Training' },
-          { title: 'Team Sports' },
-          { title: 'Lifetime Fitness' },
+          { title: 'Fitness / Weight Training', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Team Sports', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Lifetime Fitness', difficulty: 'Easy', credits: 0.5 },
         ],
         'Other Electives': [
-          { title: 'Leadership' },
-          { title: 'Teacher Assistant' },
-          { title: 'Service Learning' },
-          { title: 'AVID' },
-          { title: 'Study Skills / Academic Support' },
+          { title: 'Leadership', difficulty: 'Medium', credits: 0.5 },
+          { title: 'Teacher Assistant', difficulty: 'Easy', credits: 0.5 },
+          { title: 'Service Learning', difficulty: 'Easy', credits: 0.5 },
+          { title: 'AVID', difficulty: 'Medium', credits: 1 },
+          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
         ],
       },
     }
@@ -627,13 +627,36 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   // Transcript View - Show selected courses and requirements
   if (viewMode === 'transcript') {
     const allGradesCourses = getAllCourses()
+    
+    // Group selected courses by grade
+    const coursesByGrade = {}
+    GRADES.forEach(grade => { coursesByGrade[grade] = [] })
+    
+    selectedCourses.forEach(course => {
+      const grade = course.description?.split('•')[1]?.trim()
+      if (grade && coursesByGrade.hasOwnProperty(grade)) {
+        coursesByGrade[grade].push(course)
+      }
+    })
+    
+    // Calculate total credits and groupby grade
+    const creditsByGrade = {}
+    Object.entries(coursesByGrade).forEach(([grade, courses]) => {
+      creditsByGrade[grade] = courses.reduce((sum, course) => {
+        const fullCourse = GRADES.flatMap(g => Object.values(allGradesCourses[g] || {})).find(c => c.title === course.title)
+        return sum + (fullCourse?.credits || 0)
+      }, 0)
+    })
+    
+    const totalCredits = Object.values(creditsByGrade).reduce((sum, credits) => sum + credits, 0)
+    
     return (
       <div className="page-container" style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', padding: '2rem' }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'space-between' }}>
             <div>
-              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, margin: 0 }}>My Course Transcript</h1>
-              <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0 0' }}>Courses you're taking (Max 6) & Graduation Requirements</p>
+              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, margin: 0 }}>📋 My Course Transcript</h1>
+              <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0 0' }}>Courses by year with difficulty levels and total credits</p>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <motion.button
@@ -655,8 +678,85 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
             </div>
           </div>
 
+          {/* Courses by Grade */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+            {GRADES.map((grade, idx) => {
+              const gradeCourses = coursesByGrade[grade] || []
+              const gradeCredits = creditsByGrade[grade] || 0
+              
+              return (
+                <motion.div
+                  key={grade}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  style={{
+                    background: 'var(--bg2)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '1.5rem',
+                    borderLeft: '4px solid var(--accent)'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', margin: 0 }}>
+                      {grade}
+                    </h3>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <span style={{ padding: '0.4rem 0.8rem', background: 'rgba(124, 106, 247, 0.15)', border: '1px solid rgba(124, 106, 247, 0.3)', borderRadius: 'var(--radius)', fontSize: '0.75rem', fontWeight: 600, color: '#7c6af7' }}>
+                        📚 {gradeCourses.length} courses
+                      </span>
+                      <span style={{ padding: '0.4rem 0.8rem', background: 'rgba(106, 247, 162, 0.15)', border: '1px solid rgba(106, 247, 162, 0.3)', borderRadius: 'var(--radius)', fontSize: '0.75rem', fontWeight: 600, color: '#6af7a2' }}>
+                        ⭐ {gradeCredits} credits
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {gradeCourses.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '0.75rem' }}>
+                      {gradeCourses.map((course, i) => {
+                        const fullCourse = allGradesCourses[grade]?.find(c => c.title === course.title)
+                        const diffColor = fullCourse?.difficulty === 'Easy' ? '#6af7a2' : fullCourse?.difficulty === 'Medium' ? '#f7d66a' : '#f76a6a'
+                        
+                        return (
+                          <div
+                            key={`${course.id}-${i}`}
+                            style={{
+                              background: 'var(--bg)',
+                              padding: '0.75rem 1rem',
+                              borderRadius: 'var(--radius)',
+                              border: '1px solid var(--border)',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <div style={{ flex: 1 }}>
+                              <p style={{ margin: '0 0 0.25rem 0', fontWeight: 600, fontSize: '0.9rem' }}>{course.title}</p>
+                              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.75rem', padding: '2px 6px', background: `${diffColor}22`, color: diffColor, borderRadius: '3px', fontWeight: 600 }}>
+                                  {fullCourse?.difficulty}
+                                </span>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                                  {fullCourse?.credits} cr
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', margin: 0 }}>No courses selected for this year</p>
+                  )}
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Summary and Requirements */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
-            {/* Selected Courses */}
+            {/* Total Credits */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -667,30 +767,22 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                 padding: '1.5rem'
               }}
             >
-              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                📚 Your Courses ({selectedCourses.length}/6)
+              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                📊 Course Summary
               </h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {selectedCourses.length > 0 ? (
-                  selectedCourses.map((course, i) => (
-                    <div key={course.id} style={{
-                      background: 'var(--bg)',
-                      padding: '0.75rem 1rem',
-                      borderRadius: 'var(--radius)',
-                      border: '1px solid var(--border)',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
-                      <div>
-                        <p style={{ margin: '0 0 0.25rem 0', fontWeight: 600, fontSize: '0.9rem' }}>{course.title}</p>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>{course.description}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 1rem' }}>No courses selected yet</p>
-                )}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ textAlign: 'center', padding: '1.5rem', background: 'var(--bg)', borderRadius: 'var(--radius)' }}>
+                  <p style={{ margin: '0 0 0.5rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Total Credits Enrolled</p>
+                  <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: 'var(--accent)' }}>
+                    {totalCredits}
+                  </p>
+                </div>
+                <div style={{ textAlign: 'center', padding: '1.5rem', background: 'var(--bg)', borderRadius: 'var(--radius)' }}>
+                  <p style={{ margin: '0 0 0.5rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Courses Selected</p>
+                  <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: 'var(--accent)' }}>
+                    {selectedCourses.length}/6
+                  </p>
+                </div>
               </div>
             </motion.div>
 
@@ -719,7 +811,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                       fontSize: '0.85rem'
                     }}>
                       <span>{req}</span>
-                      <span style={{ fontWeight: 600, color: data.completed >= data.required ? 'var(--success)' : 'var(--text-muted)' }}>
+                      <span style={{ fontWeight: 600, color: data.completed >= data.required ? '#6af7a2' : 'var(--text-muted)' }}>
                         {data.completed}/{data.required}
                       </span>
                     </div>
@@ -735,25 +827,13 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                         transition={{ duration: 0.6 }}
                         style={{
                           height: '100%',
-                          background: data.completed >= data.required ? 'var(--success)' : 'var(--accent)',
+                          background: data.completed >= data.required ? '#6af7a2' : 'var(--accent)',
                           borderRadius: '3px'
                         }}
                       />
                     </div>
                   </div>
                 ))}
-              </div>
-              <div style={{
-                marginTop: '1rem',
-                padding: '1rem',
-                background: 'var(--bg)',
-                borderRadius: 'var(--radius)',
-                textAlign: 'center',
-                fontSize: '0.9rem'
-              }}>
-                <p style={{ margin: 0, color: 'var(--text-muted)' }}>
-                  Total Credits: {Object.values(completedReqs).reduce((sum, r) => sum + r.completed, 0)} / {Object.values(completedReqs).reduce((sum, r) => sum + r.required, 0)}
-                </p>
               </div>
             </motion.div>
           </div>
@@ -985,6 +1065,14 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
 
 function CourseCard({ course, index, isAdded, onAdd, onRemove }) {
   const [hovered, setHovered] = useState(false)
+  
+  const getDifficultyColor = (difficulty) => {
+    if (difficulty === 'Easy') return '#6af7a2'
+    if (difficulty === 'Medium') return '#f7d66a'
+    if (difficulty === 'Hard') return '#f76a6a'
+    return '#7c6af7'
+  }
+  
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ delay: index * 0.06 }}
       style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative', overflow: 'hidden', transition: 'border-color 0.25s ease' }}
@@ -995,8 +1083,14 @@ function CourseCard({ course, index, isAdded, onAdd, onRemove }) {
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
             <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontFamily: 'var(--font-display)', fontWeight: 600, background: 'rgba(124, 106, 247, 0.15)', color: '#7c6af7', border: '1px solid rgba(124, 106, 247, 0.3)' }}>{course.subject}</span>
+            <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontFamily: 'var(--font-display)', fontWeight: 600, background: `${getDifficultyColor(course.difficulty)}22`, color: getDifficultyColor(course.difficulty), border: `1px solid ${getDifficultyColor(course.difficulty)}` }}>
+              {course.difficulty}
+            </span>
           </div>
-          <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', lineHeight: 1.3, marginBottom: '0.25rem' }}>{course.title}</h3>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', lineHeight: 1.3, marginBottom: '0.5rem' }}>{course.title}</h3>
+          <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+            📚 {course.credits} credits
+          </p>
         </div>
         {isAdded ? (
           <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={onRemove} style={{ width: 38, height: 38, borderRadius: '12px', flexShrink: 0, border: '2px solid var(--success)', background: 'rgba(106, 247, 162, 0.15)', color: 'var(--success)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.25s ease' }}>
