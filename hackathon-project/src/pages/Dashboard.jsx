@@ -526,7 +526,8 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               letterSpacing: '-0.02em',
               background: 'linear-gradient(135deg, var(--text) 0%, var(--accent) 50%, var(--accent2) 100%)',
               WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+              WebkitTextFillColor: 'transparent',
+              textAlign: 'center'
             }}
           >
             {greeting}, {userProfile?.name || 'Scholar'} 👋
