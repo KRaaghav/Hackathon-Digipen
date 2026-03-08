@@ -5,6 +5,8 @@ import { Search, Sparkles, Plus, Clock, Users, BookOpen, Loader, Trash2, Chevron
 export default function Courses({ userProfile, calendarEvents, addCalendarEvent, removeCalendarEvent }) {
   const [selectedSchool, setSelectedSchool] = useState(null)
   const [selectedGrade, setSelectedGrade] = useState(null)
+  const [currentGrade, setCurrentGrade] = useState('9th Grade (Freshman)') // For browsing within selected school
+  const [viewMode, setViewMode] = useState('browse') // 'browse', 'all-grades', 'transcript'
   const [query, setQuery] = useState('')
   const [selectedSubjects, setSelectedSubjects] = useState(new Set())
   const [courses, setCourses] = useState([])
@@ -41,7 +43,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   ]
 
   const COURSE_DATABASE = {
-    'Redmond High School': {
+    'RHS': {
       '9th Grade (Freshman)': {
         'English': [
           { title: 'English 9' },
@@ -420,10 +422,12 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   const handleSchoolSelect = (school) => {
     setSelectedSchool(school)
     setSelectedGrade(null)
+    setCurrentGrade('9th Grade (Freshman)')
     setQuery('')
     setSelectedSubjects(new Set())
     setCourses([])
     setHasSearched(false)
+    setViewMode('browse')
   }
 
   const handleGradeSelect = (grade) => {
@@ -459,8 +463,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
     setHasSearched(true)
     
     setTimeout(() => {
-      const schoolName = selectedSchool.name
-      const gradeData = COURSE_DATABASE[schoolName]?.[selectedGrade] || {}
+      const gradeData = COURSE_DATABASE[selectedSchool.abbr]?.[selectedGrade] || {}
       let results = []
 
       if (selectedSubjects.size === 0) {
@@ -514,6 +517,60 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
     return addedCourses.has(courseId) || calendarEvents.some(e => e.title === course.title && e.type === 'course')
   }
 
+  // Get all courses across all grades
+  const getAllCourses = () => {
+    if (!selectedSchool) return {}
+    const schoolData = COURSE_DATABASE[selectedSchool.abbr] || {}
+    const allGradesCourses = {}
+    
+    GRADES.forEach(grade => {
+      const gradeData = schoolData[grade] || {}
+      allGradesCourses[grade] = []
+      Object.entries(gradeData).forEach(([subject, courseList]) => {
+        allGradesCourses[grade] = allGradesCourses[grade].concat(
+          courseList.map(c => ({ ...c, subject }))
+        )
+      })
+    })
+    
+    return allGradesCourses
+  }
+
+  // Graduation requirements
+  const GRADUATION_REQUIREMENTS = {
+    'English': { required: 4, completed: 0 },
+    'Mathematics': { required: 3, completed: 0 },
+    'Science': { required: 3, completed: 0 },
+    'Social Studies': { required: 3, completed: 0 },
+    'World Languages': { required: 2, completed: 0 },
+    'Physical Education': { required: 4, completed: 0 },
+    'Visual & Performing Arts': { required: 1, completed: 0 },
+    'Electives': { required: 21, completed: 0 }
+  }
+
+  // Count completed requirements
+  const getCompletedRequirements = () => {
+    const reqs = { ...GRADUATION_REQUIREMENTS }
+    const selectedCourseTitles = calendarEvents
+      .filter(e => e.type === 'course')
+      .map(e => e.title)
+    
+    selectedCourseTitles.forEach(courseTitle => {
+      if (courseTitle.includes('English')) reqs['English'].completed++
+      if (courseTitle.includes('Math') || courseTitle.includes('Algebra') || courseTitle.includes('Geometry') || courseTitle.includes('Calculus') || courseTitle.includes('Statistics')) reqs['Mathematics'].completed++
+      if (courseTitle.includes('Science') || courseTitle.includes('Biology') || courseTitle.includes('Chemistry') || courseTitle.includes('Physics')) reqs['Science'].completed++
+      if (courseTitle.includes('History') || courseTitle.includes('Government') || courseTitle.includes('Economics') || courseTitle.includes('Psychology')) reqs['Social Studies'].completed++
+      if (courseTitle.includes('Spanish') || courseTitle.includes('French') || courseTitle.includes('Japanese') || courseTitle.includes('Chinese')) reqs['World Languages'].completed++
+      if (courseTitle.includes('PE') || courseTitle.includes('Fitness') || courseTitle.includes('Sports')) reqs['Physical Education'].completed++
+      if (courseTitle.includes('Art') || courseTitle.includes('Music') || courseTitle.includes('Theater') || courseTitle.includes('Dance')) reqs['Visual & Performing Arts'].completed++
+    })
+    
+    return reqs
+  }
+
+  const selectedCourses = calendarEvents.filter(e => e.type === 'course')
+  const completedReqs = getCompletedRequirements()
+
   // School Selection View
   if (!selectedSchool) {
     return (
@@ -522,7 +579,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
           <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', padding: '8px 16px', borderRadius: '100px', background: 'rgba(124, 106, 247, 0.15)', border: '1px solid rgba(124, 106, 247, 0.3)' }}>
               <BookOpen size={14} color="#7c6af7" />
-              <span style={{ fontSize: '0.85rem', color: '#7c6af7', fontWeight: 600 }}>Course Planner</span>
+              <span style={{ fontSize: '0.85rem', color: '#7c6af7', fontWeight: 600 }}>Course Planner on Ascend</span>
             </div>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontWeight: 800, marginBottom: '1rem' }}>
               Choose Your School
@@ -562,6 +619,207 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
               </motion.button>
             ))}
           </div>
+        </motion.div>
+      </div>
+    )
+  }
+
+  // Transcript View - Show selected courses and requirements
+  if (viewMode === 'transcript') {
+    const allGradesCourses = getAllCourses()
+    return (
+      <div className="page-container" style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', padding: '2rem' }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'space-between' }}>
+            <div>
+              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, margin: 0 }}>My Course Transcript</h1>
+              <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0 0' }}>Courses you're taking (Max 6) & Graduation Requirements</p>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setViewMode('browse')}
+                style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem' }}
+              >
+                Browse Courses
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setViewMode('all-grades')}
+                style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem' }}
+              >
+                All Grades
+              </motion.button>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+            {/* Selected Courses */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{
+                background: 'var(--bg2)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '1.5rem'
+              }}
+            >
+              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                📚 Your Courses ({selectedCourses.length}/6)
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {selectedCourses.length > 0 ? (
+                  selectedCourses.map((course, i) => (
+                    <div key={course.id} style={{
+                      background: 'var(--bg)',
+                      padding: '0.75rem 1rem',
+                      borderRadius: 'var(--radius)',
+                      border: '1px solid var(--border)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                      <div>
+                        <p style={{ margin: '0 0 0.25rem 0', fontWeight: 600, fontSize: '0.9rem' }}>{course.title}</p>
+                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>{course.description}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 1rem' }}>No courses selected yet</p>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Graduation Requirements */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              style={{
+                background: 'var(--bg2)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '1.5rem'
+              }}
+            >
+              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                🎓 Graduation Requirements
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {Object.entries(completedReqs).map(([req, data]) => (
+                  <div key={req}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '0.25rem',
+                      fontSize: '0.85rem'
+                    }}>
+                      <span>{req}</span>
+                      <span style={{ fontWeight: 600, color: data.completed >= data.required ? 'var(--success)' : 'var(--text-muted)' }}>
+                        {data.completed}/{data.required}
+                      </span>
+                    </div>
+                    <div style={{
+                      height: '6px',
+                      background: 'var(--bg)',
+                      borderRadius: '3px',
+                      overflow: 'hidden'
+                    }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(data.completed / data.required) * 100}%` }}
+                        transition={{ duration: 0.6 }}
+                        style={{
+                          height: '100%',
+                          background: data.completed >= data.required ? 'var(--success)' : 'var(--accent)',
+                          borderRadius: '3px'
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{
+                marginTop: '1rem',
+                padding: '1rem',
+                background: 'var(--bg)',
+                borderRadius: 'var(--radius)',
+                textAlign: 'center',
+                fontSize: '0.9rem'
+              }}>
+                <p style={{ margin: 0, color: 'var(--text-muted)' }}>
+                  Total Credits: {Object.values(completedReqs).reduce((sum, r) => sum + r.completed, 0)} / {Object.values(completedReqs).reduce((sum, r) => sum + r.required, 0)}
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setViewMode('browse')}
+            style={{ padding: '0.75rem 1.5rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer', fontFamily: 'var(--font-display)', fontWeight: 600 }}
+          >
+            ← Back to Browse
+          </motion.button>
+        </motion.div>
+      </div>
+    )
+  }
+
+  // All Grades View
+  if (viewMode === 'all-grades') {
+    const allGradesCourses = getAllCourses()
+    return (
+      <div className="page-container" style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', padding: '2rem' }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div>
+              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, margin: 0 }}>All Courses by Grade</h1>
+              <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0 0' }}>View all courses available across your entire high school journey</p>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setViewMode('transcript')}
+                style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem' }}
+              >
+                Transcript
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setViewMode('browse')}
+                style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem' }}
+              >
+                Browse by Grade
+              </motion.button>
+            </div>
+          </div>
+
+          {GRADES.map((grade, gradeIdx) => (
+            <motion.div
+              key={grade}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: gradeIdx * 0.1 }}
+              style={{ marginBottom: '2rem' }}
+            >
+              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--accent)' }}>
+                {grade}
+              </h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1rem' }}>
+                {allGradesCourses[grade]?.map((course, i) => (
+                  <CourseCard key={`${course.title}-${i}`} course={course} index={i} isAdded={isAdded(course)} onAdd={() => handleAddCourse(course)} onRemove={() => handleRemoveCourse(course)} />
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     )
