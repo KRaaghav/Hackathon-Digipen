@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { X, Wind } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const AFFIRMATIONS = [
   "You are capable of amazing things.",
@@ -16,6 +17,7 @@ const AFFIRMATIONS = [
 ]
 
 export default function ZenMode({ onExit }) {
+  const { t } = useLanguage()
   const [phase, setPhase] = useState('inhale') // inhale, hold, exhale
   const [count, setCount] = useState(4)
   const [affirmation, setAffirmation] = useState(AFFIRMATIONS[0])
@@ -58,9 +60,9 @@ export default function ZenMode({ onExit }) {
   }
 
   const phaseLabels = {
-    inhale: 'Breathe In',
-    hold: 'Hold',
-    exhale: 'Breathe Out'
+    inhale: t('zenMode.breatheIn'),
+    hold: t('zenMode.hold'),
+    exhale: t('zenMode.breatheOut')
   }
 
   return (
@@ -112,7 +114,7 @@ export default function ZenMode({ onExit }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', opacity: 0.6 }}>
         <Wind size={16} color="var(--accent3)" />
         <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', letterSpacing: '0.15em', color: 'var(--accent3)', textTransform: 'uppercase' }}>
-          Zen Mode
+          {t('zenMode.zenMode')}
         </span>
       </div>
 

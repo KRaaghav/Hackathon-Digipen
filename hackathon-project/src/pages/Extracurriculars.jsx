@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Sparkles, Plus, Check, MapPin, Clock, Users, Star, Filter, Loader } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const ALL_EXTRACURRICULARS = [
   // One-Time Events & Competitions (25)
@@ -275,6 +276,7 @@ const MAJOR_SUGGESTIONS = {
 }
 
 export default function Extracurriculars({ userProfile, addCalendarEvent, calendarEvents }) {
+  const { t } = useLanguage()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
@@ -474,7 +476,7 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
               <input 
                 className="input" 
                 style={{ paddingLeft: '42px' }} 
-                placeholder={`Find ECs for ${userMajor}...`} 
+                placeholder={t('explore.findECs', { major: userMajor })} 
                 value={query} 
                 onChange={e => handleInputChange(e.target.value)}
                 onFocus={() => query && setShowAutofill(autofillSuggestions.length > 0)}
@@ -530,13 +532,13 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
             </div>
             <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="btn btn-primary" onClick={() => handleSearch()} disabled={loading}>
               {loading ? <Loader size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <Sparkles size={16} />}
-              {loading ? 'Finding...' : 'Find ECs'}
+              {loading ? t('explore.finding') : t('explore.findECsButton')}
             </motion.button>
           </div>
           
           {/* Major-specific suggestion buttons */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>Popular for {userMajor}:</span>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>{t('explore.popularFor', { major: userMajor })}</span>
             {majorSuggestions.map(p => (
               <button key={p} onClick={() => { handleInputChange(p); handleSearch(p); }} style={{ padding: '5px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', fontSize: '0.78rem', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-body)' }}
                 onMouseOver={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.color = 'var(--accent)' }}
@@ -579,9 +581,9 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
         {!loading && !hasSearched && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '4rem 2rem' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🔍</div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>Ready to discover your extracurriculars?</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Ask AI to find activities tailored to your major and goals.</p>
-            <button className="btn btn-primary" onClick={() => handleInputChange(`Best ECs for ${userMajor} students`)}><Sparkles size={16} /> Show me ECs for my major</button>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>{t('explore.readyToDiscover')}</h3>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('explore.askAI')}</p>
+            <button className="btn btn-primary" onClick={() => handleInputChange(`Best ECs for ${userMajor} students`)}><Sparkles size={16} /> {t('explore.showECs')}</button>
           </motion.div>
         )}
       </motion.div>
@@ -639,7 +641,7 @@ function ECCard({ ec, index, isAdded, onAdd, onLearnMore, onVisitWebsite, color 
           className="btn btn-ghost"
           style={{ flex: 1, fontSize: '0.8rem', padding: '8px 12px' }}
         >
-          Learn More
+          {t('explore.learnMore')}
         </motion.button>
         {ec.website && (
           <motion.button
@@ -659,6 +661,7 @@ function ECCard({ ec, index, isAdded, onAdd, onLearnMore, onVisitWebsite, color 
 
 // Details Modal Component
 function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
+  const { t } = useLanguage()
   if (!isOpen || !ec) return null
 
   return (
@@ -738,21 +741,21 @@ function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Clock size={16} color="var(--text-dim)" />
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Commitment</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>{t('explore.commitment')}</div>
               <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.commitment}</div>
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Users size={16} color="var(--text-dim)" />
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Team Size</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>{t('explore.teamSize')}</div>
               <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.teamSize}</div>
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <MapPin size={16} color="var(--text-dim)" />
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Meeting Day</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>{t('explore.meetingDay')}</div>
               <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.meetingDay}</div>
             </div>
           </div>
@@ -760,7 +763,7 @@ function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <MapPin size={16} color="var(--text-dim)" />
               <div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>Location</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>{t('explore.location')}</div>
                 <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{ec.location}</div>
               </div>
             </div>
@@ -769,21 +772,21 @@ function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
 
         {ec.prepTime && (
           <div style={{ marginBottom: '1rem' }}>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Preparation Time</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>{t('explore.prepTime')}</div>
             <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>⏰ {ec.prepTime}</div>
           </div>
         )}
 
         {ec.date && (
           <div style={{ marginBottom: '1rem' }}>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Date</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>{t('explore.date')}</div>
             <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>📅 {ec.date}</div>
           </div>
         )}
 
         {(ec.prizes || ec.cost || ec.stipend || ec.compensation) && (
           <div style={{ marginBottom: '1rem' }}>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Compensation/Prizes</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>{t('explore.compensationPrizes')}</div>
             <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>
               {ec.prizes && `🏆 ${ec.prizes}`}
               {ec.stipend && `💰 ${ec.stipend}`}
@@ -795,7 +798,7 @@ function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
 
         {ec.sponsors && (
           <div style={{ marginBottom: '1rem' }}>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>Sponsors</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>{t('explore.sponsors')}</div>
             <div style={{ fontSize: '0.9rem', color: 'var(--text)' }}>🤝 {Array.isArray(ec.sponsors) ? ec.sponsors.join(', ') : ec.sponsors}</div>
           </div>
         )}
@@ -809,7 +812,7 @@ function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
 
         {ec.skills && (
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.5rem' }}>Skills You'll Gain</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.5rem' }}>{t('explore.skillsGain')}</div>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
               {ec.skills.map(skill => (
                 <span key={skill} className="tag" style={{ background: `${color}22`, color, border: `1px solid ${color}44` }}>{skill}</span>
@@ -838,7 +841,7 @@ function ECDetailsModal({ ec, isOpen, onClose, onAdd, isAdded, color }) {
             className="btn btn-primary"
             style={{ fontSize: '0.9rem', padding: '10px 16px' }}
           >
-            {isAdded ? '✓ Added to Calendar' : '+ Add to Calendar'}
+            {isAdded ? `✓ ${t('explore.addedToCalendar')}` : `+ ${t('explore.addToCalendar')}`}
           </motion.button>
         </div>
       </motion.div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CalendarDays, Plus, Trash2, Clock, Tag, Sparkles, X, Check, Heart, Wind } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
@@ -23,6 +24,7 @@ const WELLNESS_TIPS = [
 ]
 
 export default function Calendar({ calendarEvents, addCalendarEvent, removeCalendarEvent }) {
+  const { t } = useLanguage()
   const [showAddModal, setShowAddModal] = useState(false)
   const [view, setView] = useState('year') // 'year' | 'list' | 'week'
   const [newEvent, setNewEvent] = useState({ title: '', category: 'Academic', description: '', meetingDay: 'Mondays', commitment: '', color: '#7c6af7', stressLevel: 'Low', frequency: 'weekly', startDate: new Date().toISOString().split('T')[0] })
@@ -109,13 +111,13 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem' }}>
-              <span className="chip chip-orange"><CalendarDays size={10} /> Calendar</span>
+              <span className="chip chip-orange"><CalendarDays size={10} /> {t('calendar.calendar')}</span>
             </div>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, marginBottom: '0.3rem' }}>
-              Calendar
+              {t('calendar.calendar')}
             </h1>
             <p style={{ color: 'var(--text-muted)' }}>
-              {calendarEvents.length} {calendarEvents.length === 1 ? 'activity' : 'activities'} planned
+              {calendarEvents.length === 1 ? t('calendar.planned', { n: calendarEvents.length }) : t('calendar.plannedPlural', { n: calendarEvents.length })}
             </p>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -129,7 +131,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                   fontSize: '0.8rem', fontFamily: 'var(--font-display)', fontWeight: 600,
                   transition: 'all 0.2s ease'
                 }}>
-                  {v === 'year' ? '📅 Year' : v === 'list' ? '≡ List' : '⊞ Week'}
+                  {v === 'year' ? `📅 ${t('calendar.yearView')}` : v === 'list' ? `≡ ${t('calendar.listView')}` : `⊞ ${t('calendar.weekView')}`}
                 </button>
               ))}
             </div>
@@ -139,7 +141,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
               className="btn btn-primary"
               onClick={() => setShowAddModal(true)}
             >
-              <Plus size={16} /> Add Activity
+              <Plus size={16} /> {t('calendar.addActivity')}
             </motion.button>
             <motion.a
               href="/zen-game"
@@ -170,7 +172,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
           <div style={{ position: 'absolute', top: 0, right: 0, opacity: 0.1, fontSize: '4rem' }}>💚</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.5rem' }}>
             <Heart size={20} />
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem' }}>Wellness Tip</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem' }}>{t('calendar.wellnessTip')}</span>
           </div>
           <p style={{ fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>
             {currentTip}
@@ -205,14 +207,14 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
         {calendarEvents.length === 0 && view !== 'year' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '5rem 2rem' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem', animation: 'float 3s ease-in-out infinite' }}>📅</div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', marginBottom: '0.75rem' }}>Your calendar is empty</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', marginBottom: '0.75rem' }}>{t('calendar.calendarEmpty')}</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', maxWidth: 380, margin: '0 auto 1.5rem' }}>
               Add activities manually or explore extracurriculars to fill your schedule.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button className="btn btn-primary" onClick={() => setShowAddModal(true)}><Plus size={16} /> Add Manually</button>
-              <a href="/explore" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Sparkles size={16} /> ECs</a>
-              <a href="/zen-game" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Wind size={16} /> Take a Break</a>
+              <a href="/explore" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Sparkles size={16} /> {t('calendar.ecs')}</a>
+              <a href="/zen-game" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Wind size={16} /> {t('calendar.takeBreak')}</a>
             </div>
           </motion.div>
         )}
@@ -261,7 +263,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
             {calendarEvents.filter(e => !DAYS_OF_WEEK.includes(e.meetingDay)).length > 0 && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.75rem' }}>
-                  <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Other</span>
+                  <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{t('calendar.other')}</span>
                   <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '0.75rem' }}>
@@ -280,7 +282,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
             {selectedDate && (
               <button onClick={() => { setSelectedDate(null); setView('year') }} 
                 style={{ marginBottom: '1rem', padding: '8px 16px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>
-                ← Back to Year View
+                ← {t('calendar.backToYearView')}
               </button>
             )}
             <div style={{ overflowX: 'auto' }}>
@@ -381,7 +383,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
               style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '20px', padding: '2rem', width: '100%', maxWidth: 480, boxShadow: 'var(--shadow-lg)' }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem' }}>Add Activity</h2>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem' }}>{t('calendar.addActivity')}</h2>
                 <button onClick={() => setShowAddModal(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: '8px' }}>
                   <X size={18} />
                 </button>
@@ -389,19 +391,19 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>Activity Name *</label>
+                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>{t('calendar.activityName')}</label>
                   <input className="input" placeholder="e.g. Chess Club" value={newEvent.title} onChange={e => setNewEvent(p => ({ ...p, title: e.target.value }))} />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                   <div>
-                    <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>Category</label>
+                    <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>{t('calendar.category')}</label>
                     <select className="input" value={newEvent.category} onChange={e => setNewEvent(p => ({ ...p, category: e.target.value }))}>
                       {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>Meeting Day</label>
+                    <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>{t('calendar.meetingDay')}</label>
                     <select className="input" value={newEvent.meetingDay} onChange={e => setNewEvent(p => ({ ...p, meetingDay: e.target.value }))}>
                       {DAYS_OF_WEEK.map(d => <option key={d} value={d}>{d}</option>)}
                     </select>
@@ -409,7 +411,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>Frequency</label>
+                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>{t('calendar.frequency')}</label>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {['one-time', 'weekly', 'biweekly'].map(freq => (
                       <button key={freq} onClick={() => setNewEvent(p => ({ ...p, frequency: freq }))} style={{
@@ -417,18 +419,18 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                         color: newEvent.frequency === freq ? 'white' : 'var(--text)',
                         cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, transition: 'all 0.2s ease'
                       }}>
-                        {freq === 'one-time' ? 'One-Time' : freq === 'weekly' ? 'Weekly' : 'Biweekly'}
+                        {freq === 'one-time' ? t('calendar.oneTime') : freq === 'weekly' ? t('calendar.weekly') : t('calendar.biweekly')}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>Commitment</label>
+                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>{t('calendar.commitment')}</label>
                   <input className="input" placeholder="e.g. 2-3 hrs/week" value={newEvent.commitment} onChange={e => setNewEvent(p => ({ ...p, commitment: e.target.value }))} />
                 </div>
 
-                <div>                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>Stress Level</label>
+                <div>                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>{t('calendar.stressLevel')}</label>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {STRESS_LEVELS.map(level => (
                       <button key={level} onClick={() => setNewEvent(p => ({ ...p, stressLevel: level }))} style={{
@@ -442,12 +444,12 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                   </div>
                 </div>
 
-                <div>                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>Description (optional)</label>
+                <div>                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block', fontWeight: 500 }}>{t('calendar.descriptionOptional')}</label>
                   <input className="input" placeholder="Brief description..." value={newEvent.description} onChange={e => setNewEvent(p => ({ ...p, description: e.target.value }))} />
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>Color</label>
+                  <label style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'block', fontWeight: 500 }}>{t('calendar.color')}</label>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {COLORS.map(c => (
                       <button key={c} onClick={() => setNewEvent(p => ({ ...p, color: c }))} style={{
@@ -462,9 +464,9 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
               </div>
 
               <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
-                <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setShowAddModal(false)}>Cancel</button>
+                <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setShowAddModal(false)}>{t('calendar.cancel')}</button>
                 <button className="btn btn-primary" style={{ flex: 2 }} onClick={handleAdd} disabled={!newEvent.title.trim()}>
-                  <Plus size={16} /> Add to Calendar
+                  <Plus size={16} /> {t('calendar.addToCalendar')}
                 </button>
               </div>
             </motion.div>
@@ -536,7 +538,7 @@ function EventCard({ event, index, onRemove }) {
           )}
           {event.frequency && (
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>
-              🔄 {event.frequency === 'one-time' ? 'One-Time' : event.frequency === 'weekly' ? 'Weekly' : 'Biweekly'}
+              🔄 {event.frequency === 'one-time' ? t('calendar.oneTime') : event.frequency === 'weekly' ? t('calendar.weekly') : t('calendar.biweekly')}
             </span>
           )}
         </div>

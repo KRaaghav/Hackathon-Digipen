@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, BookOpen, Compass, ChevronRight, ChevronLeft, Check } from 'lucide-react'
+import { Sparkles, BookOpen, ChevronRight, ChevronLeft, Check } from 'lucide-react'
 import GalaxyTree from './GalaxyTree'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const MAJORS = [
   "Computer Science", "Software Engineering", "Data Science", "Cybersecurity",
@@ -66,6 +67,7 @@ const QUIZ_QUESTIONS = [
 ]
 
 export default function OnboardingModal({ onComplete }) {
+  const { t } = useLanguage()
   const [step, setStep] = useState(0)
   const [mode, setMode] = useState(null)
   const [profile, setProfile] = useState({ name: '', major: '', year: '', goals: [] })
@@ -167,8 +169,8 @@ export default function OnboardingModal({ onComplete }) {
             <GalaxyTree size={20} color="white" />
           </div>
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.25rem', color: 'white' }}>Tranquility</div>
-            <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>Your academic journey starts here</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.25rem', color: 'white' }}>{t('appName')}</div>
+            <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>{t('onboarding.subtitle')}</div>
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px' }}>
             {Array.from({ length: totalDots }).map((_, i) => (
@@ -189,14 +191,14 @@ export default function OnboardingModal({ onComplete }) {
             {step === 0 && (
               <div>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-                  Welcome! Let's find your path 🎓
+                  {t('onboarding.welcome')} 🎓
                 </h2>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-                  How would you like to discover your major?
+                  {t('onboarding.howDiscover')}
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <ModeCard selected={mode === 'dropdown'} onClick={() => setMode('dropdown')} icon={<BookOpen size={22} />} title="I already know my major" desc="Pick from our list and dive right in" />
-                  <ModeCard selected={mode === 'quiz'} onClick={() => setMode('quiz')} icon={<Sparkles size={22} />} title="Help me figure it out" desc="Take a quick quiz and let AI suggest the right fit" badge="AI Powered" />
+                  <ModeCard selected={mode === 'dropdown'} onClick={() => setMode('dropdown')} icon={<BookOpen size={22} />} title={t('onboarding.knowMajor')} desc={t('onboarding.knowMajorDesc')} />
+                  <ModeCard selected={mode === 'quiz'} onClick={() => setMode('quiz')} icon={<Sparkles size={22} />} title={t('onboarding.helpMe')} desc={t('onboarding.helpMeDesc')} badge={t('onboarding.aiPowered')} />
                 </div>
               </div>
             )}
@@ -204,12 +206,12 @@ export default function OnboardingModal({ onComplete }) {
             {/* Step 1: Name + Year */}
             {step === 1 && (
               <div>
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>What should we call you?</h2>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>This will personalize your Tranquility experience.</p>
-                <input className="input" placeholder="Your name or nickname..." value={profile.name} onChange={e => setProfile(p => ({ ...p, name: e.target.value }))} autoFocus style={{ fontSize: '1rem', padding: '14px 16px', marginBottom: '1rem' }} onKeyDown={e => e.key === 'Enter' && canProceed() && handleNext()} />
-                <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>Year in school</label>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>{t('onboarding.whatCallYou')}</h2>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>{t('onboarding.personalize')}</p>
+                <input className="input" placeholder={t('onboarding.namePlaceholder')} value={profile.name} onChange={e => setProfile(p => ({ ...p, name: e.target.value }))} autoFocus style={{ fontSize: '1rem', padding: '14px 16px', marginBottom: '1rem' }} onKeyDown={e => e.key === 'Enter' && canProceed() && handleNext()} />
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>{t('onboarding.yearLabel')}</label>
                 <select className="input" value={profile.year} onChange={e => setProfile(p => ({ ...p, year: e.target.value }))}>
-                  <option value="">Select your year...</option>
+                  <option value="">{t('onboarding.selectYear')}</option>
                   {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
                 </select>
               </div>
@@ -218,10 +220,10 @@ export default function OnboardingModal({ onComplete }) {
             {/* Step 2 dropdown: Choose major */}
             {step === 2 && mode === 'dropdown' && (
               <div>
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>What's your major, {profile.name}?</h2>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>Select your current or intended major.</p>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>{t('onboarding.whatsMajor', { name: profile.name })}</h2>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>{t('onboarding.selectMajor')}</p>
                 <select className="input" value={profile.major} onChange={e => setProfile(p => ({ ...p, major: e.target.value }))} style={{ fontSize: '0.95rem' }}>
-                  <option value="">Select a major...</option>
+                  <option value="">{t('onboarding.selectMajorOption')}</option>
                   {MAJORS.map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
               </div>
@@ -231,10 +233,10 @@ export default function OnboardingModal({ onComplete }) {
             {mode === 'quiz' && step >= 2 && step <= 4 && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}>
-                  <span className="chip chip-accent">Question {step - 1} of 3</span>
+                  <span className="chip chip-accent">{t('onboarding.questionOf', { n: step - 1 })}</span>
                 </div>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, marginBottom: '1.5rem' }}>
-                  {getQuizQuestion().question}
+                  {getQuizQuestion() && t(`onboarding.${getQuizQuestion().id}`)}
                 </h2>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                   {getQuizQuestion().options.map(opt => {
@@ -260,8 +262,8 @@ export default function OnboardingModal({ onComplete }) {
             {/* Goals step — dropdown step 3, quiz step 5 */}
             {((mode === 'dropdown' && step === 3) || (mode === 'quiz' && step === 5)) && (
               <div>
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.5rem' }}>What are your goals?</h2>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>Select all that apply — pick as many as you like!</p>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.5rem' }}>{t('onboarding.whatGoals')}</h2>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>{t('onboarding.goalsSub')}</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
                   {GOALS.map(g => {
                     const selected = profile.goals.includes(g)
@@ -283,7 +285,7 @@ export default function OnboardingModal({ onComplete }) {
                 </div>
                 {profile.goals.length > 0 && (
                   <p style={{ fontSize: '0.78rem', color: 'var(--accent)', marginTop: '0.75rem' }}>
-                    ✓ {profile.goals.length} goal{profile.goals.length > 1 ? 's' : ''} selected
+                    ✓ {t('onboarding.goalsSelected', { n: profile.goals.length })}
                   </p>
                 )}
               </div>
@@ -295,16 +297,16 @@ export default function OnboardingModal({ onComplete }) {
         {/* Footer */}
         <div style={{ padding: '1.5rem 2rem', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <button className="btn btn-ghost" onClick={() => setStep(s => Math.max(0, s - 1))} style={{ visibility: step === 0 ? 'hidden' : 'visible' }}>
-            <ChevronLeft size={16} /> Back
+            <ChevronLeft size={16} /> {t('onboarding.back')}
           </button>
 
           {isLastStep() ? (
             <button className="btn btn-primary" onClick={handleComplete} disabled={!canProceed()} style={{ opacity: canProceed() ? 1 : 0.4, cursor: canProceed() ? 'pointer' : 'not-allowed' }}>
-              <Sparkles size={16} /> Let's Go!
+              <Sparkles size={16} /> {t('onboarding.letsGo')}
             </button>
           ) : (
             <button className="btn btn-primary" onClick={handleNext} disabled={!canProceed()} style={{ opacity: canProceed() ? 1 : 0.4, cursor: canProceed() ? 'pointer' : 'not-allowed' }}>
-              Continue <ChevronRight size={16} />
+              {t('onboarding.continue')} <ChevronRight size={16} />
             </button>
           )}
         </div>

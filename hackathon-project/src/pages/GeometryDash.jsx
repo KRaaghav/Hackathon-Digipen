@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { initCalmSounds, calmJump, calmDeath } from '../utils/calmSounds'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const GAME_WIDTH = 900
 const GAME_HEIGHT = 320
@@ -189,6 +190,7 @@ function createDeathParticles(px, py) {
 }
 
 export default function GeometryDash() {
+  const { t } = useLanguage()
   const floorY = GAME_HEIGHT - FLOOR_HEIGHT
 
   const [playerY, setPlayerY] = useState(floorY - PLAYER_SIZE)
@@ -466,9 +468,9 @@ export default function GeometryDash() {
             fontSize: 14,
           }}
         >
-          <span>Score: {score}</span>
+          <span>{t('geometry.score')}: {score}</span>
           <span style={{ color: 'rgba(0,212,255,0.9)' }}>{progress}%</span>
-          <span style={{ opacity: 0.8 }}>Space / Click • R restart</span>
+          <span style={{ opacity: 0.8 }}>{t('geometry.controls')}</span>
         </div>
 
         <div
@@ -717,10 +719,10 @@ export default function GeometryDash() {
               }}
             >
               <h2 style={{ fontSize: 36, marginBottom: 8, color: '#ff3366', textShadow: '0 0 20px rgba(255,51,102,0.6)' }}>
-                Game Over
+                {t('geometry.gameOver')}
               </h2>
-              <p style={{ marginBottom: 20, opacity: 0.9 }}>Score: {score} — {progress}%</p>
-              <p style={{ marginBottom: 16, fontSize: 14, opacity: 0.8 }}>Press R or click Restart</p>
+              <p style={{ marginBottom: 20, opacity: 0.9 }}>{t('geometry.score')}: {score} — {progress}%</p>
+              <p style={{ marginBottom: 16, fontSize: 14, opacity: 0.8 }}>{t('geometry.pressRestart')}</p>
               <motion.button
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.96 }}
@@ -738,7 +740,7 @@ export default function GeometryDash() {
                   boxShadow: '0 0 24px rgba(0,212,255,0.5)',
                 }}
               >
-                Restart
+                {t('geometry.restart')}
               </motion.button>
             </div>
           )}

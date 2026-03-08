@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Sparkles, TrendingUp, CalendarDays, Search, ArrowRight, BookOpen, Target, Clock, Star } from 'lucide-react'
 import Antigravity from '../components/Antigravity'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const MAJORS = [
   "Computer Science", "Software Engineering", "Data Science", "Cybersecurity",
@@ -68,12 +69,13 @@ const TIPS_BY_MAJOR = {
 }
 
 const QUICK_STATS = [
-  { label: "Days Until Finals", value: "42", icon: <Clock size={18} />, color: 'var(--accent2)' },
-  { label: "Clubs Available", value: "200+", icon: <Star size={18} />, color: 'var(--accent)' },
-  { label: "Internships Posted", value: "1.2k", icon: <Target size={18} />, color: 'var(--accent3)' },
+  { labelKey: 'daysUntilFinals', value: '42', icon: <Clock size={18} />, color: 'var(--accent2)' },
+  { labelKey: 'clubsAvailable', value: '200+', icon: <Star size={18} />, color: 'var(--accent)' },
+  { labelKey: 'internshipsPosted', value: '1.2k', icon: <Target size={18} />, color: 'var(--accent3)' },
 ]
 
 export default function Dashboard({ userProfile, calendarEvents }) {
+  const { t } = useLanguage()
   const [aiInsight, setAiInsight] = useState('')
   const [loadingInsight, setLoadingInsight] = useState(false)
   const [insightFetched, setInsightFetched] = useState(false)
@@ -194,7 +196,8 @@ export default function Dashboard({ userProfile, calendarEvents }) {
   }, [])
 
   const hour = new Date().getHours()
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const greetingKey = hour < 12 ? 'goodMorning' : hour < 17 ? 'goodAfternoon' : 'goodEvening'
+  const greeting = t(`dashboard.${greetingKey}`)
 
   return (
     <div className="page-container" style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative' }}>
@@ -310,7 +313,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             textAlign: 'center'
           }}
         >
-          Here's your personalized academic command center. Let's make today count.
+          {t('dashboard.heroSubtitle')}
         </motion.p>
 
         <motion.div
@@ -336,7 +339,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                 fontWeight: 600
               }}
             >
-              Get Started
+              {t('dashboard.getStarted')}
             </motion.button>
           </Link>
           <motion.button
@@ -352,7 +355,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             }}
             onClick={() => setShowLearnMoreModal(true)}
           >
-            Learn More
+            {t('dashboard.learnMore')}
           </motion.button>
         </motion.div>
 
@@ -369,7 +372,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             gap: '0.5rem'
           }}
         >
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Scroll to explore</p>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('dashboard.scrollToExplore')}</p>
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -530,7 +533,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               textAlign: 'center'
             }}
           >
-            {greeting}, {userProfile?.name || 'Scholar'} 👋
+            {greeting}, {userProfile?.name || t('dashboard.scholar')} 👋
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -551,7 +554,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               margin: '0 auto'
             }}
           >
-            Here's your personalized academic command center. Let's make today count.
+            {t('dashboard.heroSubtitle')}
           </motion.p>
         </motion.div>
 
@@ -599,7 +602,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                   marginBottom: '0.75rem'
                 }}
               >
-                ✨ AI Advisor · Today's Insight
+                ✨ {t('dashboard.aiAdvisor')}
               </motion.div>
               {loadingInsight ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -634,7 +637,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
         >
           {QUICK_STATS.map((stat, i) => (
             <motion.div
-              key={stat.label}
+              key={stat.labelKey}
               initial={{ opacity: 0, scale: 0.85, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ delay: 0.5 + i * 0.1, duration: 0.6 }}
@@ -670,7 +673,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                 {stat.value}
               </motion.div>
               <div style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                {stat.label}
+                {t(`dashboard.${stat.labelKey}`)}
               </div>
             </motion.div>
           ))}
@@ -702,7 +705,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               {calendarEvents.length}
             </div>
             <div style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-              Saved ECs
+              {t('dashboard.savedECs')}
             </div>
           </motion.div>
         </motion.div>
@@ -730,13 +733,13 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               alignItems: 'center',
               gap: '8px'
             }}>
-              <TrendingUp size={24} color="var(--accent)" /> Quick Actions
+              <TrendingUp size={24} color="var(--accent)" /> {t('dashboard.quickActions')}
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {[
-                { to: '/explore', icon: <Search size={24} />, label: 'Find Extracurriculars', desc: 'AI-powered EC discovery', color: 'var(--accent)' },
-                { to: '/calendar', icon: <CalendarDays size={24} />, label: 'Calendar', desc: `${calendarEvents.length} activities planned`, color: 'var(--accent2)' },
-                { to: '/zen', icon: <span style={{ fontSize: '1.3rem' }}>🎮</span>, label: 'Zen Space', desc: 'Relax & recharge', color: 'var(--accent3)' },
+                { to: '/explore', icon: <Search size={24} />, labelKey: 'findECs', descKey: 'findECsDesc', color: 'var(--accent)' },
+                { to: '/calendar', icon: <CalendarDays size={24} />, labelKey: 'calendar', descKey: 'calendarDesc', descParams: { n: calendarEvents.length }, color: 'var(--accent2)' },
+                { to: '/zen', icon: <span style={{ fontSize: '1.3rem' }}>🎮</span>, labelKey: 'zenSpace', descKey: 'zenSpaceDesc', color: 'var(--accent3)' },
               ].map((item, idx) => (
                 <Link key={item.to} to={item.to} style={{ textDecoration: 'none' }}>
                   <motion.div
@@ -787,9 +790,9 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                           marginBottom: '0.3rem'
                         }}
                       >
-                        {item.label}
+                        {t(`dashboard.${item.labelKey}`)}
                       </motion.div>
-                      <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{item.desc}</div>
+                      <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{item.descParams ? t(`dashboard.${item.descKey}`, item.descParams) : t(`dashboard.${item.descKey}`)}</div>
                     </div>
                     <motion.div
                       animate={{ x: [0, 6, 0] }}
@@ -818,7 +821,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               alignItems: 'center',
               gap: '8px'
             }}>
-              <BookOpen size={24} color="var(--accent2)" /> Tips for {userProfile?.major || 'Your Major'}
+              <BookOpen size={24} color="var(--accent2)" /> {t('dashboard.tipsFor', { major: userProfile?.major || 'Your Major' })}
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {tips.map((tip, i) => (
@@ -1258,7 +1261,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
                     className="btn btn-primary"
                     style={{ fontSize: '1rem', padding: '12px 24px' }}
                   >
-                    🚀 Get Started Now
+                    🚀 {t('dashboard.getStartedNow')}
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}

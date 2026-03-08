@@ -1,30 +1,37 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { TreePine, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, BookOpen, Timer } from 'lucide-react'
+import { TreePine, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, BookOpen, Timer, Globe } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 const MotionLink = motion(Link)
 
 const NAV_ITEMS = [
-  { path: '/', icon: <LayoutDashboard size={17} />, label: 'Dashboard' },
-  { path: '/explore', icon: <Search size={17} />, label: 'ECs' },
-  { path: '/courses', icon: <BookOpen size={17} />, label: 'Courses' },
-  { path: '/calendar', icon: <CalendarDays size={17} />, label: 'Calendar' },
-  { path: '/timers', icon: <Timer size={17} />, label: 'Timers' },
+  { path: '/', icon: <LayoutDashboard size={17} />, labelKey: 'dashboard' },
+  { path: '/explore', icon: <Search size={17} />, labelKey: 'explore' },
+  { path: '/courses', icon: <BookOpen size={17} />, labelKey: 'courses' },
+  { path: '/calendar', icon: <CalendarDays size={17} />, labelKey: 'calendar' },
+  { path: '/timers', icon: <Timer size={17} />, labelKey: 'timers' },
 ]
 
 export default function Navbar({ userProfile, zenMode, setZenMode, eventCount }) {
   const location = useLocation()
   const { isDarkMode, toggleTheme } = useTheme()
+  const { t, language, setLanguage, LANGUAGE_OPTIONS } = useLanguage()
 
   const [zenOpen, setZenOpen] = useState(false)
+  const [langOpen, setLangOpen] = useState(false)
   const dropdownRef = useRef(null)
+  const langDropdownRef = useRef(null)
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setZenOpen(false)
+      }
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target)) {
+        setLangOpen(false)
       }
     }
 
@@ -89,7 +96,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
             WebkitTextFillColor: 'transparent',
             letterSpacing: '-0.02em'
           }}>
-            Tranquility
+            {t('appName')}
           </span>
         </Link>
 
@@ -121,7 +128,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                 }}
               >
                 {item.icon}
-                {item.label}
+                {t(`nav.${item.labelKey}`)}
 
                 {item.path === '/calendar' && eventCount > 0 && (
                   <span style={{
@@ -168,7 +175,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
               }}
             >
               <Gamepad2 size={17} />
-              Zen Games
+              {t('nav.zenGames')}
             </motion.div>
 
             {zenOpen && (
@@ -199,7 +206,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                     fontSize: '0.85rem'
                   }}
                 >
-                  Zen Game
+                  {t('nav.zenGame')}
                 </MotionLink>
 
                 <MotionLink
@@ -215,7 +222,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
                     fontSize: '0.85rem'
                   }}
                 >
-                  Zen Dash
+                  {t('nav.zenDash')}
                 </MotionLink>
               </div>
             )}
@@ -225,27 +232,92 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
         {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
 
+          {/* Language dropdown */}
+          <div ref={langDropdownRef} style={{ position: 'relative' }}>
+            <motion.button
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              onClick={() => setLangOpen(!langOpen)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                padding: '7px 14px',
+                borderRadius: '10px',
+                border: '1px solid var(--border)',
+                background: langOpen ? 'var(--accent-glow)' : 'transparent',
+                color: langOpen ? 'var(--accent)' : 'var(--text-muted)',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontFamily: 'var(--font-display)',
+                fontWeight: 500
+              }}
+            >
+              <Globe size={16} />
+              {t('nav.language')}
+            </motion.button>
+
+            {langOpen && (
+              <div style={{
+                position: 'absolute',
+                top: '110%',
+                right: 0,
+                background: 'rgba(20,20,25,0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid var(--border)',
+                borderRadius: '10px',
+                padding: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: 140,
+                boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+                zIndex: 50
+              }}>
+                {LANGUAGE_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.code}
+                    onClick={() => { setLanguage(opt.code); setLangOpen(false) }}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      background: language === opt.code ? 'var(--accent-glow)' : 'transparent',
+                      color: language === opt.code ? 'var(--accent)' : 'var(--text-muted)',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      fontFamily: 'var(--font-body)',
+                      textAlign: 'left',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Theme toggle (icon only) */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleTheme}
+            title={isDarkMode ? t('nav.light') : t('nav.dark')}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '7px',
-              padding: '7px 14px',
+              justifyContent: 'center',
+              width: 40,
+              height: 40,
               borderRadius: '10px',
               border: '1px solid var(--border)',
               background: 'transparent',
               color: 'var(--text-muted)',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-              fontFamily: 'var(--font-display)',
-              fontWeight: 500
+              cursor: 'pointer'
             }}
           >
-            {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
-            {isDarkMode ? 'Light' : 'Dark'}
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
           </motion.button>
 
           <motion.button
@@ -268,7 +340,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
             }}
           >
             <Moon size={15} />
-            Zen
+            {t('nav.zen')}
           </motion.button>
 
           {userProfile && (

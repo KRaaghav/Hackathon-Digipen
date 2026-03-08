@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Gamepad2, RotateCcw, Trophy, Sparkles, Wind } from 'lucide-react'
 import DotGrid from '../components/DotGrid'
 import { initCalmSounds, calmPop, calmCombo, calmBubbleFade, calmGameStart, calmGameOver } from '../utils/calmSounds'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function ZenGame() {
+  const { t } = useLanguage()
   const [gameMode, setGameMode] = useState('menu') // menu | playing | over
   const [score, setScore] = useState(0)
   const [bubbles, setBubbles] = useState([])
@@ -147,7 +149,7 @@ export default function ZenGame() {
         <div style={{ marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem' }}>
             <span className="chip chip-green">
-              <Gamepad2 size={10} /> Zen Space
+              <Gamepad2 size={10} /> {t('zenGame.zenSpace')}
             </span>
           </div>
 
@@ -159,11 +161,11 @@ export default function ZenGame() {
               marginBottom: '0.3rem'
             }}
           >
-            Zen Space 🫧
+            {t('zenGame.zenSpace')} 🫧
           </h1>
 
           <p style={{ color: 'var(--text-muted)' }}>
-            Take a break. Pop some bubbles. Breathe easy.
+            {t('zenGame.tagline')}
           </p>
         </div>
 
@@ -185,7 +187,7 @@ export default function ZenGame() {
                 marginBottom: '0.75rem'
               }}
             >
-              Bubble Pop
+              {t('zenGame.bubblePop')}
             </h2>
 
             <p
@@ -196,7 +198,7 @@ export default function ZenGame() {
                 margin: '0 auto 2rem'
               }}
             >
-              Tap bubbles to pop them before they fade. Feel the pop — build combos for a 2× bonus!
+              {t('zenGame.instructions')}
             </p>
 
             {highScore > 0 && (
@@ -215,7 +217,7 @@ export default function ZenGame() {
                   fontWeight: 600
                 }}
               >
-                <Trophy size={16} /> Best: {highScore}
+                <Trophy size={16} /> {t('zenGame.best')}: {highScore}
               </div>
             )}
 
@@ -229,7 +231,7 @@ export default function ZenGame() {
               style={{ fontSize: '1rem', padding: '14px 32px' }}
               onClick={startGame}
             >
-              <Gamepad2 size={18} /> Start Playing
+              <Gamepad2 size={18} /> {t('zenGame.startPlaying')}
             </motion.button>
           </motion.div>
         )}
@@ -250,7 +252,7 @@ export default function ZenGame() {
                 marginBottom: '0.5rem'
               }}
             >
-              Nice one!
+              {t('zenGame.niceOne')}
             </h2>
 
             <div
@@ -281,7 +283,7 @@ export default function ZenGame() {
                   {score}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  Your Score
+                  {t('zenGame.yourScore')}
                 </div>
               </div>
 
@@ -307,7 +309,7 @@ export default function ZenGame() {
                   <Trophy size={28} /> {highScore}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  Best Score
+                  {t('zenGame.bestScore')}
                 </div>
               </div>
             </div>
@@ -329,7 +331,7 @@ export default function ZenGame() {
                   marginBottom: '1.5rem'
                 }}
               >
-                🎉 New High Score!
+                🎉 {t('zenGame.newHighScore')}
               </motion.div>
             )}
 
@@ -382,12 +384,12 @@ export default function ZenGame() {
                       background: 'rgba(247,162,106,0.2)',
                       color: 'var(--accent2)',
                       fontFamily: 'var(--font-display)',
-                      fontWeight: 700,
-                      fontSize: '0.85rem'
-                    }}
-                  >
-                    🔥 {combo}× Combo!
-                  </motion.div>
+                    fontWeight: 700,
+                    fontSize: '0.85rem'
+                  }}
+                >
+                  🔥 {combo}× {t('zenGame.combo')}
+                </motion.div>
                 )}
               </div>
 
@@ -603,7 +605,7 @@ export default function ZenGame() {
                     pointerEvents: 'none'
                     }}
                 >
-                    Pop to relax...
+                {t('zenGame.popToRelax')}
                 </div>
                 )}
             </div>
@@ -621,8 +623,8 @@ export default function ZenGame() {
                   clearInterval(intervalRef.current)
                   setGameMode('over')
                 }}
-              >
-                End Game
+                >
+                {t('zenGame.endGame')}
               </motion.button>
             </div>
           </div>
@@ -669,12 +671,11 @@ export default function ZenGame() {
                 marginBottom: '4px'
               }}
             >
-              REMINDER
+              {t('zenGame.reminder')}
             </div>
 
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', margin: 0, lineHeight: 1.6 }}>
-              Taking breaks is scientifically proven to improve focus and reduce stress. You're not wasting time — you're
-              investing in your best performance. 🌿
+              {t('zenGame.reminderText')}
             </p>
           </div>
 
@@ -692,7 +693,7 @@ export default function ZenGame() {
               alert(affirmations[Math.floor(Math.random() * affirmations.length)])
             }}
           >
-            <Sparkles size={14} /> Get Affirmation
+            <Sparkles size={14} /> {t('zenGame.getAffirmation')}
           </button>
         </motion.div>
       </motion.div>

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { createPortal } from 'react-dom'
 import { Timer, Plus, Trash2, Play, Pause, RotateCcw, Clock, Minimize2 } from 'lucide-react'
 import { initCalmSounds, calmTimerStart, calmTimerPause, calmTimerComplete, calmTimerMinimize } from '../utils/calmSounds'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function formatTime(seconds) {
   const h = Math.floor(seconds / 3600)
@@ -15,6 +16,7 @@ function formatTime(seconds) {
 }
 
 function CountdownTimer({ id, initialMinutes, label, onRemove, onStart, onStateReport, onPause, onComplete }) {
+  const { t } = useLanguage()
   const [secondsLeft, setSecondsLeft] = useState(initialMinutes * 60)
   const [running, setRunning] = useState(false)
   const completedRef = useRef(false)
@@ -127,7 +129,7 @@ function CountdownTimer({ id, initialMinutes, label, onRemove, onStart, onStateR
           }}
         >
           {running ? <Pause size={16} /> : <Play size={16} />}
-          {running ? 'Pause' : 'Start'}
+          {running ? t('timers.pause') : t('timers.start')}
         </motion.button>
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -151,6 +153,7 @@ function CountdownTimer({ id, initialMinutes, label, onRemove, onStart, onStateR
 }
 
 function Stopwatch({ id, onRemove, onStart, onStateReport }) {
+  const { t } = useLanguage()
   const [seconds, setSeconds] = useState(0)
   const [running, setRunning] = useState(false)
 
@@ -191,7 +194,7 @@ function Stopwatch({ id, onRemove, onStart, onStateReport }) {
       style={{ padding: '1.5rem', border: '1px solid var(--border)', background: 'var(--bg2)' }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, color: 'var(--text)' }}>Stopwatch</span>
+        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, color: 'var(--text)' }}>{t('timers.stopwatch')}</span>
         <button
           onClick={() => onRemove(id)}
           style={{
@@ -228,7 +231,7 @@ function Stopwatch({ id, onRemove, onStart, onStateReport }) {
           }}
         >
           {running ? <Pause size={16} /> : <Play size={16} />}
-          {running ? 'Pause' : 'Start'}
+          {running ? t('timers.pause') : t('timers.start')}
         </motion.button>
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -251,10 +254,11 @@ function Stopwatch({ id, onRemove, onStart, onStateReport }) {
 }
 
 function FullscreenOverlay({ activeTimerId, activeTimerState, onMinimize }) {
+  const { t } = useLanguage()
   const show = Boolean(activeTimerId && activeTimerState)
   const { label, type, value, running } = activeTimerState || {}
   const isDone = type === 'countdown' && value === 0
-  const displayLabel = type === 'stopwatch' ? 'Stopwatch' : (label || 'Timer')
+  const displayLabel = type === 'stopwatch' ? t('timers.stopwatch') : (label || t('timers.timer'))
 
   return createPortal(
     <AnimatePresence>
@@ -321,7 +325,7 @@ function FullscreenOverlay({ activeTimerId, activeTimerState, onMinimize }) {
                 animate={{ opacity: 1, y: 0 }}
                 style={{ fontSize: '1.25rem', color: 'var(--accent3)', fontWeight: 600, marginBottom: '1.5rem' }}
               >
-                Done!
+                {t('timers.done')}
               </motion.p>
             )}
             <motion.button
@@ -357,6 +361,7 @@ function FullscreenOverlay({ activeTimerId, activeTimerState, onMinimize }) {
 const PRESETS = [5, 10, 15, 25, 30, 45, 60]
 
 export default function Timers() {
+  const { t } = useLanguage()
   const [timers, setTimers] = useState(() => {
     try {
       const saved = localStorage.getItem('tranquility_timers')
@@ -436,16 +441,16 @@ export default function Timers() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: '0.5rem' }}>
           <Timer size={28} color="var(--accent)" />
           <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.75rem', color: 'var(--text)' }}>
-            Timers
+            {t('timers.timers')}
           </h1>
         </div>
         <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>
-          Countdown timers for study sessions, breaks, or anything you need to track. Start a timer to fill the screen.
+          {t('timers.description')}
         </p>
 
         <div style={{ marginBottom: '2rem' }}>
           <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, marginBottom: '0.75rem', color: 'var(--text-muted)' }}>
-            Quick add countdown
+            {t('timers.addCountdown')}
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {PRESETS.map((min) => (
@@ -489,7 +494,7 @@ export default function Timers() {
             }}
           >
             <Plus size={18} />
-            Add stopwatch
+            {t('timers.addStopwatch')}
           </motion.button>
         </div>
 
@@ -506,7 +511,7 @@ export default function Timers() {
               }}
             >
               <Timer size={40} style={{ marginBottom: '0.75rem', opacity: 0.5 }} />
-              <p>No timers yet. Add a countdown above or create a stopwatch.</p>
+              <p>{t('timers.noTimersYet')}</p>
             </div>
           ) : (
             timers.map((t) =>

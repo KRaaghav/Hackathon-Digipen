@@ -4,6 +4,8 @@ import { AnimatePresence } from 'framer-motion'
 import OnboardingModal from './components/OnboardingModal'
 import Navbar from './components/Navbar'
 import ZenMode from './components/ZenMode'
+import { ThemeProvider } from './contexts/ThemeContext.jsx'
+import { LanguageProvider } from './contexts/LanguageContext.jsx'
 import Dashboard from './pages/Dashboard'
 import Extracurriculars from './pages/Extracurriculars'
 import Calendar from './pages/Calendar'
@@ -53,6 +55,7 @@ export default function App() {
   }
 
   return (
+    <LanguageProvider>
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className="app-root" style={{ position: 'relative', minHeight: '100vh' }}>
         {/* Background orbs */}
@@ -129,5 +132,6 @@ export default function App() {
         )}
       </div>
     </BrowserRouter>
+    </LanguageProvider>
   )
 }

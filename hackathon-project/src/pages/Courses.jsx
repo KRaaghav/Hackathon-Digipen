@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Sparkles, Plus, Clock, Users, BookOpen, Loader, Trash2, ChevronLeft } from 'lucide-react'
+import { EHS_COURSE_DATABASE } from '../data/eastlakeCourses'
+import { RHS_COURSE_DATABASE } from '../data/redmondCourses'
+import { TESLA_STEM_COURSE_DATABASE } from '../data/teslaStemCourses'
 
 export default function Courses({ userProfile, calendarEvents, addCalendarEvent, removeCalendarEvent }) {
   const [selectedSchool, setSelectedSchool] = useState(null)
@@ -22,7 +25,9 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   }, [selectedSubjects, selectedSchool, selectedGrade])
 
   const SCHOOLS = [
-    { name: 'Redmond High School', abbr: 'RHS' }
+    { name: 'Redmond High School', abbr: 'RHS' },
+    { name: 'Eastlake High School', abbr: 'EHS' },
+    { name: 'Tesla STEM High School', abbr: 'TSTEM' }
   ]
 
   const GRADES = ['9th Grade (Freshman)', '10th Grade (Sophomore)', '11th Grade (Junior)', '12th Grade (Senior)']
@@ -43,361 +48,9 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   ]
 
   const COURSE_DATABASE = {
-    'RHS': {
-      '9th Grade (Freshman)': {
-        'English': [
-          { title: 'English 9', difficulty: 'Medium', credits: 1 },
-          { title: 'Honors English 9', difficulty: 'Hard', credits: 1 },
-        ],
-        'Mathematics': [
-          { title: 'Algebra 1', difficulty: 'Medium', credits: 1 },
-          { title: 'Algebra 2', difficulty: 'Hard', credits: 1 },
-          { title: 'Algebra 2 Honors', difficulty: 'Hard', credits: 1 },
-        ],
-        'Science': [
-          { title: 'Biology in the Earth System', difficulty: 'Medium', credits: 1 },
-        ],
-        'Social Studies': [
-          { title: 'World History 1: Ancient Cultures to Post-Classical World', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Honors World History 1', difficulty: 'Hard', credits: 1 },
-        ],
-        'World Languages': [
-          { title: 'French 1', difficulty: 'Easy', credits: 1 },
-          { title: 'American Sign Language I', difficulty: 'Easy', credits: 1 },
-        ],
-        'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
-          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
-        ],
-        'Engineering / STEM': [
-          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
-        ],
-        'Visual Arts': [
-          { title: 'Art 1', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Art 2: Drawing/Painting 1', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Art 2: Ceramics/Pottery 1', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Music': [
-          { title: 'Concert Band', difficulty: 'Medium', credits: 1 },
-          { title: 'Symphonic Band', difficulty: 'Hard', credits: 1 },
-          { title: 'Jazz Band', difficulty: 'Hard', credits: 1 },
-          { title: 'Orchestra', difficulty: 'Medium', credits: 1 },
-          { title: 'Choir', difficulty: 'Easy', credits: 1 },
-        ],
-        'Theater': [
-          { title: 'Drama/Acting', difficulty: 'Easy', credits: 1 },
-        ],
-        'Physical Education': [
-          { title: 'High School PE', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Health & Wellness', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Other Electives': [
-          { title: 'High School Academy', difficulty: 'Medium', credits: 1 },
-          { title: 'AVID', difficulty: 'Medium', credits: 1 },
-          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
-        ],
-      },
-      '10th Grade (Sophomore)': {
-        'English': [
-          { title: 'English 10', difficulty: 'Medium', credits: 1 },
-          { title: 'English 10 Honors', difficulty: 'Hard', credits: 1 },
-          { title: 'Creative Writing', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Journalism', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Newspaper / Yearbook', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Film Studies', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Mythology', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Public Speaking', difficulty: 'Medium', credits: 0.5 },
-        ],
-        'Mathematics': [
-          { title: 'Algebra 1', difficulty: 'Medium', credits: 1 },
-          { title: 'Geometry', difficulty: 'Medium', credits: 1 },
-          { title: 'Algebra 2', difficulty: 'Hard', credits: 1 },
-          { title: 'Algebra 2 Honors', difficulty: 'Hard', credits: 1 },
-        ],
-        'Science': [
-          { title: 'Chemistry', difficulty: 'Hard', credits: 1 },
-          { title: 'Chemistry Honors', difficulty: 'Hard', credits: 1 },
-        ],
-        'Social Studies': [
-          { title: 'World History', difficulty: 'Medium', credits: 1 },
-          { title: 'AP World History', difficulty: 'Hard', credits: 1 },
-        ],
-        'World Languages': [
-          { title: 'Spanish 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Spanish 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Spanish 3', difficulty: 'Hard', credits: 1 },
-          { title: 'French 1', difficulty: 'Easy', credits: 1 },
-          { title: 'French 2', difficulty: 'Medium', credits: 1 },
-          { title: 'French 3', difficulty: 'Hard', credits: 1 },
-          { title: 'French 4', difficulty: 'Hard', credits: 1 },
-          { title: 'Japanese 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Japanese 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Japanese 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Japanese 4', difficulty: 'Hard', credits: 1 },
-          { title: 'Chinese (Mandarin) 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Chinese (Mandarin) 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Chinese (Mandarin) 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Chinese (Mandarin) 4', difficulty: 'Hard', credits: 1 },
-        ],
-        'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
-          { title: 'AP Computer Science Principles', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Computer Science A', difficulty: 'Hard', credits: 1 },
-          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
-          { title: 'Programming / Software Development', difficulty: 'Hard', credits: 1 },
-        ],
-        'Engineering / STEM': [
-          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
-          { title: 'Robotics', difficulty: 'Hard', credits: 1 },
-          { title: 'Electronics', difficulty: 'Hard', credits: 1 },
-          { title: 'Manufacturing / Technology', difficulty: 'Medium', credits: 1 },
-        ],
-        'Visual Arts': [
-          { title: 'Drawing', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Painting', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Ceramics', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Sculpture', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Photography', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Digital Art', difficulty: 'Medium', credits: 0.5 },
-        ],
-        'Music': [
-          { title: 'Concert Band', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Symphonic Band', difficulty: 'Hard', credits: 0.5 },
-          { title: 'Jazz Band', difficulty: 'Hard', credits: 0.5 },
-          { title: 'Orchestra', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Choir', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Theater': [
-          { title: 'Drama / Acting', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Theater Production', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Stagecraft', difficulty: 'Medium', credits: 0.5 },
-        ],
-        'Physical Education': [
-          { title: 'Fitness / Weight Training', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Team Sports', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Lifetime Fitness', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Other Electives': [
-          { title: 'Leadership', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Service Learning', difficulty: 'Easy', credits: 0.5 },
-          { title: 'AVID', difficulty: 'Medium', credits: 1 },
-          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
-        ],
-      },
-      '11th Grade (Junior)': {
-        'English': [
-          { title: 'American Literature', difficulty: 'Medium', credits: 1 },
-          { title: 'American Literature Honors', difficulty: 'Hard', credits: 1 },
-          { title: 'AP English Language & Composition', difficulty: 'Hard', credits: 1 },
-          { title: 'Creative Writing', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Journalism', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Newspaper / Yearbook', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Film Studies', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Mythology', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Public Speaking', difficulty: 'Medium', credits: 0.5 },
-        ],
-        'Mathematics': [
-          { title: 'Geometry', difficulty: 'Medium', credits: 1 },
-          { title: 'Algebra 2', difficulty: 'Hard', credits: 1 },
-          { title: 'Algebra 2 Honors', difficulty: 'Hard', credits: 1 },
-          { title: 'Precalculus', difficulty: 'Hard', credits: 1 },
-          { title: 'Precalculus Honors', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Precalculus', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Calculus AB', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Statistics', difficulty: 'Hard', credits: 1 },
-        ],
-        'Science': [
-          { title: 'Physics', difficulty: 'Hard', credits: 1 },
-          { title: 'Physics Honors', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Biology', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Chemistry', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Physics 1', difficulty: 'Hard', credits: 1 },
-          { title: 'Environmental Science', difficulty: 'Medium', credits: 1 },
-          { title: 'Anatomy & Physiology', difficulty: 'Hard', credits: 1 },
-          { title: 'Forensic Science', difficulty: 'Medium', credits: 1 },
-        ],
-        'Social Studies': [
-          { title: 'U.S. History', difficulty: 'Medium', credits: 1 },
-          { title: 'AP U.S. History', difficulty: 'Hard', credits: 1 },
-          { title: 'Psychology', difficulty: 'Medium', credits: 1 },
-          { title: 'AP Psychology', difficulty: 'Hard', credits: 1 },
-        ],
-        'World Languages': [
-          { title: 'Spanish 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Spanish 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Spanish 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Spanish 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Spanish Language', difficulty: 'Hard', credits: 1 },
-          { title: 'French 1', difficulty: 'Easy', credits: 1 },
-          { title: 'French 2', difficulty: 'Medium', credits: 1 },
-          { title: 'French 3', difficulty: 'Hard', credits: 1 },
-          { title: 'French 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP French', difficulty: 'Hard', credits: 1 },
-          { title: 'Japanese 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Japanese 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Japanese 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Japanese 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Japanese', difficulty: 'Hard', credits: 1 },
-          { title: 'Chinese (Mandarin) 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Chinese (Mandarin) 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Chinese (Mandarin) 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Chinese (Mandarin) 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Chinese', difficulty: 'Hard', credits: 1 },
-        ],
-        'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
-          { title: 'AP Computer Science Principles', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Computer Science A', difficulty: 'Hard', credits: 1 },
-          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
-          { title: 'Programming / Software Development', difficulty: 'Hard', credits: 1 },
-        ],
-        'Engineering / STEM': [
-          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
-          { title: 'Robotics', difficulty: 'Hard', credits: 1 },
-          { title: 'Electronics', difficulty: 'Hard', credits: 1 },
-          { title: 'Manufacturing / Technology', difficulty: 'Medium', credits: 1 },
-        ],
-        'Visual Arts': [
-          { title: 'Drawing', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Painting', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Ceramics', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Sculpture', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Photography', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Digital Art', difficulty: 'Medium', credits: 0.5 },
-          { title: 'AP Studio Art', difficulty: 'Hard', credits: 0.5 },
-        ],
-        'Music': [
-          { title: 'Concert Band', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Symphonic Band', difficulty: 'Hard', credits: 0.5 },
-          { title: 'Jazz Band', difficulty: 'Hard', credits: 0.5 },
-          { title: 'Orchestra', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Choir', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Theater': [
-          { title: 'Drama / Acting', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Theater Production', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Stagecraft', difficulty: 'Medium', credits: 0.5 },
-        ],
-        'Physical Education': [
-          { title: 'Fitness / Weight Training', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Team Sports', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Lifetime Fitness', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Other Electives': [
-          { title: 'Leadership', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Teacher Assistant', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Service Learning', difficulty: 'Easy', credits: 0.5 },
-          { title: 'AVID', difficulty: 'Medium', credits: 1 },
-          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
-        ],
-      },
-      '12th Grade (Senior)': {
-        'English': [
-          { title: 'AP English Literature & Composition', difficulty: 'Hard', credits: 1 },
-          { title: 'Creative Writing', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Journalism', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Newspaper / Yearbook', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Film Studies', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Mythology', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Public Speaking', difficulty: 'Medium', credits: 0.5 },
-        ],
-        'Mathematics': [
-          { title: 'Precalculus', difficulty: 'Hard', credits: 1 },
-          { title: 'Precalculus Honors', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Precalculus', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Calculus AB', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Calculus BC', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Statistics', difficulty: 'Hard', credits: 1 },
-        ],
-        'Science': [
-          { title: 'Physics', difficulty: 'Hard', credits: 1 },
-          { title: 'Physics Honors', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Biology', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Chemistry', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Physics 1', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Physics C', difficulty: 'Hard', credits: 1 },
-          { title: 'Environmental Science', difficulty: 'Medium', credits: 1 },
-          { title: 'Anatomy & Physiology', difficulty: 'Hard', credits: 1 },
-          { title: 'Forensic Science', difficulty: 'Medium', credits: 1 },
-        ],
-        'Social Studies': [
-          { title: 'Civics / Government', difficulty: 'Medium', credits: 1 },
-          { title: 'AP U.S. Government', difficulty: 'Hard', credits: 1 },
-          { title: 'Economics', difficulty: 'Medium', credits: 1 },
-          { title: 'AP Macroeconomics', difficulty: 'Hard', credits: 1 },
-          { title: 'Psychology', difficulty: 'Medium', credits: 1 },
-          { title: 'AP Psychology', difficulty: 'Hard', credits: 1 },
-        ],
-        'World Languages': [
-          { title: 'Spanish 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Spanish 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Spanish 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Spanish 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Spanish Language', difficulty: 'Hard', credits: 1 },
-          { title: 'French 1', difficulty: 'Easy', credits: 1 },
-          { title: 'French 2', difficulty: 'Medium', credits: 1 },
-          { title: 'French 3', difficulty: 'Hard', credits: 1 },
-          { title: 'French 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP French', difficulty: 'Hard', credits: 1 },
-          { title: 'Japanese 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Japanese 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Japanese 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Japanese 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Japanese', difficulty: 'Hard', credits: 1 },
-          { title: 'Chinese (Mandarin) 1', difficulty: 'Easy', credits: 1 },
-          { title: 'Chinese (Mandarin) 2', difficulty: 'Medium', credits: 1 },
-          { title: 'Chinese (Mandarin) 3', difficulty: 'Hard', credits: 1 },
-          { title: 'Chinese (Mandarin) 4', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Chinese', difficulty: 'Hard', credits: 1 },
-        ],
-        'Computer Science / Technology': [
-          { title: 'Introduction to Computer Science', difficulty: 'Easy', credits: 1 },
-          { title: 'AP Computer Science Principles', difficulty: 'Hard', credits: 1 },
-          { title: 'AP Computer Science A', difficulty: 'Hard', credits: 1 },
-          { title: 'Web Design', difficulty: 'Medium', credits: 1 },
-          { title: 'Programming / Software Development', difficulty: 'Hard', credits: 1 },
-        ],
-        'Engineering / STEM': [
-          { title: 'Engineering Design', difficulty: 'Medium', credits: 1 },
-          { title: 'Robotics', difficulty: 'Hard', credits: 1 },
-          { title: 'Electronics', difficulty: 'Hard', credits: 1 },
-          { title: 'Manufacturing / Technology', difficulty: 'Medium', credits: 1 },
-        ],
-        'Visual Arts': [
-          { title: 'Drawing', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Painting', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Ceramics', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Sculpture', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Photography', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Digital Art', difficulty: 'Medium', credits: 0.5 },
-          { title: 'AP Studio Art', difficulty: 'Hard', credits: 0.5 },
-        ],
-        'Music': [
-          { title: 'Concert Band', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Symphonic Band', difficulty: 'Hard', credits: 0.5 },
-          { title: 'Jazz Band', difficulty: 'Hard', credits: 0.5 },
-          { title: 'Orchestra', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Choir', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Theater': [
-          { title: 'Drama / Acting', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Theater Production', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Stagecraft', difficulty: 'Medium', credits: 0.5 },
-        ],
-        'Physical Education': [
-          { title: 'Fitness / Weight Training', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Team Sports', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Lifetime Fitness', difficulty: 'Easy', credits: 0.5 },
-        ],
-        'Other Electives': [
-          { title: 'Leadership', difficulty: 'Medium', credits: 0.5 },
-          { title: 'Teacher Assistant', difficulty: 'Easy', credits: 0.5 },
-          { title: 'Service Learning', difficulty: 'Easy', credits: 0.5 },
-          { title: 'AVID', difficulty: 'Medium', credits: 1 },
-          { title: 'Study Skills / Academic Support', difficulty: 'Easy', credits: 0.5 },
-        ],
-      },
-    }
+    'RHS': RHS_COURSE_DATABASE,
+    'EHS': EHS_COURSE_DATABASE,
+    'TSTEM': TESLA_STEM_COURSE_DATABASE,
   }
 
   const handleSchoolSelect = (school) => {
@@ -517,35 +170,81 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
     return allGradesCourses
   }
 
-  // Graduation requirements
-  const GRADUATION_REQUIREMENTS = {
-    'English': { required: 4, completed: 0 },
-    'Mathematics': { required: 3, completed: 0 },
-    'Science': { required: 3, completed: 0 },
-    'Social Studies': { required: 3, completed: 0 },
-    'World Languages': { required: 2, completed: 0 },
-    'Physical Education': { required: 4, completed: 0 },
-    'Visual & Performing Arts': { required: 1, completed: 0 },
-    'Electives': { required: 21, completed: 0 }
+  // Credit requirements: EHS minimums (24 total), plus reference columns for Public 4-Year and Highly Selective
+  const TOTAL_CREDITS_REQUIRED = 24
+  const CREDIT_REQUIREMENTS_TABLE = [
+    { subject: 'English', ehs: '4 credits', public4yr: '4 credits', highlySelective: '4 credits' },
+    { subject: 'Math', ehs: '3 credits (ALG 1, GEO & ALG 2)', public4yr: '3 credits (Min ALG 1 & GEO AND ALG 2 AND 1.0 cr Math in Senior Year)', highlySelective: '3–4 credits' },
+    { subject: 'Science', ehs: '3 credits', public4yr: '2 credits Lab Science (algebra-based biology, chemistry, or physics)', highlySelective: '3–4 credits' },
+    { subject: 'Social Studies', ehs: '3 credits', public4yr: '3 credits', highlySelective: '3–4 credits' },
+    { subject: 'World Language', ehs: '2 credits', public4yr: '2 credits (same language)', highlySelective: '3–4 credits' },
+    { subject: 'Visual or Performing Arts', ehs: '2 credits', public4yr: '1 credit', highlySelective: '2–3 credits' },
+    { subject: 'Health & Fitness', ehs: '1.5 Fitness + 0.5 Health', public4yr: 'Varies by school', highlySelective: '—' },
+    { subject: 'Career & Technical Education', ehs: '1.0 credit', public4yr: '—', highlySelective: '—' },
+    { subject: 'Elective', ehs: 'To meet 24 total', public4yr: '—', highlySelective: '—' },
+  ]
+
+  // EHS minimum credits per category (used for progress). Elective = remainder to reach 24.
+  const EHS_REQUIREMENTS = {
+    'English': 4,
+    'Math': 3,
+    'Science': 3,
+    'Social Studies': 3,
+    'World Language': 2,
+    'Visual or Performing Arts': 2,
+    'Health & Fitness': 2,
+    'Career & Technical Education': 1,
+    'Elective': 4, // 24 - (4+3+3+3+2+2+2+1) = 4
   }
 
-  // Count completed requirements
+  // Map course subject (from SUBJECT_CATEGORIES) to requirement category
+  const SUBJECT_TO_REQUIREMENT = {
+    'English': 'English',
+    'Mathematics': 'Math',
+    'Science': 'Science',
+    'Social Studies': 'Social Studies',
+    'World Languages': 'World Language',
+    'Visual Arts': 'Visual or Performing Arts',
+    'Music': 'Visual or Performing Arts',
+    'Theater': 'Visual or Performing Arts',
+    'Physical Education': 'Health & Fitness',
+    'Computer Science / Technology': 'Career & Technical Education',
+    'Engineering / STEM': 'Career & Technical Education',
+    'Other Electives': 'Elective',
+  }
+
+  // Graduation requirements (for display and progress) — deep copy with completed credits
+  const getGraduationRequirements = () => ({
+    'English': { required: EHS_REQUIREMENTS['English'], completed: 0 },
+    'Math': { required: EHS_REQUIREMENTS['Math'], completed: 0 },
+    'Science': { required: EHS_REQUIREMENTS['Science'], completed: 0 },
+    'Social Studies': { required: EHS_REQUIREMENTS['Social Studies'], completed: 0 },
+    'World Language': { required: EHS_REQUIREMENTS['World Language'], completed: 0 },
+    'Visual or Performing Arts': { required: EHS_REQUIREMENTS['Visual or Performing Arts'], completed: 0 },
+    'Health & Fitness': { required: EHS_REQUIREMENTS['Health & Fitness'], completed: 0 },
+    'Career & Technical Education': { required: EHS_REQUIREMENTS['Career & Technical Education'], completed: 0 },
+    'Elective': { required: EHS_REQUIREMENTS['Elective'], completed: 0 },
+  })
+
+  // Count completed credits per requirement category (using actual course credits from database)
   const getCompletedRequirements = () => {
-    const reqs = { ...GRADUATION_REQUIREMENTS }
-    const selectedCourseTitles = calendarEvents
-      .filter(e => e.type === 'course')
-      .map(e => e.title)
-    
-    selectedCourseTitles.forEach(courseTitle => {
-      if (courseTitle.includes('English')) reqs['English'].completed++
-      if (courseTitle.includes('Math') || courseTitle.includes('Algebra') || courseTitle.includes('Geometry') || courseTitle.includes('Calculus') || courseTitle.includes('Statistics')) reqs['Mathematics'].completed++
-      if (courseTitle.includes('Science') || courseTitle.includes('Biology') || courseTitle.includes('Chemistry') || courseTitle.includes('Physics')) reqs['Science'].completed++
-      if (courseTitle.includes('History') || courseTitle.includes('Government') || courseTitle.includes('Economics') || courseTitle.includes('Psychology')) reqs['Social Studies'].completed++
-      if (courseTitle.includes('Spanish') || courseTitle.includes('French') || courseTitle.includes('Japanese') || courseTitle.includes('Chinese')) reqs['World Languages'].completed++
-      if (courseTitle.includes('PE') || courseTitle.includes('Fitness') || courseTitle.includes('Sports')) reqs['Physical Education'].completed++
-      if (courseTitle.includes('Art') || courseTitle.includes('Music') || courseTitle.includes('Theater') || courseTitle.includes('Dance')) reqs['Visual & Performing Arts'].completed++
+    const reqs = getGraduationRequirements()
+    const allGradesCourses = getAllCourses()
+    const selectedCourseEvents = calendarEvents.filter(e => e.type === 'course')
+
+    selectedCourseEvents.forEach(event => {
+      const parts = event.description?.split('•').map(s => s?.trim()) || []
+      const grade = parts[1]
+      const subject = parts[2]
+      const courseList = grade && allGradesCourses[grade] ? allGradesCourses[grade] : []
+      const fullCourse = courseList.find(c => c.title === event.title)
+      const credits = fullCourse?.credits ?? 1
+      const requirementKey = SUBJECT_TO_REQUIREMENT[subject] || 'Elective'
+      if (reqs[requirementKey]) {
+        reqs[requirementKey].completed += credits
+      }
     })
-    
+
     return reqs
   }
 
@@ -566,7 +265,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
               Choose Your School
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto' }}>
-              Select Redmond High School to explore available courses for your grade level
+              Select your school to explore available courses for your grade level
             </p>
           </div>
 
@@ -722,6 +421,9 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                                   {fullCourse?.credits} cr
                                 </span>
                               </div>
+                              {fullCourse?.prerequisite && (
+                                <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.7rem', color: 'var(--text-dim)' }}>Prereq: {fullCourse.prerequisite}</p>
+                              )}
                             </div>
                           </div>
                         )
@@ -755,13 +457,13 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                 <div style={{ textAlign: 'center', padding: '1.5rem', background: 'var(--bg)', borderRadius: 'var(--radius)' }}>
                   <p style={{ margin: '0 0 0.5rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Total Credits Enrolled</p>
                   <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: 'var(--accent)' }}>
-                    {totalCredits}
+                    {totalCredits} / {TOTAL_CREDITS_REQUIRED}
                   </p>
                 </div>
                 <div style={{ textAlign: 'center', padding: '1.5rem', background: 'var(--bg)', borderRadius: 'var(--radius)' }}>
                   <p style={{ margin: '0 0 0.5rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Courses Selected</p>
                   <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: 'var(--accent)' }}>
-                    {selectedCourses.length}/6
+                    {selectedCourses.length}
                   </p>
                 </div>
               </div>
@@ -780,7 +482,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
               }}
             >
               <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                🎓 Graduation Requirements
+                🎓 EHS Graduation Requirements (24 credits)
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {Object.entries(completedReqs).map(([req, data]) => (
@@ -793,7 +495,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                     }}>
                       <span>{req}</span>
                       <span style={{ fontWeight: 600, color: data.completed >= data.required ? '#6af7a2' : 'var(--text-muted)' }}>
-                        {data.completed}/{data.required}
+                        {data.completed.toFixed(1)} / {data.required}
                       </span>
                     </div>
                     <div style={{
@@ -804,7 +506,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
                     }}>
                       <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${(data.completed / data.required) * 100}%` }}
+                        animate={{ width: `${Math.min(100, (data.completed / data.required) * 100)}%` }}
                         transition={{ duration: 0.6 }}
                         style={{
                           height: '100%',
@@ -818,6 +520,55 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
               </div>
             </motion.div>
           </div>
+
+          {/* Credit Requirements Reference Table */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            style={{
+              background: 'var(--bg2)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '1.5rem',
+              marginBottom: '2rem',
+              overflowX: 'auto'
+            }}
+          >
+            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              📋 Credit Requirements Reference
+            </h2>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+              Minimum requirements for EHS graduation (24 credits total). Public 4-year and highly selective colleges may expect more — check each institution.
+            </p>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                  <th style={{ textAlign: 'left', padding: '0.6rem 0.5rem', fontWeight: 600, color: 'var(--text)' }}>Subject</th>
+                  <th style={{ textAlign: 'left', padding: '0.6rem 0.5rem', fontWeight: 600, color: 'var(--accent)' }}>EHS Minimum</th>
+                  <th style={{ textAlign: 'left', padding: '0.6rem 0.5rem', fontWeight: 600, color: 'var(--text)' }}>Public 4-Year Colleges</th>
+                  <th style={{ textAlign: 'left', padding: '0.6rem 0.5rem', fontWeight: 600, color: 'var(--text)' }}>Highly Selective</th>
+                </tr>
+              </thead>
+              <tbody>
+                {CREDIT_REQUIREMENTS_TABLE.map((row, i) => (
+                  <tr key={row.subject} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: '0.6rem 0.5rem', fontWeight: 500, color: 'var(--text)' }}>{row.subject}</td>
+                    <td style={{ padding: '0.6rem 0.5rem', color: 'var(--text)' }}>{row.ehs}</td>
+                    <td style={{ padding: '0.6rem 0.5rem', color: 'var(--text-muted)' }}>{row.public4yr}</td>
+                    <td style={{ padding: '0.6rem 0.5rem', color: 'var(--text-muted)' }}>{row.highlySelective}</td>
+                  </tr>
+                ))}
+                <tr style={{ borderBottom: 'none', background: 'var(--bg)' }}>
+                  <td style={{ padding: '0.75rem 0.5rem', fontWeight: 700, color: 'var(--text)' }}>Total</td>
+                  <td colSpan={3} style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: 'var(--accent)' }}>{TOTAL_CREDITS_REQUIRED} credits</td>
+                </tr>
+              </tbody>
+            </table>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1rem', marginBottom: 0 }}>
+              Students need a minimum 2.00 cumulative GPA at time of application. Most colleges require Algebra 2 or higher. Requirements vary by school — verify with each institution.
+            </p>
+          </motion.div>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -1098,6 +849,11 @@ function CourseCard({ course, index, isAdded, onAdd, onRemove }) {
           <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
             📚 {course.credits} credits
           </p>
+          {course.prerequisite && (
+            <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+              Prerequisite: {course.prerequisite}
+            </p>
+          )}
         </div>
         {isAdded ? (
           <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={onRemove} style={{ width: 38, height: 38, borderRadius: '12px', flexShrink: 0, border: '2px solid var(--success)', background: 'rgba(106, 247, 162, 0.15)', color: 'var(--success)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.25s ease' }}>
