@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { TreePine, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
+import { TreePine, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen, Timer } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 
 const NAV_ITEMS = [
@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { path: '/explore', icon: <Search size={17} />, label: 'Explore ECs' },
   { path: '/courses', icon: <BookOpen size={17} />, label: 'Courses' },
   { path: '/calendar', icon: <CalendarDays size={17} />, label: 'My Calendar' },
+  { path: '/timers', icon: <Timer size={17} />, label: 'Timers' },
   { path: '/zen', icon: <Gamepad2 size={17} />, label: 'Zen Space' },
   { path: '/geometry', icon: <Gamepad2 size={17} />, label: 'Zen Dash' },
 ]

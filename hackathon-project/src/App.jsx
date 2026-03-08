@@ -10,6 +10,7 @@ import Calendar from './pages/Calendar'
 import ZenGame from './pages/ZenGame'
 import Courses from './pages/Courses'
 import GeometryDash from "./pages/GeometryDash"
+import Timers from './pages/Timers'
 
 export default function App() {
   const [userProfile, setUserProfile] = useState(() => {
@@ -120,8 +121,9 @@ export default function App() {
                 }
               />
               <Route path="/zen" element={<ZenGame />} />
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="/timers" element={<Timers />} />
               <Route path="/geometry" element={<GeometryDash />} />
+              <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </>
         )}
