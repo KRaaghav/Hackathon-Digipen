@@ -466,7 +466,7 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, marginBottom: '0.5rem' }}>
             Discover Opportunities
           </h1>
-          <p style={{ color: 'var(--text-muted)', maxWidth: 500 }}>Ask AI to find activities perfectly matched to your major, goals, and interests on Ascend.</p>
+          <p style={{ color: 'var(--text-muted)', maxWidth: 500 }}>Ask AI to find activities perfectly matched to your major, goals, and interests on Tranquility.</p>
         </div>
 
         <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', marginBottom: '1.5rem' }}>

@@ -259,7 +259,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
           <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', padding: '8px 16px', borderRadius: '100px', background: 'rgba(124, 106, 247, 0.15)', border: '1px solid rgba(124, 106, 247, 0.3)' }}>
               <BookOpen size={14} color="#7c6af7" />
-              <span style={{ fontSize: '0.85rem', color: '#7c6af7', fontWeight: 600 }}>Course Planner on Ascend</span>
+              <span style={{ fontSize: '0.85rem', color: '#7c6af7', fontWeight: 600 }}>Course Planner on Tranquility</span>
             </div>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontWeight: 800, marginBottom: '1rem' }}>
               Choose Your School
