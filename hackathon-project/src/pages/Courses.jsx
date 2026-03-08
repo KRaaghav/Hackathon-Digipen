@@ -12,79 +12,386 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   const [addedCourses, setAddedCourses] = useState(new Set())
 
   const SCHOOLS = [
-    { name: 'Lake Forest High School', abbr: 'LFHS' },
-    { name: 'Mercer Island High School', abbr: 'MIHS' },
-    { name: 'Inglemoor High School', abbr: 'IHS' },
-    { name: 'Edmonds-Woodway High School', abbr: 'EWHS' },
-    { name: 'Mountlake Terrace High School', abbr: 'MTHS' },
-    { name: 'Bothell High School', abbr: 'BHS' },
-    { name: 'Shoreline High School', abbr: 'SHS' },
-    { name: 'Shorewood High School', abbr: 'SWHS' },
-    { name: 'Edmonds High School', abbr: 'EHS' }
+    { name: 'Redmond High School', abbr: 'RHS' }
   ]
 
   const GRADES = ['9th Grade (Freshman)', '10th Grade (Sophomore)', '11th Grade (Junior)', '12th Grade (Senior)']
 
   const COURSE_DATABASE = {
-    'Lake Forest High School': {
+    'Redmond High School': {
       '9th Grade (Freshman)': {
-        'Math': [
-          { title: 'Algebra 1', teacher: 'Ms. Johnson', period: '1st', room: '201', capacity: '28', enrolled: '24' },
-          { title: 'Algebra 1', teacher: 'Mr. Chen', period: '3rd', room: '205', capacity: '28', enrolled: '26' },
-          { title: 'Geometry', teacher: 'Ms. Wilson', period: '2nd', room: '203', capacity: '28', enrolled: '22' },
+        'English': [
+          { title: 'English 9' },
+          { title: 'English 9 Honors' },
+        ],
+        'Mathematics': [
+          { title: 'Algebra 1' },
+          { title: 'Geometry' },
         ],
         'Science': [
-          { title: 'Biology I', teacher: 'Dr. Smith', period: '1st', room: '301', capacity: '30', enrolled: '28' },
-          { title: 'Biology I', teacher: 'Ms. Lee', period: '4th', room: '305', capacity: '30', enrolled: '27' },
-          { title: 'Physical Science', teacher: 'Mr. Rodriguez', period: '2nd', room: '302', capacity: '30', enrolled: '25' },
+          { title: 'Biology' },
+          { title: 'Biology Honors' },
         ],
-        'English': [
-          { title: 'English 9', teacher: 'Ms. Anderson', period: '1st', room: '101', capacity: '25', enrolled: '24' },
-          { title: 'English 9', teacher: 'Mr. Thompson', period: '3rd', room: '105', capacity: '25', enrolled: '23' },
-          { title: 'English 9 Honors', teacher: 'Dr. Martinez', period: '2nd', room: '103', capacity: '20', enrolled: '19' },
+        'Social Studies': [
+          { title: 'World History' },
+        ],
+        'World Languages': [
+          { title: 'Spanish 1' },
+          { title: 'Spanish 2' },
+          { title: 'French 1' },
+          { title: 'French 2' },
+          { title: 'French 3' },
+          { title: 'French 4' },
+          { title: 'Japanese 1' },
+          { title: 'Japanese 2' },
+          { title: 'Japanese 3' },
+          { title: 'Japanese 4' },
+          { title: 'Chinese (Mandarin) 1' },
+          { title: 'Chinese (Mandarin) 2' },
+          { title: 'Chinese (Mandarin) 3' },
+          { title: 'Chinese (Mandarin) 4' },
+        ],
+        'Computer Science / Technology': [
+          { title: 'Introduction to Computer Science' },
+          { title: 'Web Design' },
+        ],
+        'Engineering / STEM': [
+          { title: 'Engineering Design' },
+          { title: 'Robotics' },
+          { title: 'Manufacturing / Technology' },
+        ],
+        'Visual Arts': [
+          { title: 'Drawing' },
+          { title: 'Painting' },
+          { title: 'Ceramics' },
+          { title: 'Sculpture' },
+          { title: 'Photography' },
+          { title: 'Digital Art' },
+        ],
+        'Music': [
+          { title: 'Concert Band' },
+          { title: 'Symphonic Band' },
+          { title: 'Jazz Band' },
+          { title: 'Orchestra' },
+          { title: 'Choir' },
+        ],
+        'Theater': [
+          { title: 'Drama / Acting' },
+          { title: 'Theater Production' },
+          { title: 'Stagecraft' },
+        ],
+        'Physical Education': [
+          { title: 'PE 9' },
+          { title: 'Health' },
+          { title: 'Fitness / Weight Training' },
+          { title: 'Team Sports' },
+        ],
+        'Other Electives': [
+          { title: 'AVID' },
+          { title: 'Study Skills / Academic Support' },
         ],
       },
       '10th Grade (Sophomore)': {
-        'Math': [
-          { title: 'Geometry', teacher: 'Ms. Wilson', period: '1st', room: '203', capacity: '28', enrolled: '25' },
-          { title: 'Algebra 2', teacher: 'Mr. Kim', period: '2nd', room: '204', capacity: '28', enrolled: '26' },
-          { title: 'Algebra 2 Honors', teacher: 'Dr. Patel', period: '3rd', room: '206', capacity: '24', enrolled: '22' },
+        'English': [
+          { title: 'English 10' },
+          { title: 'English 10 Honors' },
+          { title: 'Creative Writing' },
+          { title: 'Journalism' },
+          { title: 'Newspaper / Yearbook' },
+          { title: 'Film Studies' },
+          { title: 'Mythology' },
+          { title: 'Public Speaking' },
+        ],
+        'Mathematics': [
+          { title: 'Algebra 1' },
+          { title: 'Geometry' },
+          { title: 'Algebra 2' },
+          { title: 'Algebra 2 Honors' },
         ],
         'Science': [
-          { title: 'Chemistry I', teacher: 'Mr. Jackson', period: '1st', room: '303', capacity: '30', enrolled: '29' },
-          { title: 'Biology II', teacher: 'Ms. Garcia', period: '2nd', room: '304', capacity: '30', enrolled: '28' },
+          { title: 'Chemistry' },
+          { title: 'Chemistry Honors' },
+        ],
+        'Social Studies': [
+          { title: 'World History' },
+          { title: 'AP World History' },
+        ],
+        'World Languages': [
+          { title: 'Spanish 1' },
+          { title: 'Spanish 2' },
+          { title: 'Spanish 3' },
+          { title: 'French 1' },
+          { title: 'French 2' },
+          { title: 'French 3' },
+          { title: 'French 4' },
+          { title: 'Japanese 1' },
+          { title: 'Japanese 2' },
+          { title: 'Japanese 3' },
+          { title: 'Japanese 4' },
+          { title: 'Chinese (Mandarin) 1' },
+          { title: 'Chinese (Mandarin) 2' },
+          { title: 'Chinese (Mandarin) 3' },
+          { title: 'Chinese (Mandarin) 4' },
+        ],
+        'Computer Science / Technology': [
+          { title: 'Introduction to Computer Science' },
+          { title: 'AP Computer Science Principles' },
+          { title: 'AP Computer Science A' },
+          { title: 'Web Design' },
+          { title: 'Programming / Software Development' },
+        ],
+        'Engineering / STEM': [
+          { title: 'Engineering Design' },
+          { title: 'Robotics' },
+          { title: 'Electronics' },
+          { title: 'Manufacturing / Technology' },
+        ],
+        'Visual Arts': [
+          { title: 'Drawing' },
+          { title: 'Painting' },
+          { title: 'Ceramics' },
+          { title: 'Sculpture' },
+          { title: 'Photography' },
+          { title: 'Digital Art' },
+        ],
+        'Music': [
+          { title: 'Concert Band' },
+          { title: 'Symphonic Band' },
+          { title: 'Jazz Band' },
+          { title: 'Orchestra' },
+          { title: 'Choir' },
+        ],
+        'Theater': [
+          { title: 'Drama / Acting' },
+          { title: 'Theater Production' },
+          { title: 'Stagecraft' },
+        ],
+        'Physical Education': [
+          { title: 'Fitness / Weight Training' },
+          { title: 'Team Sports' },
+          { title: 'Lifetime Fitness' },
+        ],
+        'Other Electives': [
+          { title: 'Leadership' },
+          { title: 'Service Learning' },
+          { title: 'AVID' },
+          { title: 'Study Skills / Academic Support' },
         ],
       },
       '11th Grade (Junior)': {
-        'Math': [
-          { title: 'Pre-Calculus', teacher: 'Mr. Park', period: '1st', room: '207', capacity: '26', enrolled: '24' },
-          { title: 'AP Calculus AB', teacher: 'Dr. Nguyen', period: '2nd', room: '209', capacity: '22', enrolled: '20' },
+        'English': [
+          { title: 'American Literature' },
+          { title: 'American Literature Honors' },
+          { title: 'AP English Language & Composition' },
+          { title: 'Creative Writing' },
+          { title: 'Journalism' },
+          { title: 'Newspaper / Yearbook' },
+          { title: 'Film Studies' },
+          { title: 'Mythology' },
+          { title: 'Public Speaking' },
+        ],
+        'Mathematics': [
+          { title: 'Geometry' },
+          { title: 'Algebra 2' },
+          { title: 'Algebra 2 Honors' },
+          { title: 'Precalculus' },
+          { title: 'Precalculus Honors' },
+          { title: 'AP Precalculus' },
+          { title: 'AP Calculus AB' },
+          { title: 'AP Statistics' },
         ],
         'Science': [
-          { title: 'Physics I', teacher: 'Mr. Webb', period: '1st', room: '307', capacity: '28', enrolled: '26' },
-          { title: 'AP Biology', teacher: 'Dr. Smith', period: '2nd', room: '309', capacity: '24', enrolled: '22' },
+          { title: 'Physics' },
+          { title: 'Physics Honors' },
+          { title: 'AP Biology' },
+          { title: 'AP Chemistry' },
+          { title: 'AP Physics 1' },
+          { title: 'Environmental Science' },
+          { title: 'Anatomy & Physiology' },
+          { title: 'Forensic Science' },
+        ],
+        'Social Studies': [
+          { title: 'U.S. History' },
+          { title: 'AP U.S. History' },
+          { title: 'Psychology' },
+          { title: 'AP Psychology' },
+        ],
+        'World Languages': [
+          { title: 'Spanish 1' },
+          { title: 'Spanish 2' },
+          { title: 'Spanish 3' },
+          { title: 'Spanish 4' },
+          { title: 'AP Spanish Language' },
+          { title: 'French 1' },
+          { title: 'French 2' },
+          { title: 'French 3' },
+          { title: 'French 4' },
+          { title: 'AP French' },
+          { title: 'Japanese 1' },
+          { title: 'Japanese 2' },
+          { title: 'Japanese 3' },
+          { title: 'Japanese 4' },
+          { title: 'AP Japanese' },
+          { title: 'Chinese (Mandarin) 1' },
+          { title: 'Chinese (Mandarin) 2' },
+          { title: 'Chinese (Mandarin) 3' },
+          { title: 'Chinese (Mandarin) 4' },
+          { title: 'AP Chinese' },
+        ],
+        'Computer Science / Technology': [
+          { title: 'Introduction to Computer Science' },
+          { title: 'AP Computer Science Principles' },
+          { title: 'AP Computer Science A' },
+          { title: 'Web Design' },
+          { title: 'Programming / Software Development' },
+        ],
+        'Engineering / STEM': [
+          { title: 'Engineering Design' },
+          { title: 'Robotics' },
+          { title: 'Electronics' },
+          { title: 'Manufacturing / Technology' },
+        ],
+        'Visual Arts': [
+          { title: 'Drawing' },
+          { title: 'Painting' },
+          { title: 'Ceramics' },
+          { title: 'Sculpture' },
+          { title: 'Photography' },
+          { title: 'Digital Art' },
+          { title: 'AP Studio Art' },
+        ],
+        'Music': [
+          { title: 'Concert Band' },
+          { title: 'Symphonic Band' },
+          { title: 'Jazz Band' },
+          { title: 'Orchestra' },
+          { title: 'Choir' },
+        ],
+        'Theater': [
+          { title: 'Drama / Acting' },
+          { title: 'Theater Production' },
+          { title: 'Stagecraft' },
+        ],
+        'Physical Education': [
+          { title: 'Fitness / Weight Training' },
+          { title: 'Team Sports' },
+          { title: 'Lifetime Fitness' },
+        ],
+        'Other Electives': [
+          { title: 'Leadership' },
+          { title: 'Teacher Assistant' },
+          { title: 'Service Learning' },
+          { title: 'AVID' },
+          { title: 'Study Skills / Academic Support' },
         ],
       },
-    },
-    'Mercer Island High School': {
-      '9th Grade (Freshman)': {
-        'Math': [
-          { title: 'Algebra 1', teacher: 'Mr. Stone', period: '1st', room: '301', capacity: '28', enrolled: '26' },
-          { title: 'Geometry', teacher: 'Ms. Price', period: '2nd', room: '302', capacity: '28', enrolled: '27' },
+      '12th Grade (Senior)': {
+        'English': [
+          { title: 'AP English Literature & Composition' },
+          { title: 'Creative Writing' },
+          { title: 'Journalism' },
+          { title: 'Newspaper / Yearbook' },
+          { title: 'Film Studies' },
+          { title: 'Mythology' },
+          { title: 'Public Speaking' },
+        ],
+        'Mathematics': [
+          { title: 'Precalculus' },
+          { title: 'Precalculus Honors' },
+          { title: 'AP Precalculus' },
+          { title: 'AP Calculus AB' },
+          { title: 'AP Calculus BC' },
+          { title: 'AP Statistics' },
         ],
         'Science': [
-          { title: 'Biology I', teacher: 'Dr. Berg', period: '1st', room: '401', capacity: '30', enrolled: '29' },
+          { title: 'Physics' },
+          { title: 'Physics Honors' },
+          { title: 'AP Biology' },
+          { title: 'AP Chemistry' },
+          { title: 'AP Physics 1' },
+          { title: 'AP Physics C' },
+          { title: 'Environmental Science' },
+          { title: 'Anatomy & Physiology' },
+          { title: 'Forensic Science' },
+        ],
+        'Social Studies': [
+          { title: 'Civics / Government' },
+          { title: 'AP U.S. Government' },
+          { title: 'Economics' },
+          { title: 'AP Macroeconomics' },
+          { title: 'Psychology' },
+          { title: 'AP Psychology' },
+        ],
+        'World Languages': [
+          { title: 'Spanish 1' },
+          { title: 'Spanish 2' },
+          { title: 'Spanish 3' },
+          { title: 'Spanish 4' },
+          { title: 'AP Spanish Language' },
+          { title: 'French 1' },
+          { title: 'French 2' },
+          { title: 'French 3' },
+          { title: 'French 4' },
+          { title: 'AP French' },
+          { title: 'Japanese 1' },
+          { title: 'Japanese 2' },
+          { title: 'Japanese 3' },
+          { title: 'Japanese 4' },
+          { title: 'AP Japanese' },
+          { title: 'Chinese (Mandarin) 1' },
+          { title: 'Chinese (Mandarin) 2' },
+          { title: 'Chinese (Mandarin) 3' },
+          { title: 'Chinese (Mandarin) 4' },
+          { title: 'AP Chinese' },
+        ],
+        'Computer Science / Technology': [
+          { title: 'Introduction to Computer Science' },
+          { title: 'AP Computer Science Principles' },
+          { title: 'AP Computer Science A' },
+          { title: 'Web Design' },
+          { title: 'Programming / Software Development' },
+        ],
+        'Engineering / STEM': [
+          { title: 'Engineering Design' },
+          { title: 'Robotics' },
+          { title: 'Electronics' },
+          { title: 'Manufacturing / Technology' },
+        ],
+        'Visual Arts': [
+          { title: 'Drawing' },
+          { title: 'Painting' },
+          { title: 'Ceramics' },
+          { title: 'Sculpture' },
+          { title: 'Photography' },
+          { title: 'Digital Art' },
+          { title: 'AP Studio Art' },
+        ],
+        'Music': [
+          { title: 'Concert Band' },
+          { title: 'Symphonic Band' },
+          { title: 'Jazz Band' },
+          { title: 'Orchestra' },
+          { title: 'Choir' },
+        ],
+        'Theater': [
+          { title: 'Drama / Acting' },
+          { title: 'Theater Production' },
+          { title: 'Stagecraft' },
+        ],
+        'Physical Education': [
+          { title: 'Fitness / Weight Training' },
+          { title: 'Team Sports' },
+          { title: 'Lifetime Fitness' },
+        ],
+        'Other Electives': [
+          { title: 'Leadership' },
+          { title: 'Teacher Assistant' },
+          { title: 'Service Learning' },
+          { title: 'AVID' },
+          { title: 'Study Skills / Academic Support' },
         ],
       },
-    },
-    'Inglemoor High School': {
-      '9th Grade (Freshman)': {
-        'Math': [
-          { title: 'Algebra 1', teacher: 'Ms. Hood', period: '1st', room: '201', capacity: '28', enrolled: '25' },
-          { title: 'Geometry', teacher: 'Mr. Field', period: '2nd', room: '202', capacity: '28', enrolled: '26' },
-        ],
-      },
-    },
+    }
   }
 
   const handleSchoolSelect = (school) => {
@@ -97,6 +404,8 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
 
   const handleGradeSelect = (grade) => {
     setSelectedGrade(grade)
+    // Automatically show all courses for the selected grade
+    handleSearch('')
   }
 
   const handleSearch = async (searchQuery) => {
@@ -127,14 +436,14 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   }
 
   const handleAddCourse = (course) => {
-    const courseId = `${course.title}-${course.teacher}-${course.period}`
+    const courseId = `${course.title}`
     if (addedCourses.has(courseId)) return
     
     addCalendarEvent({
       title: course.title,
-      description: `${selectedSchool.name} • ${selectedGrade} • Teacher: ${course.teacher}`,
-      commitment: `Period: ${course.period}`,
-      meetingDay: `Room ${course.room}`,
+      description: `${selectedSchool.name} • ${selectedGrade} • ${course.subject}`,
+      commitment: `Course`,
+      meetingDay: `Redmond High School`,
       color: '#7c6af7',
       type: 'course'
     })
@@ -142,7 +451,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   }
 
   const handleRemoveCourse = (course) => {
-    const courseId = `${course.title}-${course.teacher}-${course.period}`
+    const courseId = `${course.title}`
     const event = calendarEvents.find(e => e.title === course.title && e.type === 'course')
     if (event) {
       removeCalendarEvent(event.id)
@@ -155,7 +464,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   }
 
   const isAdded = (course) => {
-    const courseId = `${course.title}-${course.teacher}-${course.period}`
+    const courseId = `${course.title}`
     return addedCourses.has(courseId) || calendarEvents.some(e => e.title === course.title && e.type === 'course')
   }
 
@@ -173,7 +482,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
               Choose Your School
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto' }}>
-              Select an LWSD school to explore available courses for your grade level
+              Select Redmond High School to explore available courses for your grade level
             </p>
           </div>
 
@@ -299,16 +608,8 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
 
             {!loading && courses.length > 0 && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1rem' }}>
-                {courses.map((course, i) => <CourseCard key={`${course.title}-${course.teacher}-${i}`} course={course} index={i} isAdded={isAdded(course)} onAdd={() => handleAddCourse(course)} onRemove={() => handleRemoveCourse(course)} />)}
+                {courses.map((course, i) => <CourseCard key={`${course.title}-${i}`} course={course} index={i} isAdded={isAdded(course)} onAdd={() => handleAddCourse(course)} onRemove={() => handleRemoveCourse(course)} />)}
               </div>
-            )}
-
-            {!loading && !hasSearched && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📚</div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>Ready to explore courses?</h3>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Search for courses by subject to see all available options for your grade level.</p>
-              </motion.div>
             )}
 
             {!loading && hasSearched && courses.length === 0 && (
@@ -347,12 +648,6 @@ function CourseCard({ course, index, isAdded, onAdd, onRemove }) {
             <Plus size={16} />
           </motion.button>
         )}
-      </div>
-      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>Teacher: {course.teacher}</p>
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.78rem', color: 'var(--text-dim)' }}><Clock size={12} /> Period {course.period}</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.78rem', color: 'var(--text-dim)' }}><Users size={12} /> {course.enrolled}/{course.capacity}</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.78rem', color: 'var(--text-dim)' }}>📍 Room {course.room}</div>
       </div>
     </motion.div>
   )
