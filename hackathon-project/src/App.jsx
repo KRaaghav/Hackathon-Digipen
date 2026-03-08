@@ -82,6 +82,7 @@ export default function App() {
               {zenMode && <ZenMode onExit={() => setZenMode(false)} />}
             </AnimatePresence>
 
+            <main style={{ paddingTop: 64, minHeight: 'calc(100vh - 64px)', position: 'relative' }}>
             <Routes>
               <Route
                 path="/"
@@ -128,6 +129,7 @@ export default function App() {
               <Route path="/geometry" element={<GeometryDash />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
+            </main>
           </>
         )}
       </div>
