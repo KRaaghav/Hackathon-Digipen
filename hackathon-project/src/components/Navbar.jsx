@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Compass, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
+import { TreePine, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 
 const NAV_ITEMS = [
@@ -49,7 +49,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
               color: 'white'
             }}
           >
-            <Compass size={18} color="white" />
+            <TreePine size={18} color="white" />
           </motion.div>
           <span style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
@@ -57,7 +57,7 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             letterSpacing: '-0.02em'
           }}>
-            Path<span style={{ color: 'var(--accent)' }}>Finder</span>
+            Tranquility
           </span>
         </Link>
 
