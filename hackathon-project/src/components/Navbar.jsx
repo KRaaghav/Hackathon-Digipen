@@ -6,9 +6,9 @@ import { useTheme } from '../contexts/ThemeContext.jsx'
 
 const NAV_ITEMS = [
   { path: '/', icon: <LayoutDashboard size={17} />, label: 'Dashboard' },
-  { path: '/explore', icon: <Search size={17} />, label: 'Explore ECs' },
+  { path: '/explore', icon: <Search size={17} />, label: 'ECs' },
   { path: '/courses', icon: <BookOpen size={17} />, label: 'Courses' },
-  { path: '/calendar', icon: <CalendarDays size={17} />, label: 'My Calendar' },
+  { path: '/calendar', icon: <CalendarDays size={17} />, label: 'Calendar' },
   { path: '/timers', icon: <Timer size={17} />, label: 'Timers' },
   { path: '/zen', icon: <Gamepad2 size={17} />, label: 'Zen Space' },
   { path: '/geometry', icon: <Gamepad2 size={17} />, label: 'Zen Dash' },

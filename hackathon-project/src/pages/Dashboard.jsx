@@ -735,7 +735,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {[
                 { to: '/explore', icon: <Search size={24} />, label: 'Find Extracurriculars', desc: 'AI-powered EC discovery', color: 'var(--accent)' },
-                { to: '/calendar', icon: <CalendarDays size={24} />, label: 'My EC Calendar', desc: `${calendarEvents.length} activities planned`, color: 'var(--accent2)' },
+                { to: '/calendar', icon: <CalendarDays size={24} />, label: 'Calendar', desc: `${calendarEvents.length} activities planned`, color: 'var(--accent2)' },
                 { to: '/zen', icon: <span style={{ fontSize: '1.3rem' }}>🎮</span>, label: 'Zen Space', desc: 'Relax & recharge', color: 'var(--accent3)' },
               ].map((item, idx) => (
                 <Link key={item.to} to={item.to} style={{ textDecoration: 'none' }}>
