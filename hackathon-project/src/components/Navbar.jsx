@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { TreePine, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, BookOpen, Timer } from 'lucide-react'
+import { LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, BookOpen, Timer } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
+import GalaxyTree from './GalaxyTree'
 
 const MotionLink = motion(Link)
 
@@ -69,15 +70,13 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
               width: 40,
               height: 40,
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #7c6af7, #f76af7)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 8px 24px rgba(124,106,247,0.4)',
               color: 'white'
             }}
           >
-            <TreePine size={18} />
+            <GalaxyTree size={40} />
           </motion.div>
 
           <span style={{
