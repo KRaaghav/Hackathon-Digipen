@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Sparkles, Plus, Check, MapPin, Clock, Users, Star, Filter, Loader } from 'lucide-react'
 
@@ -225,6 +225,280 @@ const ALL_EXTRACURRICULARS = [
   { title: "American Football Intramural", category: "Sports", description: "Recreational American football leagues.", commitment: "3-4 hrs/week", teamSize: "20-30 members", rating: 4.6, meetingDay: "Flexible", skills: ["Football", "Strategy", "Teamwork"], why: "Casual competitive football." },
 ]
 
+// Major-specific EC suggestions
+const MAJOR_SUGGESTIONS = {
+  "Computer Science": [
+    "Best coding competitions for CS students",
+    "AI/ML research opportunities",
+    "Tech startup internships",
+    "Open source contributions"
+  ],
+  "Software Engineering": [
+    "Full-stack development projects",
+    "DevOps and cloud computing",
+    "Mobile app development",
+    "Agile development teams"
+  ],
+  "Data Science": [
+    "Machine learning competitions",
+    "Data visualization projects",
+    "Big data analytics",
+    "Statistical research"
+  ],
+  "Cybersecurity": [
+    "Ethical hacking competitions",
+    "Security research labs",
+    "Network defense teams",
+    "Cryptography projects"
+  ],
+  "Business Administration": [
+    "Consulting case competitions",
+    "Entrepreneurship clubs",
+    "Business strategy projects",
+    "Leadership development"
+  ],
+  "Finance": [
+    "Investment banking clubs",
+    "Trading competitions",
+    "Financial modeling",
+    "Portfolio management"
+  ],
+  "Marketing": [
+    "Digital marketing campaigns",
+    "Brand strategy projects",
+    "Social media management",
+    "Market research"
+  ],
+  "Accounting": [
+    "Financial analysis projects",
+    "Tax consulting",
+    "Audit preparation",
+    "Corporate finance"
+  ],
+  "Economics": [
+    "Economic research projects",
+    "Policy analysis",
+    "Market forecasting",
+    "International trade studies"
+  ],
+  "Psychology": [
+    "Research assistant positions",
+    "Counseling internships",
+    "Behavioral studies",
+    "Mental health advocacy"
+  ],
+  "Sociology": [
+    "Social research projects",
+    "Community outreach",
+    "Policy analysis",
+    "Cultural studies"
+  ],
+  "Political Science": [
+    "Model United Nations",
+    "Policy research",
+    "Campaign management",
+    "International relations"
+  ],
+  "International Relations": [
+    "Model UN conferences",
+    "Global policy research",
+    "Cultural exchange programs",
+    "Diplomacy simulations"
+  ],
+  "Biology": [
+    "Research lab positions",
+    "Field biology studies",
+    "Medical internships",
+    "Environmental research"
+  ],
+  "Chemistry": [
+    "Lab research positions",
+    "Chemical analysis",
+    "Pharmaceutical development",
+    "Environmental chemistry"
+  ],
+  "Physics": [
+    "Physics research labs",
+    "Quantum computing",
+    "Astronomy projects",
+    "Engineering physics"
+  ],
+  "Environmental Science": [
+    "Conservation projects",
+    "Climate research",
+    "Sustainability initiatives",
+    "Environmental policy"
+  ],
+  "Neuroscience": [
+    "Brain research labs",
+    "Cognitive studies",
+    "Medical research",
+    "Psychology research"
+  ],
+  "Mechanical Engineering": [
+    "Robotics competitions",
+    "CAD design projects",
+    "Manufacturing internships",
+    "Automotive engineering"
+  ],
+  "Electrical Engineering": [
+    "Circuit design projects",
+    "Embedded systems",
+    "Power engineering",
+    "Telecommunications"
+  ],
+  "Civil Engineering": [
+    "Infrastructure projects",
+    "Sustainable design",
+    "Construction management",
+    "Urban planning"
+  ],
+  "Biomedical Engineering": [
+    "Medical device design",
+    "Biomaterials research",
+    "Healthcare innovation",
+    "Clinical engineering"
+  ],
+  "Pre-Med": [
+    "Medical research",
+    "Hospital volunteering",
+    "Healthcare internships",
+    "Medical mission trips"
+  ],
+  "Nursing": [
+    "Clinical internships",
+    "Patient care volunteering",
+    "Healthcare administration",
+    "Medical research"
+  ],
+  "Public Health": [
+    "Epidemiology research",
+    "Community health projects",
+    "Global health initiatives",
+    "Health policy analysis"
+  ],
+  "Pharmacy": [
+    "Pharmaceutical research",
+    "Clinical trials",
+    "Drug development",
+    "Healthcare consulting"
+  ],
+  "English Literature": [
+    "Writing workshops",
+    "Literary magazines",
+    "Creative writing clubs",
+    "Literature research"
+  ],
+  "Journalism": [
+    "Student newspaper",
+    "Broadcast journalism",
+    "Investigative reporting",
+    "Digital media production"
+  ],
+  "Communications": [
+    "Public relations",
+    "Media production",
+    "Event planning",
+    "Corporate communications"
+  ],
+  "Media Studies": [
+    "Film production",
+    "Digital media",
+    "Media analysis",
+    "Content creation"
+  ],
+  "Art & Design": [
+    "Design competitions",
+    "Art exhibitions",
+    "Creative workshops",
+    "Portfolio development"
+  ],
+  "Architecture": [
+    "Design competitions",
+    "Urban planning",
+    "Sustainable architecture",
+    "Building design"
+  ],
+  "Film & Media": [
+    "Film production",
+    "Video editing",
+    "Screenwriting",
+    "Media festivals"
+  ],
+  "Music": [
+    "Performance ensembles",
+    "Music composition",
+    "Recording studios",
+    "Music education"
+  ],
+  "History": [
+    "Historical research",
+    "Museum internships",
+    "Archaeological projects",
+    "Policy analysis"
+  ],
+  "Philosophy": [
+    "Philosophy clubs",
+    "Ethics discussions",
+    "Research projects",
+    "Debate teams"
+  ],
+  "Anthropology": [
+    "Field research",
+    "Cultural studies",
+    "Archaeological digs",
+    "Ethnographic research"
+  ],
+  "Religious Studies": [
+    "Interfaith dialogue",
+    "Religious research",
+    "Community service",
+    "Ethics discussions"
+  ],
+  "Mathematics": [
+    "Math competitions",
+    "Research projects",
+    "Tutoring programs",
+    "Actuarial studies"
+  ],
+  "Statistics": [
+    "Data analysis projects",
+    "Statistical research",
+    "Survey design",
+    "Machine learning"
+  ],
+  "Actuarial Science": [
+    "Actuarial competitions",
+    "Insurance research",
+    "Risk analysis",
+    "Financial modeling"
+  ],
+  "Education": [
+    "Tutoring programs",
+    "Education research",
+    "Teaching internships",
+    "Curriculum development"
+  ],
+  "Social Work": [
+    "Community service",
+    "Social research",
+    "Advocacy work",
+    "Counseling internships"
+  ],
+  "Criminal Justice": [
+    "Legal research",
+    "Policy analysis",
+    "Community programs",
+    "Law enforcement"
+  ],
+  "Undecided / Exploring": [
+    "Leadership opportunities",
+    "Community service",
+    "Research projects",
+    "Exploratory internships"
+  ]
+}
+
 export default function Extracurriculars({ userProfile, addCalendarEvent, calendarEvents }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
@@ -234,6 +508,93 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
   const [activeFilter, setActiveFilter] = useState('All')
   const [selectedEC, setSelectedEC] = useState(null)
   const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [autofillSuggestions, setAutofillSuggestions] = useState([])
+  const [showAutofill, setShowAutofill] = useState(false)
+
+  const userMajor = userProfile?.major || 'Computer Science'
+  const majorSuggestions = MAJOR_SUGGESTIONS[userMajor] || MAJOR_SUGGESTIONS['Undecided / Exploring']
+
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    debounce((searchQuery) => {
+      if (searchQuery.trim()) {
+        const filtered = ALL_EXTRACURRICULARS.filter(ec => {
+          const titleMatch = ec.title.toLowerCase().includes(searchQuery.toLowerCase())
+          const descMatch = ec.description.toLowerCase().includes(searchQuery.toLowerCase())
+          const skillsMatch = ec.skills?.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
+          const catMatch = ec.category.toLowerCase().includes(searchQuery.toLowerCase())
+          return titleMatch || descMatch || skillsMatch || catMatch
+        })
+        setResults(filtered)
+        setHasSearched(true)
+        setLoading(false)
+      } else {
+        setResults([])
+        setHasSearched(false)
+      }
+    }, 300),
+    []
+  )
+
+  // Autofill suggestions based on query
+  const getAutofillSuggestions = useCallback((searchQuery) => {
+    if (!searchQuery.trim() || searchQuery.length < 2) {
+      setAutofillSuggestions([])
+      setShowAutofill(false)
+      return
+    }
+
+    const suggestions = ALL_EXTRACURRICULARS
+      .filter(ec => ec.title.toLowerCase().includes(searchQuery.toLowerCase()))
+      .slice(0, 5) // Limit to 5 suggestions
+      .map(ec => ec.title)
+
+    setAutofillSuggestions(suggestions)
+    setShowAutofill(suggestions.length > 0)
+  }, [])
+
+  // Handle input change with real-time search and autofill
+  const handleInputChange = (value) => {
+    setQuery(value)
+    setLoading(true)
+    
+    if (value.trim()) {
+      getAutofillSuggestions(value)
+      debouncedSearch(value)
+    } else {
+      setResults([])
+      setHasSearched(false)
+      setAutofillSuggestions([])
+      setShowAutofill(false)
+      setLoading(false)
+    }
+  }
+
+  // Select autofill suggestion
+  const selectAutofillSuggestion = (suggestion) => {
+    setQuery(suggestion)
+    setShowAutofill(false)
+    setAutofillSuggestions([])
+    
+    // Trigger search for the selected suggestion
+    const filtered = ALL_EXTRACURRICULARS.filter(ec => ec.title === suggestion)
+    setResults(filtered)
+    setHasSearched(true)
+    setLoading(false)
+  }
+
+  // Debounce utility function
+  function debounce(func, wait) {
+    let timeout
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout)
+        func(...args)
+      }
+      clearTimeout(timeout)
+      timeout = setTimeout(later, wait)
+    }
+  }
 
   const FILTERS = ['All', 'Competition', 'Conference', 'Workshop', 'Internship', 'Service', 'Travel', 'Academic', 'Sports', 'Arts', 'Community', 'Professional', 'Leadership']
   const alreadyInCalendar = (title) => calendarEvents.some(e => e.title === title)
@@ -258,7 +619,7 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
 
   const handleSearch = async (customQuery) => {
     const searchQ = (customQuery || query).toLowerCase()
-    setLoading(true); setHasSearched(true); setResults([])
+    setLoading(true); setHasSearched(true); setResults([]); setShowAutofill(false)
     
     // Filter ALL_EXTRACURRICULARS by search query
     const filtered = searchQ ? ALL_EXTRACURRICULARS.filter(ec => {
@@ -332,20 +693,77 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
         </div>
 
         <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', marginBottom: '1.5rem' }}>
-          <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', position: 'relative' }}>
             <div style={{ flex: 1, position: 'relative' }}>
               <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)', zIndex: 1 }} />
-              <input className="input" style={{ paddingLeft: '42px' }} placeholder={`Find ECs for ${userProfile?.major || 'your major'}...`} value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSearch()} />
+              <input 
+                className="input" 
+                style={{ paddingLeft: '42px' }} 
+                placeholder={`Find ECs for ${userMajor}...`} 
+                value={query} 
+                onChange={e => handleInputChange(e.target.value)}
+                onFocus={() => query && setShowAutofill(autofillSuggestions.length > 0)}
+                onBlur={() => setTimeout(() => setShowAutofill(false), 200)} // Delay to allow click on suggestions
+              />
+              
+              {/* Autofill Suggestions Dropdown */}
+              <AnimatePresence>
+                {showAutofill && autofillSuggestions.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: 0,
+                      right: 0,
+                      background: 'var(--bg)',
+                      border: '1px solid var(--border)',
+                      borderRadius: 'var(--radius)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                      zIndex: 1000,
+                      maxHeight: '200px',
+                      overflowY: 'auto'
+                    }}
+                  >
+                    {autofillSuggestions.map((suggestion, index) => (
+                      <motion.div
+                        key={suggestion}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        onClick={() => selectAutofillSuggestion(suggestion)}
+                        style={{
+                          padding: '12px 16px',
+                          cursor: 'pointer',
+                          borderBottom: index < autofillSuggestions.length - 1 ? '1px solid var(--border)' : 'none',
+                          transition: 'background-color 0.2s ease'
+                        }}
+                        onMouseOver={e => e.target.style.backgroundColor = 'var(--bg2)'}
+                        onMouseOut={e => e.target.style.backgroundColor = 'transparent'}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Search size={14} style={{ color: 'var(--text-dim)' }} />
+                          <span style={{ fontSize: '0.9rem', color: 'var(--text)' }}>{suggestion}</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="btn btn-primary" onClick={() => handleSearch()} disabled={loading}>
               {loading ? <Loader size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <Sparkles size={16} />}
               {loading ? 'Finding...' : 'Find ECs'}
             </motion.button>
           </div>
+          
+          {/* Major-specific suggestion buttons */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>Try:</span>
-            {[`Best ECs for ${userProfile?.major || 'CS'} students`, 'Leadership opportunities', 'ECs for grad school', 'Community service'].map(p => (
-              <button key={p} onClick={() => { setQuery(p); handleSearch(p) }} style={{ padding: '5px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', fontSize: '0.78rem', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-body)' }}
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>Popular for {userMajor}:</span>
+            {majorSuggestions.map(p => (
+              <button key={p} onClick={() => handleInputChange(p)} style={{ padding: '5px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', fontSize: '0.78rem', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-body)' }}
                 onMouseOver={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.color = 'var(--accent)' }}
                 onMouseOut={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.color = 'var(--text-muted)' }}>
                 {p}
@@ -388,7 +806,7 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🔍</div>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>Ready to discover your extracurriculars?</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Ask AI to find activities tailored to your major and goals.</p>
-            <button className="btn btn-primary" onClick={() => handleSearch()}><Sparkles size={16} /> Show me ECs for my major</button>
+            <button className="btn btn-primary" onClick={() => handleInputChange(`Best ECs for ${userMajor} students`)}><Sparkles size={16} /> Show me ECs for my major</button>
           </motion.div>
         )}
       </motion.div>
