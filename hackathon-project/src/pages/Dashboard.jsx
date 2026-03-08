@@ -82,6 +82,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState([])
   const [cursorTrails, setCursorTrails] = useState([])
+  const [showLearnMoreModal, setShowLearnMoreModal] = useState(false)
 
   const tips = TIPS_BY_MAJOR[selectedMajor] || TIPS_BY_MAJOR.default
 
@@ -349,6 +350,7 @@ export default function Dashboard({ userProfile, calendarEvents }) {
               fontWeight: 600,
               border: '1px solid var(--border)'
             }}
+            onClick={() => setShowLearnMoreModal(true)}
           >
             Learn More
           </motion.button>
@@ -968,6 +970,308 @@ export default function Dashboard({ userProfile, calendarEvents }) {
         </motion.div>
       </motion.div>
       </div>
+
+      {/* Learn More Modal */}
+      <AnimatePresence>
+        {showLearnMoreModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0,0,0,0.8)',
+              backdropFilter: 'blur(20px)',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '2rem'
+            }}
+            onClick={() => setShowLearnMoreModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, rotateY: -15 }}
+              animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+              exit={{ scale: 0.8, opacity: 0, rotateY: 15 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              style={{
+                background: 'linear-gradient(135deg, rgba(20,15,40,0.95), rgba(30,25,60,0.95))',
+                border: '1px solid rgba(124,106,247,0.3)',
+                borderRadius: '24px',
+                padding: '3rem',
+                width: '100%',
+                maxWidth: '800px',
+                maxHeight: '80vh',
+                overflow: 'auto',
+                position: 'relative'
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setShowLearnMoreModal(false)}
+                style={{
+                  position: 'absolute',
+                  top: '1.5rem',
+                  right: '1.5rem',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  border: 'none',
+                  background: 'rgba(247,100,100,0.2)',
+                  color: 'var(--danger)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.2rem',
+                  zIndex: 10
+                }}
+              >
+                ×
+              </motion.button>
+
+              {/* Header */}
+              <motion.div
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                style={{ textAlign: 'center', marginBottom: '2rem' }}
+              >
+                <motion.div
+                  animate={{
+                    rotate: [0, 10, -10, 0],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatDelay: 3
+                  }}
+                  style={{
+                    fontSize: '3rem',
+                    marginBottom: '1rem',
+                    display: 'inline-block'
+                  }}
+                >
+                  🚀
+                </motion.div>
+                <h2 style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '2.5rem',
+                  fontWeight: 800,
+                  background: 'linear-gradient(135deg, #7c6af7, #f7a26a, #6af7c8)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  marginBottom: '0.5rem'
+                }}>
+                  Welcome to PathFinder
+                </h2>
+                <p style={{
+                  color: 'var(--text-muted)',
+                  fontSize: '1.1rem',
+                  lineHeight: 1.6
+                }}>
+                  Your AI-powered academic companion for discovering extracurriculars and managing your schedule
+                </p>
+              </motion.div>
+
+              {/* Features Grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '1.5rem',
+                marginBottom: '2rem'
+              }}>
+                {[
+                  {
+                    icon: '🤖',
+                    title: 'AI-Powered Discovery',
+                    desc: 'Smart recommendations based on your major, interests, and goals',
+                    color: 'var(--accent)',
+                    delay: 0.2
+                  },
+                  {
+                    icon: '📅',
+                    title: 'Smart Calendar',
+                    desc: 'Organize your ECs with time tracking and difficulty levels',
+                    color: 'var(--accent2)',
+                    delay: 0.3
+                  },
+                  {
+                    icon: '🎯',
+                    title: 'Personalized Tips',
+                    desc: 'Major-specific advice to accelerate your academic journey',
+                    color: 'var(--accent3)',
+                    delay: 0.4
+                  },
+                  {
+                    icon: '✨',
+                    title: 'Interactive UI',
+                    desc: 'Beautiful animations and effects for an engaging experience',
+                    color: '#f76af7',
+                    delay: 0.5
+                  },
+                  {
+                    icon: '🎮',
+                    title: 'Zen Mode',
+                    desc: 'Relaxation games and mindfulness exercises',
+                    color: '#6af7c8',
+                    delay: 0.6
+                  },
+                  {
+                    icon: '📊',
+                    title: 'Progress Tracking',
+                    desc: 'Monitor your extracurricular involvement and achievements',
+                    color: '#f7a26a',
+                    delay: 0.7
+                  }
+                ].map((feature, i) => (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ y: 30, opacity: 0, scale: 0.9 }}
+                    animate={{ y: 0, opacity: 1, scale: 1 }}
+                    transition={{
+                      delay: feature.delay,
+                      type: 'spring',
+                      stiffness: 200,
+                      damping: 20
+                    }}
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: `0 20px 40px ${feature.color}30`
+                    }}
+                    style={{
+                      background: `linear-gradient(135deg, ${feature.color}15, ${feature.color}05)`,
+                      border: `1px solid ${feature.color}30`,
+                      borderRadius: '16px',
+                      padding: '1.5rem',
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    <motion.div
+                      animate={{
+                        rotate: [0, 5, -5, 0],
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatDelay: 2 + i * 0.5
+                      }}
+                      style={{
+                        fontSize: '2rem',
+                        marginBottom: '1rem'
+                      }}
+                    >
+                      {feature.icon}
+                    </motion.div>
+                    <h3 style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '1.1rem',
+                      fontWeight: 700,
+                      marginBottom: '0.5rem',
+                      color: feature.color
+                    }}>
+                      {feature.title}
+                    </h3>
+                    <p style={{
+                      color: 'var(--text-muted)',
+                      fontSize: '0.9rem',
+                      lineHeight: 1.5,
+                      margin: 0
+                    }}>
+                      {feature.desc}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Call to Action */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                style={{
+                  textAlign: 'center',
+                  padding: '2rem',
+                  background: 'linear-gradient(135deg, rgba(124,106,247,0.1), rgba(247,162,106,0.05))',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(124,106,247,0.2)'
+                }}
+              >
+                <motion.div
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 180, 360]
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                  style={{
+                    fontSize: '2rem',
+                    marginBottom: '1rem',
+                    display: 'inline-block'
+                  }}
+                >
+                  🎯
+                </motion.div>
+                <h3 style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.5rem',
+                  fontWeight: 700,
+                  marginBottom: '1rem',
+                  color: 'var(--text)'
+                }}>
+                  Ready to Start Your Journey?
+                </h3>
+                <p style={{
+                  color: 'var(--text-muted)',
+                  fontSize: '1rem',
+                  marginBottom: '1.5rem',
+                  lineHeight: 1.6
+                }}>
+                  Join thousands of students who have discovered their perfect extracurricular path with PathFinder.
+                </p>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setShowLearnMoreModal(false)
+                      // Could navigate to explore page or trigger some action
+                    }}
+                    className="btn btn-primary"
+                    style={{ fontSize: '1rem', padding: '12px 24px' }}
+                  >
+                    🚀 Get Started Now
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowLearnMoreModal(false)}
+                    className="btn btn-ghost"
+                    style={{ fontSize: '1rem', padding: '12px 24px' }}
+                  >
+                    Maybe Later
+                  </motion.button>
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
