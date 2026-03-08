@@ -763,7 +763,7 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
             <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>Popular for {userMajor}:</span>
             {majorSuggestions.map(p => (
-              <button key={p} onClick={() => handleInputChange(p)} style={{ padding: '5px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', fontSize: '0.78rem', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-body)' }}
+              <button key={p} onClick={() => { handleInputChange(p); handleSearch(p); }} style={{ padding: '5px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', fontSize: '0.78rem', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-body)' }}
                 onMouseOver={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.color = 'var(--accent)' }}
                 onMouseOut={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.color = 'var(--text-muted)' }}>
                 {p}
