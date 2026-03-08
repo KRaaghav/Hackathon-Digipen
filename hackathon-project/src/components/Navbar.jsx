@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Compass, LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
+import { LayoutDashboard, Search, CalendarDays, Gamepad2, Moon, Sun, X, Menu, BookOpen } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 
 const NAV_ITEMS = [
@@ -37,23 +37,27 @@ export default function Navbar({ userProfile, zenMode, setZenMode, eventCount })
           textDecoration: 'none', flexShrink: 0
         }}>
           <motion.div
-            whileHover={{ rotate: 15, scale: 1.1 }}
+            whileHover={{ scale: 1.12, rotate: 5 }}
             transition={{ type: 'spring', stiffness: 300 }}
             style={{
-              width: 36, height: 36, borderRadius: '10px',
-              background: 'linear-gradient(135deg, var(--accent), #a855f7)',
+              width: 40, height: 40, borderRadius: '12px',
+              background: 'linear-gradient(135deg, #7c6af7, #f76af7)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 16px var(--accent-glow)'
+              boxShadow: '0 8px 24px rgba(124,106,247,0.4)',
+              fontSize: '22px',
+              fontWeight: 800,
+              color: 'white'
             }}
           >
-            <Compass size={18} color="white" />
+            ↗
           </motion.div>
           <span style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
-            fontSize: '1.15rem', color: 'var(--text)',
+            fontSize: '1.15rem', background: 'linear-gradient(135deg, var(--accent), #f76af7)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             letterSpacing: '-0.02em'
           }}>
-            Path<span style={{ color: 'var(--accent)' }}>Finder</span>
+            Ascend
           </span>
         </Link>
 
