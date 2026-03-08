@@ -5,6 +5,55 @@ import { EHS_COURSE_DATABASE } from '../data/eastlakeCourses'
 import { RHS_COURSE_DATABASE } from '../data/redmondCourses'
 import { TESLA_STEM_COURSE_DATABASE } from '../data/teslaStemCourses'
 
+// Suggested subject areas by major (for course suggestions on Courses page)
+const MAJOR_SUGGESTED_SUBJECTS = {
+  'Computer Science': ['Mathematics', 'Science', 'Computer Science / Technology', 'Engineering / STEM'],
+  'Software Engineering': ['Mathematics', 'Science', 'Computer Science / Technology', 'Engineering / STEM'],
+  'Data Science': ['Mathematics', 'Science', 'Computer Science / Technology'],
+  'Cybersecurity': ['Mathematics', 'Computer Science / Technology', 'Science'],
+  'Business Administration': ['Mathematics', 'Social Studies', 'English', 'Computer Science / Technology'],
+  'Finance': ['Mathematics', 'Social Studies', 'Computer Science / Technology'],
+  'Marketing': ['English', 'Social Studies', 'Computer Science / Technology'],
+  'Accounting': ['Mathematics', 'Social Studies', 'English'],
+  'Economics': ['Mathematics', 'Social Studies', 'English'],
+  'Psychology': ['Science', 'Social Studies', 'English'],
+  'Sociology': ['Social Studies', 'English', 'Science'],
+  'Political Science': ['Social Studies', 'English'],
+  'International Relations': ['Social Studies', 'World Languages', 'English'],
+  'Biology': ['Science', 'Mathematics', 'English'],
+  'Chemistry': ['Science', 'Mathematics'],
+  'Physics': ['Mathematics', 'Science', 'Engineering / STEM'],
+  'Environmental Science': ['Science', 'Mathematics', 'Social Studies'],
+  'Neuroscience': ['Science', 'Mathematics', 'Social Studies'],
+  'Mechanical Engineering': ['Mathematics', 'Science', 'Engineering / STEM', 'Computer Science / Technology'],
+  'Electrical Engineering': ['Mathematics', 'Science', 'Engineering / STEM', 'Computer Science / Technology'],
+  'Civil Engineering': ['Mathematics', 'Science', 'Engineering / STEM'],
+  'Biomedical Engineering': ['Science', 'Mathematics', 'Engineering / STEM'],
+  'Pre-Med': ['Science', 'Mathematics', 'English', 'Social Studies'],
+  'Nursing': ['Science', 'English', 'Social Studies'],
+  'Public Health': ['Science', 'Social Studies', 'English'],
+  'Pharmacy': ['Science', 'Mathematics', 'English'],
+  'English Literature': ['English', 'Social Studies', 'Theater'],
+  'Journalism': ['English', 'Social Studies', 'Computer Science / Technology'],
+  'Communications': ['English', 'Social Studies', 'Theater'],
+  'Media Studies': ['English', 'Social Studies', 'Visual Arts'],
+  'Art & Design': ['Visual Arts', 'English', 'Theater'],
+  'Architecture': ['Mathematics', 'Visual Arts', 'Engineering / STEM'],
+  'Film & Media': ['English', 'Visual Arts', 'Theater'],
+  'Music': ['Music', 'English', 'Theater'],
+  'History': ['Social Studies', 'English'],
+  'Philosophy': ['Social Studies', 'English'],
+  'Anthropology': ['Social Studies', 'Science', 'English'],
+  'Religious Studies': ['Social Studies', 'English'],
+  'Mathematics': ['Mathematics', 'Science', 'Computer Science / Technology'],
+  'Statistics': ['Mathematics', 'Science', 'Computer Science / Technology'],
+  'Actuarial Science': ['Mathematics', 'Social Studies', 'Science'],
+  'Education': ['English', 'Social Studies', 'Science'],
+  'Social Work': ['Social Studies', 'English', 'Science'],
+  'Criminal Justice': ['Social Studies', 'English'],
+  'Undecided / Exploring': ['English', 'Mathematics', 'Science', 'Social Studies'],
+}
+
 export default function Courses({ userProfile, calendarEvents, addCalendarEvent, removeCalendarEvent }) {
   const [selectedSchool, setSelectedSchool] = useState(null)
   const [selectedGrade, setSelectedGrade] = useState(null)
@@ -250,6 +299,15 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
 
   const selectedCourses = calendarEvents.filter(e => e.type === 'course')
   const completedReqs = getCompletedRequirements()
+
+  const userMajor = userProfile?.major || 'Undecided / Exploring'
+  const suggestedSubjectsForMajor = MAJOR_SUGGESTED_SUBJECTS[userMajor] || MAJOR_SUGGESTED_SUBJECTS['Undecided / Exploring']
+
+  const applySuggestedSubjects = () => {
+    if (suggestedSubjectsForMajor?.length) {
+      setSelectedSubjects(new Set(suggestedSubjectsForMajor))
+    }
+  }
 
   // School Selection View
   if (!selectedSchool) {
@@ -704,6 +762,68 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
         {/* Course Search */}
         {selectedGrade && (
           <>
+            {/* Suggested for your major */}
+            {suggestedSubjectsForMajor?.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  background: 'linear-gradient(135deg, rgba(124, 106, 247, 0.12) 0%, rgba(106, 247, 162, 0.08) 100%)',
+                  border: '1px solid rgba(124, 106, 247, 0.25)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '1.25rem 1.5rem',
+                  marginBottom: '1.5rem'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
+                  <Sparkles size={18} color="var(--accent)" />
+                  <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', margin: 0, color: 'var(--text)' }}>
+                    Suggested for your major: {userMajor}
+                  </h4>
+                </div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: 1.5 }}>
+                  Focus on these subject areas to align with {userMajor}. Click the button to filter courses by these subjects.
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+                  {suggestedSubjectsForMajor.map(subject => (
+                    <span
+                      key={subject}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '100px',
+                        fontSize: '0.8rem',
+                        fontFamily: 'var(--font-body)',
+                        background: 'rgba(124, 106, 247, 0.15)',
+                        color: 'var(--accent)',
+                        border: '1px solid rgba(124, 106, 247, 0.3)'
+                      }}
+                    >
+                      {subject}
+                    </span>
+                  ))}
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={applySuggestedSubjects}
+                    style={{
+                      marginLeft: '0.5rem',
+                      padding: '6px 14px',
+                      borderRadius: 'var(--radius)',
+                      border: '1px solid var(--accent)',
+                      background: 'var(--accent)',
+                      color: 'white',
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-display)'
+                    }}
+                  >
+                    Apply suggested subjects
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+
             <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', marginBottom: '1.5rem' }}>
               <div style={{ marginBottom: '1rem' }}>
                 <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text)', margin: '0 0 0.75rem 0' }}>
