@@ -82,6 +82,18 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
     return { level: 'High', color: STRESS_COLORS.High }
   }
 
+  const getDayTimeCommitment = (events) => {
+    return events.reduce((total, ev) => {
+      const commitment = ev.commitment || ''
+      // Extract hours from commitment string (e.g., "3 hrs/week" -> 3, "24 hrs (one-time)" -> 24)
+      const hourMatch = commitment.match(/(\d+)\s*hrs?/i)
+      if (hourMatch) {
+        return total + parseInt(hourMatch[1])
+      }
+      return total
+    }, 0)
+  }
+
   const handleAdd = () => {
     if (!newEvent.title.trim()) return
     addCalendarEvent({ ...newEvent, type: 'manual' })
@@ -210,6 +222,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {Object.entries(groupedByDay).map(([day, events]) => {
               const stress = getDayStress(events)
+              const totalTime = getDayTimeCommitment(events)
               return (
                 <motion.div key={day} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.75rem' }}>
@@ -217,14 +230,20 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                       {day}
                     </span>
                     <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Clock size={12} color="var(--text-dim)" />
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: 500 }}>
+                          {totalTime}hrs
+                        </span>
+                      </div>
                       <div style={{
                         width: 8, height: 8, borderRadius: '50%',
                         background: stress.color,
                         boxShadow: `0 0 8px ${stress.color}40`
                       }} />
                       <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: 500 }}>
-                        {stress.level} Stress
+                        {stress.level}
                       </span>
                     </div>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>{events.length}</span>
@@ -291,6 +310,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                 })
                 const isToday = today.toDateString() === displayDate.toDateString()
                 const stress = getDayStress(dayEvents)
+                const totalTime = getDayTimeCommitment(dayEvents)
                 return (
                   <div key={day}>
                     <div style={{
@@ -303,13 +323,16 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
                     }}>
                       {day}
                       {dayEvents.length > 0 && (
-                        <div style={{
-                          marginTop: '4px',
-                          width: 6, height: 6, borderRadius: '50%',
-                          background: stress.color,
-                          boxShadow: `0 0 6px ${stress.color}40`,
-                          margin: '4px auto 0'
-                        }} />
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', marginTop: '4px' }}>
+                          <div style={{
+                            width: 6, height: 6, borderRadius: '50%',
+                            background: stress.color,
+                            boxShadow: `0 0 6px ${stress.color}40`
+                          }} />
+                          <span style={{ fontSize: '0.65rem', color: 'var(--text-dim)', fontWeight: 500 }}>
+                            {totalTime}hrs
+                          </span>
+                        </div>
                       )}
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', minHeight: 200 }}>
