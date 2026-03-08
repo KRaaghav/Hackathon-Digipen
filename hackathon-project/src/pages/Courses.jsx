@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Sparkles, Plus, Clock, Users, BookOpen, Loader, Trash2, ChevronLeft } from 'lucide-react'
 
@@ -6,16 +6,39 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   const [selectedSchool, setSelectedSchool] = useState(null)
   const [selectedGrade, setSelectedGrade] = useState(null)
   const [query, setQuery] = useState('')
+  const [selectedSubjects, setSelectedSubjects] = useState(new Set())
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
   const [addedCourses, setAddedCourses] = useState(new Set())
+
+  // Auto-update courses when subjects change
+  useEffect(() => {
+    if (selectedSchool && selectedGrade) {
+      handleSearch()
+    }
+  }, [selectedSubjects, selectedSchool, selectedGrade])
 
   const SCHOOLS = [
     { name: 'Redmond High School', abbr: 'RHS' }
   ]
 
   const GRADES = ['9th Grade (Freshman)', '10th Grade (Sophomore)', '11th Grade (Junior)', '12th Grade (Senior)']
+
+  const SUBJECT_CATEGORIES = [
+    'English',
+    'Mathematics', 
+    'Science',
+    'Social Studies',
+    'World Languages',
+    'Computer Science / Technology',
+    'Engineering / STEM',
+    'Visual Arts',
+    'Music',
+    'Theater',
+    'Physical Education',
+    'Other Electives'
+  ]
 
   const COURSE_DATABASE = {
     'Redmond High School': {
@@ -398,6 +421,7 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
     setSelectedSchool(school)
     setSelectedGrade(null)
     setQuery('')
+    setSelectedSubjects(new Set())
     setCourses([])
     setHasSearched(false)
   }
@@ -405,10 +429,30 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
   const handleGradeSelect = (grade) => {
     setSelectedGrade(grade)
     // Automatically show all courses for the selected grade
-    handleSearch('')
+    handleSearch()
   }
 
-  const handleSearch = async (searchQuery) => {
+  const handleSubjectToggle = (subject) => {
+    setSelectedSubjects(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(subject)) {
+        newSet.delete(subject)
+      } else {
+        newSet.add(subject)
+      }
+      return newSet
+    })
+  }
+
+  const handleSelectAllSubjects = () => {
+    setSelectedSubjects(new Set(SUBJECT_CATEGORIES))
+  }
+
+  const handleClearAllSubjects = () => {
+    setSelectedSubjects(new Set())
+  }
+
+  const handleSearch = async () => {
     if (!selectedSchool || !selectedGrade) return
     
     setLoading(true)
@@ -419,16 +463,18 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
       const gradeData = COURSE_DATABASE[schoolName]?.[selectedGrade] || {}
       let results = []
 
-      const lowerQuery = searchQuery.toLowerCase()
-      
-      Object.entries(gradeData).forEach(([subject, courseList]) => {
-        if (subject.toLowerCase().includes(lowerQuery) || lowerQuery === '') {
+      if (selectedSubjects.size === 0) {
+        // If no subjects selected, show all courses
+        Object.entries(gradeData).forEach(([subject, courseList]) => {
           results = results.concat(courseList.map(c => ({ ...c, subject })))
-        } else {
-          const filtered = courseList.filter(c => c.title.toLowerCase().includes(lowerQuery))
-          results = results.concat(filtered.map(c => ({ ...c, subject })))
-        }
-      })
+        })
+      } else {
+        // Filter by selected subjects
+        selectedSubjects.forEach(selectedSubject => {
+          const courseList = gradeData[selectedSubject] || []
+          results = results.concat(courseList.map(c => ({ ...c, subject: selectedSubject })))
+        })
+      }
 
       setCourses(results)
       setLoading(false)
@@ -581,17 +627,72 @@ export default function Courses({ userProfile, calendarEvents, addCalendarEvent,
         {selectedGrade && (
           <>
             <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem' }}>
-                <div style={{ flex: 1, position: 'relative' }}>
-                  <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)' }} />
-                  <input className="input" style={{ paddingLeft: '42px' }} placeholder="Search courses (Math, Science, English...)..." value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSearch(query)} />
+              <div style={{ marginBottom: '1rem' }}>
+                <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text)', margin: '0 0 0.75rem 0' }}>
+                  Filter by Subject Areas
+                </h4>
+                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }} 
+                    whileTap={{ scale: 0.98 }} 
+                    onClick={handleSelectAllSubjects}
+                    style={{ 
+                      padding: '0.4rem 0.8rem', 
+                      borderRadius: 'var(--radius)', 
+                      border: '1px solid var(--border)', 
+                      background: 'var(--bg)', 
+                      color: 'var(--text-muted)', 
+                      fontSize: '0.8rem', 
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-body)'
+                    }}
+                  >
+                    Select All
+                  </motion.button>
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }} 
+                    whileTap={{ scale: 0.98 }} 
+                    onClick={handleClearAllSubjects}
+                    style={{ 
+                      padding: '0.4rem 0.8rem', 
+                      borderRadius: 'var(--radius)', 
+                      border: '1px solid var(--border)', 
+                      background: 'var(--bg)', 
+                      color: 'var(--text-muted)', 
+                      fontSize: '0.8rem', 
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-body)'
+                    }}
+                  >
+                    Clear All
+                  </motion.button>
                 </div>
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="btn btn-primary" onClick={() => handleSearch(query)} disabled={loading}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.5rem' }}>
+                  {SUBJECT_CATEGORIES.map(subject => (
+                    <label key={subject} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.85rem', fontFamily: 'var(--font-body)', color: 'var(--text)' }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedSubjects.has(subject)}
+                        onChange={() => handleSubjectToggle(subject)}
+                        style={{ 
+                          width: '16px', 
+                          height: '16px', 
+                          accentColor: 'var(--primary)',
+                          cursor: 'pointer'
+                        }}
+                      />
+                      {subject}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>Grade: {selectedGrade}</p>
+                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="btn btn-primary" onClick={handleSearch} disabled={loading}>
                   {loading ? <Loader size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <Sparkles size={16} />}
-                  {loading ? 'Searching...' : 'Search'}
+                  {loading ? 'Loading...' : 'Show Courses'}
                 </motion.button>
               </div>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>Grade: {selectedGrade}</p>
             </div>
 
             {loading && (
