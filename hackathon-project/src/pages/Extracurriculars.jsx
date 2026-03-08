@@ -457,8 +457,12 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
   const filtered = activeFilter === 'All' ? results : results.filter(r => r.category === activeFilter)
 
   return (
-    <div className="page-container">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+    <div className="page-container" style={{ paddingTop: '1rem' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+      >
         <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem' }}>
             <span className="chip chip-accent"><Sparkles size={10} /> AI Discovery</span>
@@ -583,7 +587,14 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🔍</div>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>{t('explore.readyToDiscover')}</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('explore.askAI')}</p>
-            <button className="btn btn-primary" onClick={() => handleInputChange(`Best ECs for ${userMajor} students`)}><Sparkles size={16} /> {t('explore.showECs')}</button>
+            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button className="btn btn-primary" onClick={() => { const q = `Best ECs for ${userMajor} students`; handleInputChange(q); handleSearch(q); }}>
+                <Sparkles size={16} /> {t('explore.showECs')}
+              </button>
+              <button className="btn btn-ghost" onClick={handleBrowseAll} style={{ border: '1px solid var(--border)' }}>
+                {t('explore.browseAll')}
+              </button>
+            </div>
           </motion.div>
         )}
       </motion.div>
@@ -600,6 +611,7 @@ export default function Extracurriculars({ userProfile, addCalendarEvent, calend
 }
 
 function ECCard({ ec, index, isAdded, onAdd, onLearnMore, onVisitWebsite, color }) {
+  const { t } = useLanguage()
   const [hovered, setHovered] = useState(false)
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ delay: index * 0.06 }}

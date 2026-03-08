@@ -74,7 +74,7 @@ const QUICK_STATS = [
   { labelKey: 'internshipsPosted', value: '1.2k', icon: <Target size={18} />, color: 'var(--accent3)' },
 ]
 
-export default function Dashboard({ userProfile, calendarEvents }) {
+export default function Dashboard({ userProfile, setUserProfile, calendarEvents }) {
   const { t } = useLanguage()
   const [aiInsight, setAiInsight] = useState('')
   const [loadingInsight, setLoadingInsight] = useState(false)
@@ -128,8 +128,9 @@ export default function Dashboard({ userProfile, calendarEvents }) {
     setMajorInput(major)
     setShowSuggestions(false)
     setSuggestions([])
-    // TODO: Update in database
-    // await updateUserProfile({ major })
+    if (setUserProfile) {
+      setUserProfile(prev => (prev ? { ...prev, major } : { major, name: '', year: '', goals: [] }))
+    }
   }
 
   const handleMajorInputBlur = () => {
@@ -160,6 +161,13 @@ export default function Dashboard({ userProfile, calendarEvents }) {
       return () => clearTimeout(timer)
     }
   }, [userProfile])
+
+  // Keep major dropdown in sync with profile when it changes (e.g. from onboarding or another tab)
+  useEffect(() => {
+    const profileMajor = userProfile?.major || 'Computer Science'
+    setSelectedMajor(profileMajor)
+    setMajorInput(profileMajor)
+  }, [userProfile?.major])
 
   // Cursor trail effect
   useEffect(() => {
