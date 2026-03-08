@@ -109,10 +109,10 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem' }}>
-              <span className="chip chip-orange"><CalendarDays size={10} /> EC Calendar</span>
+              <span className="chip chip-orange"><CalendarDays size={10} /> Calendar</span>
             </div>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, marginBottom: '0.3rem' }}>
-              My EC Calendar
+              Calendar
             </h1>
             <p style={{ color: 'var(--text-muted)' }}>
               {calendarEvents.length} {calendarEvents.length === 1 ? 'activity' : 'activities'} planned
@@ -211,7 +211,7 @@ export default function Calendar({ calendarEvents, addCalendarEvent, removeCalen
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button className="btn btn-primary" onClick={() => setShowAddModal(true)}><Plus size={16} /> Add Manually</button>
-              <a href="/explore" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Sparkles size={16} /> Explore ECs</a>
+              <a href="/explore" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Sparkles size={16} /> ECs</a>
               <a href="/zen-game" className="btn btn-ghost" style={{ textDecoration: 'none' }}><Wind size={16} /> Take a Break</a>
             </div>
           </motion.div>
