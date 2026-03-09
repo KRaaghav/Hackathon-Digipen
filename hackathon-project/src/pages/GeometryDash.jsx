@@ -12,7 +12,7 @@ const PLAYER_X = 120
 
 const GRAVITY = 0.95
 const JUMP_VELOCITY = -13.2
-const SCROLL_SPEED = 5.8
+const SCROLL_SPEED = 6.5
 
 const PLATFORM_MIN_WIDTH = 80
 const PLATFORM_MAX_WIDTH = 160
